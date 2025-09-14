@@ -16,7 +16,7 @@
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   color: white;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #3134c5, #4f15d7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -24,7 +24,7 @@
 
 .light-theme .section-title {
   color: #1a1a1a;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #3538ef, #510def);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
