@@ -59,13 +59,13 @@
   align-items: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.15);
   font-size: 1rem;
 }
 
 .add-platform-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
 }
 
 .add-platform-btn span {
@@ -132,6 +132,25 @@
 
 .light-theme .platform-icon {
   background: rgba(0, 0, 0, 0.05);
+}
+
+/* Icon color adjustments for dark/light modes */
+.platform-icon i {
+  transition: color 0.3s ease;
+}
+
+/* Dark mode - white icons need to be darker */
+.light-theme .platform-icon i[class*="bi-github"],
+.light-theme .platform-icon i[class*="bi-pencil"],
+.light-theme .platform-icon i[class*="bi-code-square"] {
+  color: #333 !important;
+}
+
+/* Light mode - dark icons need to be lighter */
+.platform-icon i[class*="bi-github"],
+.platform-icon i[class*="bi-pencil"],
+.platform-icon i[class*="bi-code-square"] {
+  color: #ffffff;
 }
 
 .platform-actions {
@@ -292,12 +311,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
 }
 
 .add-first-platform-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
 }
 
 /* Platform Modal */

@@ -128,13 +128,15 @@ const MyAchievements = () => {
 
   return (
     <div className="achievements-content">
-      <div className="achievements-header">
-        <h2 className="section-title">My Achievements</h2>
+      <div className="achievements-main">
+        <div className="achievements-header">
+        <h2 className="section-title" style={{color: 'white'}}>My Achievements</h2>
         <button 
           className="submit-achievement-btn"
           onClick={() => setIsSubmitModalOpen(true)}
+          style={{backgroundColor: '#363ba1'}}
         >
-          <span>➕</span>
+          <span><i className="bi bi-plus"></i></span>
           Submit Achievement
         </button>
       </div>
@@ -230,6 +232,59 @@ const MyAchievements = () => {
             </p>
           </div>
         )}
+      </div>
+      </div>
+
+      {/* Sidebar */}
+      <div className="achievements-sidebar">
+        <h3 style={{color: 'white', marginBottom: '1.5rem', fontSize: '1.2rem'}}>Achievement Stats</h3>
+        
+        <div style={{marginBottom: '1.5rem'}}>
+          <p style={{color: '#a0a0a0', marginBottom: '0.5rem', fontSize: '0.9rem'}}>Total Verified</p>
+          <p style={{color: 'white', fontSize: '2rem', fontWeight: 'bold', margin: 0}}>
+            {achievements['all-verified'].length}
+          </p>
+        </div>
+        
+        <div style={{marginBottom: '1.5rem'}}>
+          <p style={{color: '#a0a0a0', marginBottom: '0.5rem', fontSize: '0.9rem'}}>Pending Review</p>
+          <p style={{color: '#fbbf24', fontSize: '2rem', fontWeight: 'bold', margin: 0}}>
+            {achievements['pending'].length}
+          </p>
+        </div>
+        
+        <div style={{marginBottom: '1.5rem'}}>
+          <p style={{color: '#a0a0a0', marginBottom: '0.5rem', fontSize: '0.9rem'}}>Rejected</p>
+          <p style={{color: '#ef4444', fontSize: '2rem', fontWeight: 'bold', margin: 0}}>
+            {achievements['rejected'].length}
+          </p>
+        </div>
+        
+        <div style={{marginBottom: '1.5rem'}}>
+          <p style={{color: '#a0a0a0', marginBottom: '0.5rem', fontSize: '0.9rem'}}>Success Rate</p>
+          <p style={{color: '#10b981', fontSize: '1.5rem', fontWeight: 'bold', margin: 0}}>
+            {achievements['all-verified'].length + achievements['pending'].length + achievements['rejected'].length > 0 
+              ? Math.round((achievements['all-verified'].length / (achievements['all-verified'].length + achievements['pending'].length + achievements['rejected'].length)) * 100)
+              : 0}%
+          </p>
+        </div>
+        
+        <div>
+          <p style={{color: '#a0a0a0', marginBottom: '0.5rem', fontSize: '0.9rem'}}>Categories</p>
+          <div style={{display: 'flex', flexWrap: 'wrap', gap: '0.5rem'}}>
+            {[...new Set([...achievements['all-verified'], ...achievements['pending'], ...achievements['rejected']].map(a => a.category))].slice(0, 3).map(category => (
+              <span key={category} style={{
+                background: 'rgba(99, 102, 241, 0.2)',
+                color: '#a5b4fc',
+                padding: '0.25rem 0.5rem',
+                borderRadius: '6px',
+                fontSize: '0.8rem'
+              }}>
+                {category}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Submit Achievement Modal */}

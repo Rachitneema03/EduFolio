@@ -1,9 +1,10 @@
 /* Account Settings Component Styles */
 
 .account-settings {
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
 }
 
 .settings-header {
@@ -43,9 +44,10 @@
 /* Settings Container */
 .settings-container {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 3rem;
+  grid-template-columns: 280px 1fr 300px;
+  gap: 2rem;
   min-height: 600px;
+  align-items: start;
 }
 
 /* Settings Sidebar */
@@ -130,6 +132,84 @@
 
 .settings-section {
   max-width: 1000px;
+}
+
+/* Settings Right Sidebar */
+.settings-right-sidebar {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.sidebar-section {
+  margin-bottom: 2rem;
+}
+
+.sidebar-section:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-title {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item:last-child {
+  border-bottom: none;
+}
+
+.sidebar-label {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+}
+
+.sidebar-value {
+  color: white;
+  font-weight: 500;
+}
+
+.sidebar-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.stat-number {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  color: #a0a0a0;
+  font-size: 0.8rem;
 }
 
 .section-header {
@@ -448,6 +528,12 @@ input:checked + .slider:before {
   .settings-container {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .settings-right-sidebar {
+    order: -1;
+    position: static;
+    margin-bottom: 1rem;
   }
 
   .settings-sidebar {
