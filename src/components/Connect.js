@@ -9,7 +9,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
       username: 'john-doe-dev',
       profileUrl: 'https://linkedin.com/in/john-doe-dev',
       isConnected: true,
-      icon: '💼'
+      icon: 'bi-linkedin'
     },
     {
       id: 2,
@@ -17,7 +17,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
       username: 'johndoe',
       profileUrl: 'https://github.com/johndoe',
       isConnected: true,
-      icon: '🐙'
+      icon: 'bi-github'
     }
   ]);
 
@@ -27,25 +27,25 @@ const Connect = ({ onPlatformDataUpdate }) => {
     platform: '',
     username: '',
     profileUrl: '',
-    icon: '🔗'
+    icon: 'bi-link'
   });
 
   const availablePlatforms = [
-    { name: 'LinkedIn', icon: '💼', color: '#0077b5' },
-    { name: 'GitHub', icon: '🐙', color: '#333' },
-    { name: 'Coursera', icon: '🎓', color: '#0056d3' },
-    { name: 'Udemy', icon: '🎯', color: '#a435f0' },
-    { name: 'GeeksforGeeks', icon: '💻', color: '#2f8d46' },
-    { name: 'LeetCode', icon: '⚡', color: '#ffa116' },
-    { name: 'HackerRank', icon: '🏆', color: '#00ea64' },
-    { name: 'CodePen', icon: '✏️', color: '#000' },
-    { name: 'Portfolio Website', icon: '🌐', color: '#6366f1' },
-    { name: 'Twitter', icon: '🐦', color: '#1da1f2' },
-    { name: 'YouTube', icon: '📺', color: '#ff0000' },
-    { name: 'Medium', icon: '📝', color: '#00ab6c' },
-    { name: 'Dev.to', icon: '👨‍💻', color: '#0a0a0a' },
-    { name: 'Stack Overflow', icon: '📚', color: '#f48024' },
-    { name: 'Other', icon: '🔗', color: '#6b7280' }
+    { name: 'LinkedIn', icon: 'bi-linkedin', color: '#0077b5' },
+    { name: 'GitHub', icon: 'bi-github', color: '#ffffff' },
+    { name: 'Coursera', icon: 'bi-mortarboard', color: '#0056d3' },
+    { name: 'Udemy', icon: 'bi-book', color: '#a435f0' },
+    { name: 'GeeksforGeeks', icon: 'bi-code-slash', color: '#2f8d46' },
+    { name: 'LeetCode', icon: 'bi-lightning', color: '#ffa116' },
+    { name: 'HackerRank', icon: 'bi-trophy', color: '#00ea64' },
+    { name: 'CodePen', icon: 'bi-pencil', color: '#ffffff' },
+    { name: 'Portfolio Website', icon: 'bi-globe', color: '#6366f1' },
+    { name: 'Twitter', icon: 'bi-twitter', color: '#1da1f2' },
+    { name: 'YouTube', icon: 'bi-youtube', color: '#ff0000' },
+    { name: 'Medium', icon: 'bi-file-text', color: '#00ab6c' },
+    { name: 'Dev.to', icon: 'bi-code-square', color: '#ffffff' },
+    { name: 'Stack Overflow', icon: 'bi-stack-overflow', color: '#f48024' },
+    { name: 'Other', icon: 'bi-link', color: '#6b7280' }
   ];
 
   const handleAddPlatform = () => {
@@ -60,7 +60,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
       };
 
       setConnectedPlatforms(prev => [...prev, platform]);
-      setNewPlatform({ platform: '', username: '', profileUrl: '', icon: '🔗' });
+      setNewPlatform({ platform: '', username: '', profileUrl: '', icon: 'bi-link' });
       setIsAddModalOpen(false);
       onPlatformDataUpdate([...connectedPlatforms, platform]);
     }
@@ -93,7 +93,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
         )
       );
       setEditingPlatform(null);
-      setNewPlatform({ platform: '', username: '', profileUrl: '', icon: '🔗' });
+      setNewPlatform({ platform: '', username: '', profileUrl: '', icon: 'bi-link' });
       setIsAddModalOpen(false);
     }
   };
@@ -117,7 +117,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
   };
 
   const getPlatformInfo = (platformName) => {
-    return availablePlatforms.find(p => p.name === platformName) || { name: platformName, icon: '🔗', color: '#6b7280' };
+    return availablePlatforms.find(p => p.name === platformName) || { name: platformName, icon: 'bi-link', color: '#6b7280' };
   };
 
   const openModal = () => {
@@ -142,7 +142,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
       {/* Add Platform Button */}
       <div className="add-platform-section">
         <button className="add-platform-btn" onClick={openModal}>
-          <span>➕</span>
+          <span><i className="bi bi-plus"></i></span>
           Add Platform
         </button>
       </div>
@@ -156,7 +156,7 @@ const Connect = ({ onPlatformDataUpdate }) => {
               <div key={platform.id} className={`platform-card ${platform.isConnected ? 'connected' : 'disconnected'}`}>
                 <div className="platform-header">
                   <div className="platform-icon" style={{ color: platformInfo.color }}>
-                    {platform.icon}
+                    <i className={`bi ${platform.icon}`}></i>
                   </div>
                   <div className="platform-actions">
                     <button 
@@ -164,14 +164,14 @@ const Connect = ({ onPlatformDataUpdate }) => {
                       onClick={() => handleEditPlatform(platform)}
                       title="Edit"
                     >
-                      ✏️
+                      <i className="bi bi-pencil"></i>
                     </button>
                     <button 
                       className="action-btn delete-btn"
                       onClick={() => handleDeletePlatform(platform.id)}
                       title="Delete"
                     >
-                      🗑️
+                      <i className="bi bi-trash"></i>
                     </button>
                   </div>
                 </div>
@@ -202,10 +202,11 @@ const Connect = ({ onPlatformDataUpdate }) => {
           })
         ) : (
           <div className="empty-platforms">
-            <div className="empty-icon">🔗</div>
+            <div className="empty-icon"><i className="bi bi-link"></i></div>
             <h3>No Platforms Connected</h3>
             <p>Add your professional platforms to get started</p>
             <button className="add-first-platform-btn" onClick={openModal}>
+              <i className="bi bi-plus"></i>
               Add Your First Platform
             </button>
           </div>
@@ -231,14 +232,14 @@ const Connect = ({ onPlatformDataUpdate }) => {
                     setNewPlatform(prev => ({
                       ...prev,
                       platform: e.target.value,
-                      icon: selected ? selected.icon : '🔗'
+                      icon: selected ? selected.icon : 'bi-link'
                     }));
                   }}
                 >
                   <option value="">Select Platform</option>
                   {availablePlatforms.map(platform => (
                     <option key={platform.name} value={platform.name}>
-                      {platform.icon} {platform.name}
+                      {platform.name}
                     </option>
                   ))}
                 </select>

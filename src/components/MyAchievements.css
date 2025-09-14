@@ -1,9 +1,28 @@
 /* My Achievements Component Styles */
 
 .achievements-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.achievements-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.achievements-sidebar {
+  flex: 0 0 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: fit-content;
 }
 
 .achievements-header {
@@ -402,6 +421,13 @@ textarea::placeholder {
 @media (max-width: 768px) {
   .achievements-content {
     padding: 1rem;
+    flex-direction: column;
+  }
+
+  .achievements-sidebar {
+    flex: none;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .achievements-header {

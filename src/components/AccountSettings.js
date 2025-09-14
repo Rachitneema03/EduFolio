@@ -649,6 +649,105 @@ const AccountSettings = ({
             </div>
           )}
         </div>
+
+        {/* Right Sidebar */}
+        <div className="settings-right-sidebar">
+          <div className="sidebar-section">
+            <h3 className="sidebar-title">
+              <i className="bi bi-info-circle"></i>
+              Account Overview
+            </h3>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Member Since</span>
+              <span className="sidebar-value">Jan 2024</span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Last Login</span>
+              <span className="sidebar-value">Today</span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Account Status</span>
+              <span className="sidebar-value" style={{color: '#10b981'}}>Active</span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Theme</span>
+              <span className="sidebar-value">{isDarkMode ? 'Dark' : 'Light'}</span>
+            </div>
+          </div>
+
+          <div className="sidebar-section">
+            <h3 className="sidebar-title">
+              <i className="bi bi-graph-up"></i>
+              Activity Stats
+            </h3>
+            <div className="sidebar-stats">
+              <div className="stat-item">
+                <div className="stat-number">12</div>
+                <div className="stat-label">Courses</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number">8</div>
+                <div className="stat-label">Certificates</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number">15</div>
+                <div className="stat-label">Achievements</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number">95%</div>
+                <div className="stat-label">Profile</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="sidebar-section">
+            <h3 className="sidebar-title">
+              <i className="bi bi-shield-check"></i>
+              Security
+            </h3>
+            <div className="sidebar-item">
+              <span className="sidebar-label">2FA</span>
+              <span className="sidebar-value" style={{color: settings.account.twoFactorAuth ? '#10b981' : '#ef4444'}}>
+                {settings.account.twoFactorAuth ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Login Alerts</span>
+              <span className="sidebar-value" style={{color: settings.account.loginAlerts ? '#10b981' : '#ef4444'}}>
+                {settings.account.loginAlerts ? 'On' : 'Off'}
+              </span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Session Timeout</span>
+              <span className="sidebar-value">{settings.account.sessionTimeout} min</span>
+            </div>
+          </div>
+
+          <div className="sidebar-section">
+            <h3 className="sidebar-title">
+              <i className="bi bi-bell"></i>
+              Notifications
+            </h3>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Email</span>
+              <span className="sidebar-value" style={{color: settings.notifications.emailNotifications ? '#10b981' : '#ef4444'}}>
+                {settings.notifications.emailNotifications ? 'On' : 'Off'}
+              </span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Push</span>
+              <span className="sidebar-value" style={{color: settings.notifications.pushNotifications ? '#10b981' : '#ef4444'}}>
+                {settings.notifications.pushNotifications ? 'On' : 'Off'}
+              </span>
+            </div>
+            <div className="sidebar-item">
+              <span className="sidebar-label">Course Updates</span>
+              <span className="sidebar-value" style={{color: settings.notifications.courseUpdates ? '#10b981' : '#ef4444'}}>
+                {settings.notifications.courseUpdates ? 'On' : 'Off'}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 /* Generate Portfolio Component Styles */
 
 .generate-portfolio {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
+  width: 100%;
 }
 
 .portfolio-header {
@@ -82,15 +83,16 @@
 /* Portfolio Controls */
 .portfolio-controls {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 2rem;
-  padding: 1.5rem;
+  padding: 1.5rem 2rem;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
+  max-width: 100%;
 }
 
 .light-theme .portfolio-controls {
@@ -103,6 +105,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  min-width: 150px;
 }
 
 .template-selector label,
@@ -146,6 +150,9 @@
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
   font-size: 1rem;
+  flex-shrink: 0;
+  min-width: 160px;
+  margin-top: 1.4rem;
 }
 
 .generate-btn:hover:not(:disabled) {
@@ -167,6 +174,23 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   overflow: auto;
   max-height: 80vh;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.portfolio-preview-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.portfolio-preview-sidebar {
+  flex: 0 0 300px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .light-theme .portfolio-preview {
@@ -178,7 +202,7 @@
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
@@ -186,19 +210,88 @@
 }
 
 /* Template Variations */
-.portfolio-template.modern {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.portfolio-template.light {
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #e5e7eb;
 }
 
-.portfolio-template.classic {
-  background: white;
-  border: 2px solid #333;
+.portfolio-template.light .portfolio-name,
+.portfolio-template.light .section-heading,
+.portfolio-template.light .course-name,
+.portfolio-template.light .certificate-name,
+.portfolio-template.light .achievement-title {
+  color: #1a1a1a;
 }
 
-.portfolio-template.creative {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-  color: white;
+.portfolio-template.light .portfolio-bio,
+.portfolio-template.light .course-platform,
+.portfolio-template.light .certificate-platform,
+.portfolio-template.light .achievement-platform {
+  color: #6b7280;
+}
+
+.portfolio-template.dark {
+  background: #1f2937;
+  color: #f9fafb;
+  border: 1px solid #374151;
+}
+
+.portfolio-template.dark .portfolio-name,
+.portfolio-template.dark .section-heading,
+.portfolio-template.dark .course-name,
+.portfolio-template.dark .certificate-name,
+.portfolio-template.dark .achievement-title {
+  color: #f9fafb;
+}
+
+.portfolio-template.dark .portfolio-bio,
+.portfolio-template.dark .course-platform,
+.portfolio-template.dark .certificate-platform,
+.portfolio-template.dark .achievement-platform {
+  color: #d1d5db;
+}
+
+.portfolio-template.minimal {
+  background: #fafafa;
+  color: #2d3748;
+  border: 1px solid #e2e8f0;
+}
+
+.portfolio-template.minimal .portfolio-name,
+.portfolio-template.minimal .section-heading,
+.portfolio-template.minimal .course-name,
+.portfolio-template.minimal .certificate-name,
+.portfolio-template.minimal .achievement-title {
+  color: #2d3748;
+}
+
+.portfolio-template.minimal .portfolio-bio,
+.portfolio-template.minimal .course-platform,
+.portfolio-template.minimal .certificate-platform,
+.portfolio-template.minimal .achievement-platform {
+  color: #718096;
+}
+
+.portfolio-template.professional {
+  background: #ffffff;
+  color: #1a202c;
+  border: 2px solid #363ba1;
+}
+
+.portfolio-template.professional .portfolio-name,
+.portfolio-template.professional .section-heading,
+.portfolio-template.professional .course-name,
+.portfolio-template.professional .certificate-name,
+.portfolio-template.professional .achievement-title {
+  color: #1a202c;
+}
+
+.portfolio-template.professional .portfolio-bio,
+.portfolio-template.professional .course-platform,
+.portfolio-template.professional .certificate-platform,
+.portfolio-template.professional .achievement-platform {
+  color: #4a5568;
 }
 
 /* Portfolio Header Section */
@@ -209,7 +302,7 @@
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.portfolio-template.classic .portfolio-header-section {
+.portfolio-template.professional .portfolio-header-section {
   border-bottom: 2px solid #333;
 }
 
@@ -255,7 +348,7 @@
   padding-bottom: 0.5rem;
 }
 
-.portfolio-template.classic .section-heading {
+.portfolio-template.professional .section-heading {
   border-bottom: 1px solid #333;
 }
 
@@ -308,7 +401,7 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.portfolio-template.classic .skill-tag {
+.portfolio-template.professional .skill-tag {
   background: #f0f0f0;
   color: #333;
   border: 1px solid #ddd;
@@ -325,9 +418,9 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.portfolio-template.classic .course-item,
-.portfolio-template.classic .certificate-item,
-.portfolio-template.classic .achievement-item {
+.portfolio-template.professional .course-item,
+.portfolio-template.professional .certificate-item,
+.portfolio-template.professional .achievement-item {
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
 }
@@ -392,8 +485,9 @@
 
   .portfolio-controls {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: stretch;
+    padding: 1rem;
   }
 
   .template-selector,
@@ -401,10 +495,23 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex: none;
+  }
+
+  .generate-btn {
+    width: 100%;
+    min-width: auto;
   }
 
   .portfolio-preview {
     padding: 1rem;
+    flex-direction: column;
+  }
+
+  .portfolio-preview-sidebar {
+    flex: none;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .portfolio-template {
@@ -558,7 +665,7 @@
   transition: all 0.3s ease;
 }
 
-.portfolio-template.classic .social-link {
+.portfolio-template.professional .social-link {
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
 }
@@ -569,7 +676,7 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.portfolio-template.classic .social-link:hover {
+.portfolio-template.professional .social-link:hover {
   background: #f0f0f0;
 }
 

@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import './GeneratePortfolio.css';
 
 const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievements = [], platformData = [] }) => {
-  const [selectedTemplate, setSelectedTemplate] = useState('modern');
+  const [selectedTemplate, setSelectedTemplate] = useState('light');
   const [isGenerating, setIsGenerating] = useState(false);
   const [downloadFormat, setDownloadFormat] = useState('pdf');
   const [isEditMode, setIsEditMode] = useState(false);
@@ -161,12 +161,12 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
 
   const getPlatformIcon = (platform) => {
     switch (platform.toLowerCase()) {
-      case 'coursera': return '🎓';
-      case 'udemy': return '🎯';
-      case 'geeksforgeeks': return '💻';
-      case 'aws': return '☁️';
-      case 'freecodecamp': return '🔥';
-      default: return '📚';
+      case 'coursera': return <i className="bi bi-mortarboard"></i>;
+      case 'udemy': return <i className="bi bi-book"></i>;
+      case 'geeksforgeeks': return <i className="bi bi-code-slash"></i>;
+      case 'aws': return <i className="bi bi-cloud"></i>;
+      case 'freecodecamp': return <i className="bi bi-fire"></i>;
+      default: return <i className="bi bi-book"></i>;
     }
   };
 
@@ -182,7 +182,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
             className={`edit-resume-btn ${isEditMode ? 'active' : ''}`}
             onClick={toggleEditMode}
           >
-            {isEditMode ? '✏️ Exit Edit' : '✏️ Edit Resume Manually'}
+            {isEditMode ? <><i className="bi bi-pencil"></i> Exit Edit</> : <><i className="bi bi-pencil"></i> Edit Resume Manually</>}
           </button>
         </div>
       </div>
@@ -195,9 +195,10 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
             value={selectedTemplate} 
             onChange={(e) => setSelectedTemplate(e.target.value)}
           >
-            <option value="modern">Modern</option>
-            <option value="classic">Classic</option>
-            <option value="creative">Creative</option>
+            <option value="light">Light Theme</option>
+            <option value="dark">Dark Theme</option>
+            <option value="minimal">Minimal</option>
+            <option value="professional">Professional</option>
           </select>
         </div>
 
@@ -223,10 +224,11 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
 
       {/* Portfolio Preview */}
       <div className="portfolio-preview">
-        <div 
-          ref={portfolioRef}
-          className={`portfolio-template ${selectedTemplate} ${isEditMode ? 'edit-mode' : ''}`}
-        >
+        <div className="portfolio-preview-content">
+          <div 
+            ref={portfolioRef}
+            className={`portfolio-template ${selectedTemplate} ${isEditMode ? 'edit-mode' : ''}`}
+          >
           {/* Header Section */}
           <div className="portfolio-header-section">
             <div className="personal-info">
@@ -257,21 +259,21 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
               <div className="contact-info">
                 {isEditMode ? (
                   <>
-                    <span>📧 <input
+                    <span><i className="bi bi-envelope"></i> <input
                       type="email"
                       className="editable-input contact-input"
                       value={sampleUserData.email}
                       onChange={(e) => handleContentEdit('email', e.target.value)}
                       placeholder="your.email@example.com"
                     /></span>
-                    <span>📱 <input
+                    <span><i className="bi bi-phone"></i> <input
                       type="tel"
                       className="editable-input contact-input"
                       value={sampleUserData.phone}
                       onChange={(e) => handleContentEdit('phone', e.target.value)}
                       placeholder="+1 (555) 123-4567"
                     /></span>
-                    <span>📍 <input
+                    <span><i className="bi bi-geo-alt"></i> <input
                       type="text"
                       className="editable-input contact-input"
                       value={sampleUserData.location}
@@ -281,9 +283,9 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                   </>
                 ) : (
                   <>
-                    <span>📧 {sampleUserData.email}</span>
-                    <span>📱 {sampleUserData.phone}</span>
-                    <span>📍 {sampleUserData.location}</span>
+                    <span><i className="bi bi-envelope"></i> {sampleUserData.email}</span>
+                    <span><i className="bi bi-phone"></i> {sampleUserData.phone}</span>
+                    <span><i className="bi bi-geo-alt"></i> {sampleUserData.location}</span>
                   </>
                 )}
               </div>
@@ -466,6 +468,28 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                 <p className="achievement-date">Completed: {achievement.date}</p>
               </div>
             ))}
+          </div>
+        </div>
+        </div>
+        
+        {/* Sidebar */}
+        <div className="portfolio-preview-sidebar">
+          <h3 style={{color: '#1a1a1a', marginBottom: '1rem', fontSize: '1.2rem'}}>Quick Stats</h3>
+          <div style={{marginBottom: '1.5rem'}}>
+            <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Courses Completed</p>
+            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{sampleCourses.length}</p>
+          </div>
+          <div style={{marginBottom: '1.5rem'}}>
+            <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Certificates Earned</p>
+            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{sampleCertificates.length}</p>
+          </div>
+          <div style={{marginBottom: '1.5rem'}}>
+            <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Achievements</p>
+            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{sampleAchievements.length}</p>
+          </div>
+          <div>
+            <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Skills</p>
+            <p style={{color: '#1a1a1a', fontSize: '1rem'}}>{sampleUserData.skills.length} skills listed</p>
           </div>
         </div>
       </div>
