@@ -1,0 +1,650 @@
+/* Generate Portfolio Component Styles */
+
+.generate-portfolio {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.portfolio-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.header-content > div:first-child {
+  flex: 1;
+  text-align: left;
+}
+
+.edit-resume-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.edit-resume-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.edit-resume-btn.active {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.edit-resume-btn.active:hover {
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: white;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.light-theme .section-title {
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  color: #a0a0a0;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.light-theme .section-subtitle {
+  color: #6b7280;
+}
+
+/* Portfolio Controls */
+.portfolio-controls {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.light-theme .portfolio-controls {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.template-selector,
+.format-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.template-selector label,
+.format-selector label {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.light-theme .template-selector label,
+.light-theme .format-selector label {
+  color: #6b7280;
+}
+
+.template-selector select,
+.format-selector select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: white;
+  font-size: 0.9rem;
+  min-width: 120px;
+}
+
+.light-theme .template-selector select,
+.light-theme .format-selector select {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  color: #1a1a1a;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 2rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+  font-size: 1rem;
+}
+
+.generate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+.generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Portfolio Preview */
+.portfolio-preview {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  max-height: 80vh;
+}
+
+.light-theme .portfolio-preview {
+  background: #ffffff;
+}
+
+.portfolio-template {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Template Variations */
+.portfolio-template.modern {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.portfolio-template.classic {
+  background: white;
+  border: 2px solid #333;
+}
+
+.portfolio-template.creative {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  color: white;
+}
+
+/* Portfolio Header Section */
+.portfolio-header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.portfolio-template.classic .portfolio-header-section {
+  border-bottom: 2px solid #333;
+}
+
+.portfolio-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: inherit;
+}
+
+.portfolio-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+
+.contact-info span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Portfolio Sections */
+.portfolio-section {
+  margin-bottom: 2rem;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: inherit;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.portfolio-template.classic .section-heading {
+  border-bottom: 1px solid #333;
+}
+
+.bio-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Education Section */
+.education-item {
+  margin-bottom: 1rem;
+}
+
+.education-degree {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: inherit;
+}
+
+.education-school {
+  font-size: 0.95rem;
+  margin: 0 0 0.25rem 0;
+  opacity: 0.8;
+}
+
+.education-gpa {
+  font-size: 0.9rem;
+  margin: 0;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* Skills Section */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.portfolio-template.classic .skill-tag {
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+/* Course Section */
+.course-item,
+.certificate-item,
+.achievement-item {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.portfolio-template.classic .course-item,
+.portfolio-template.classic .certificate-item,
+.portfolio-template.classic .achievement-item {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+}
+
+.course-header,
+.certificate-header,
+.achievement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.course-name,
+.certificate-name,
+.achievement-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: inherit;
+  flex: 1;
+}
+
+.course-platform,
+.certificate-platform,
+.achievement-platform {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.course-dates,
+.certificate-date,
+.achievement-date {
+  font-size: 0.9rem;
+  margin: 0;
+  opacity: 0.7;
+}
+
+.certificate-link {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.8;
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.3s ease;
+}
+
+.certificate-link:hover {
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .generate-portfolio {
+    padding: 1rem;
+  }
+
+  .portfolio-controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .template-selector,
+  .format-selector {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .portfolio-preview {
+    padding: 1rem;
+  }
+
+  .portfolio-template {
+    padding: 1.5rem;
+  }
+
+  .portfolio-name {
+    font-size: 2rem;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .course-header,
+  .certificate-header,
+  .achievement-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .generate-portfolio {
+    padding: 0.5rem;
+  }
+
+  .portfolio-template {
+    padding: 1rem;
+  }
+
+  .portfolio-name {
+    font-size: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-heading {
+    font-size: 1.3rem;
+  }
+}
+
+/* Edit Mode Styles */
+.editable-input,
+.editable-textarea {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #6366f1;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: inherit;
+  font-family: inherit;
+  color: #333;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.editable-input:focus,
+.editable-textarea:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
+
+.editable-input::placeholder,
+.editable-textarea::placeholder {
+  color: #6b7280;
+  opacity: 0.7;
+}
+
+/* Specific Editable Input Styles */
+.portfolio-name-input {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-title-input {
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.contact-input {
+  font-size: 0.95rem;
+  min-width: 200px;
+  flex: 1;
+}
+
+.bio-textarea {
+  font-size: 1rem;
+  line-height: 1.7;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.education-degree-input {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.education-details-edit {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.education-school-input,
+.education-year-input {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.education-gpa-input {
+  font-size: 0.9rem;
+  font-weight: 500;
+  max-width: 150px;
+}
+
+.skills-textarea {
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Social Links Section */
+.social-links-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.portfolio-template.classic .social-link {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+}
+
+.social-link:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-template.classic .social-link:hover {
+  background: #f0f0f0;
+}
+
+.social-icon {
+  font-size: 1.5rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+.social-platform {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: inherit;
+}
+
+.social-username {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  color: inherit;
+}
+
+/* Edit Mode Visual Indicators */
+.portfolio-template.edit-mode {
+  border: 3px dashed #6366f1;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+}
+
+.portfolio-template.edit-mode .section-heading {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+}
+
+/* Responsive Design for Edit Mode */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .header-content > div:first-child {
+    text-align: center;
+  }
+
+  .edit-resume-btn {
+    align-self: center;
+    width: fit-content;
+  }
+
+  .education-details-edit {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-input {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-name-input {
+    font-size: 2rem;
+  }
+
+  .portfolio-title-input {
+    font-size: 1.1rem;
+  }
+
+  .editable-input,
+  .editable-textarea {
+    font-size: 0.9rem;
+  }
+}
