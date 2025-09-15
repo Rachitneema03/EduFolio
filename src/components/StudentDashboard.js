@@ -157,6 +157,7 @@ const StudentDashboard = () => {
           pinnedCertificates={pinnedCertificates}
           setPinnedCertificates={setPinnedCertificates}
           onNavigateToCertificates={() => setActiveTab('certificates')}
+          setActiveTab={setActiveTab}
         />;
       case 'courses':
         return <CoursesContent />;
@@ -194,6 +195,7 @@ const StudentDashboard = () => {
           pinnedCertificates={pinnedCertificates}
           setPinnedCertificates={setPinnedCertificates}
           onNavigateToCertificates={() => setActiveTab('certificates')}
+          setActiveTab={setActiveTab}
         />;
     }
   };
@@ -216,6 +218,7 @@ const StudentDashboard = () => {
             />
           </div>
           <div className="header-title">
+
             <h1>Student Dashboard</h1>
           </div>
         </div>
@@ -231,15 +234,15 @@ const StudentDashboard = () => {
               onFocus={handleSearchFocus}
               onBlur={handleSearchBlur}
             />
-            <div className="search-icon"><i className="bi bi-search"></i></div>
+            <div className="search-icon">🔍</div>
           </div>
           
           <button className="theme-toggle" onClick={toggleTheme}>
-            {isDarkMode ? <i className="bi bi-sun"></i> : <i className="bi bi-moon"></i>}
+            {isDarkMode ? '☀️' : '🌙'}
           </button>
           
           <div className="notification-icon" onClick={toggleNotification}>
-            <i className="bi bi-bell-fill"></i>
+            🔔
             {unreadCount > 0 && (
               <span className="notification-badge">{unreadCount}</span>
             )}
@@ -260,7 +263,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`}
               onClick={() => setActiveTab('profile')}
             >
-              <span className="nav-icon"><i className="bi bi-person-fill"></i></span>
+              <span className="nav-icon">👤</span>
               <span className="nav-text">Profile</span>
             </button>
             
@@ -268,7 +271,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'courses' ? 'active' : ''}`}
               onClick={() => setActiveTab('courses')}
             >
-              <span className="nav-icon"><i className="bi bi-book-fill"></i></span>
+              <span className="nav-icon">📖</span>
               <span className="nav-text">Courses</span>
             </button>
             
@@ -276,7 +279,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'certificates' ? 'active' : ''}`}
               onClick={() => setActiveTab('certificates')}
             >
-              <span className="nav-icon"><i className="bi bi-trophy-fill"></i></span>
+              <span className="nav-icon">🏆</span>
               <span className="nav-text">Certificates</span>
             </button>
             
@@ -284,7 +287,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'achievements' ? 'active' : ''}`}
               onClick={() => setActiveTab('achievements')}
             >
-              <span className="nav-icon"><i className="bi bi-file-earmark-text-fill"></i></span>
+              <span className="nav-icon">📄</span>
               <span className="nav-text">My Achievements</span>
             </button>
             
@@ -292,7 +295,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'portfolio' ? 'active' : ''}`}
               onClick={() => setActiveTab('portfolio')}
             >
-              <span className="nav-icon"><i className="bi bi-rocket-fill"></i></span>
+              <span className="nav-icon">🚀</span>
               <span className="nav-text">Generate Portfolio</span>
             </button>
             
@@ -300,7 +303,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'connect' ? 'active' : ''}`}
               onClick={() => setActiveTab('connect')}
             >
-              <span className="nav-icon"><i className="bi bi-link-45deg"></i></span>
+              <span className="nav-icon">🔗</span>
               <span className="nav-text">Connect</span>
             </button>
             
@@ -308,7 +311,7 @@ const StudentDashboard = () => {
               className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
               onClick={() => setActiveTab('settings')}
             >
-              <span className="nav-icon"><i className="bi bi-gear-fill"></i></span>
+              <span className="nav-icon">⚙️</span>
               <span className="nav-text">Account Settings</span>
             </button>
           </nav>
@@ -424,8 +427,16 @@ const StudentDashboard = () => {
 };
 
 // Profile Content Component
-const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinnedCertificates, onNavigateToCertificates }) => {
+const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinnedCertificates, onNavigateToCertificates, setActiveTab }) => {
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+  
+  // Sample courses data for the profile view
+  const courses = [
+    { id: 1, name: "GfG 160 Daily DSA Problems", platform: "GeeksforGeeks" },
+    { id: 2, name: "GfG 160 Daily DSA Problems", platform: "GeeksforGeeks" },
+    { id: 3, name: "GfG 160 Daily DSA Problems", platform: "GeeksforGeeks" }
+  ];
+  
   const [availableCertificates] = useState([
     {
       id: 1,
@@ -530,172 +541,165 @@ const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinned
 
   return (
     <div className="profile-content">
-      <div className="profile-header">
-        <div className="profile-info">
-          <div className="profile-avatar-large">
-            {userData.profilePhoto ? (
-              <img 
-                src={userData.profilePhoto} 
-                alt="Profile" 
-                className="profile-photo"
-              />
-            ) : (
-              <div className="avatar-circle">{getInitials(userData.name)}</div>
-            )}
-            <button className="edit-avatar"><i className="bi bi-pencil-fill"></i></button>
-          </div>
-          
-          <div className="profile-details">
+      <div className="profile-card">
+        <div className="profile-main">
+          <div className="profile-left">
+            <div className="profile-avatar-large">
+              {userData.profilePhoto ? (
+                <img 
+                  src={userData.profilePhoto} 
+                  alt="Profile" 
+                  className="profile-photo"
+                />
+              ) : (
+                <div className="avatar-circle">{getInitials(userData.name)}</div>
+              )}
+              <button className="edit-avatar">✏️</button>
+            </div>
             <h2 className="username">{userData.name}</h2>
-            {userData.profileHeadline && (
-              <p className="profile-headline">{userData.profileHeadline}</p>
-            )}
-            {userData.age && (
-              <p className="profile-age">Age: {userData.age}</p>
-            )}
-            {userData.gender && (
-              <p className="profile-gender">Gender: {userData.gender}</p>
-            )}
           </div>
           
-          <div className="institution-info">
-            {userData.collegeName && (
-              <div className="institution">
-                <span className="location-icon">📍</span>
-                <span>{userData.collegeName}</span>
-              </div>
-            )}
-            {userData.year && (
-              <div className="year">Year: {userData.year}</div>
-            )}
-            {userData.degree && (
-              <div className="degree">Degree: {userData.degree}</div>
-            )}
-            {userData.passingYear && (
-              <div className="passing-year">Passing Year: {userData.passingYear}</div>
-            )}
-          </div>
-          
-          <button className="edit-profile-btn" onClick={onEditProfile}>
-            <span><i className="bi bi-pencil"></i></span>
-            Edit Profile
-          </button>
-        </div>
-      </div>
-
-      <div className="performance-metrics">
-        <div className="metric-card">
-          <div className="metric-icon">📊</div>
-          <div className="metric-value">6</div>
-          <div className="metric-label">Coding Score</div>
-        </div>
-        
-        <div className="metric-card">
-          <div className="metric-icon">✅</div>
-          <div className="metric-value">3</div>
-          <div className="metric-label">Problem Solved</div>
-        </div>
-        
-        <div className="metric-card">
-          <div className="metric-icon">⭐</div>
-          <div className="metric-value">--</div>
-          <div className="metric-label">Contest Rating</div>
-        </div>
-      </div>
-
-      <div className="campus-mantri">
-        <p>Apply for Campus Mantri</p>
-      </div>
-
-      {/* Pinned Certificates Section */}
-      <div className="pinned-certificates-section">
-        <div className="section-header">
-          <h3 className="section-subtitle">
-            <span className="section-icon"><i className="bi bi-pin"></i></span>
-            Pinned Certificates
-          </h3>
-          <div className="section-actions">
-            <span className="section-count">({pinnedCertificates.length}/3)</span>
-            <button 
-              className="pin-certificate-btn"
-              onClick={() => setIsPinModalOpen(true)}
-              disabled={pinnedCertificates.length >= 3}
-              title={pinnedCertificates.length >= 3 ? 'Maximum 3 certificates can be pinned' : 'Pin a certificate'}
-            >
-              <span>+</span>
-              Pin Certificate
-            </button>
-          </div>
-        </div>
-        
-        {pinnedCertificates.length > 0 ? (
-          <div className="pinned-certificates-grid">
-            {pinnedCertificates.map(certificate => (
-              <div 
-                key={certificate.id} 
-                className="pinned-certificate-card glass-morphism"
-                onClick={onNavigateToCertificates}
-                title="Click to view in Certificates page"
-              >
-                <div className="pinned-certificate-header">
-                  <div className="pinned-certificate-icon">🏆</div>
-                  <button 
-                    className="unpin-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPinnedCertificates(prev => prev.filter(cert => cert.id !== certificate.id));
-                    }}
-                    title="Unpin certificate"
-                  >
-                    📌
-                  </button>
+          <div className="profile-center">
+            <div className="institution-info">
+              {userData.collegeName && (
+                <div className="institution">
+                  <div className="institution-label">Institution:</div>
+                  <span>{userData.collegeName}</span>
                 </div>
-                
-                {certificate.certificateImage ? (
-                  <div className="pinned-certificate-image-container">
-                    <img 
-                      src={certificate.certificateImage} 
-                      alt={certificate.name}
-                      className="pinned-certificate-image"
-                    />
+              )}
+              {userData.year && (
+                <div className="year">Year: {userData.year}</div>
+              )}
+              {userData.degree && (
+                <div className="degree">Degree: {userData.degree}</div>
+              )}
+              {userData.passingYear && (
+                <div className="passing-year">Passing Year: {userData.passingYear}</div>
+              )}
+            </div>
+          </div>
+          
+          <div className="profile-right">
+            <button className="edit-profile-btn" onClick={onEditProfile}>
+              <span>✏️</span>
+              Edit Profile
+            </button>
+            <div className="profile-stats">
+              <div className="stat-section">
+                <span className="stat-label">Achievement Score:</span>
+                <span className="stat-value">1,240</span>
+              </div>
+              <div className="stat-section">
+                <span className="stat-label">Verified Achievements:</span>
+                <span className="stat-value">6</span>
+              </div>
+              <div className="stat-section">
+                <span className="stat-label">Campus Rank:</span>
+                <span className="stat-value">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="profile-bottom">
+          <div className="potd-streak">
+            <span>Active 5 of the last 7 days</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Courses and Certificates Sections */}
+      <div className="courses-certificates-container">
+        {/* Courses Section */}
+        <div className="courses-section">
+          <div className="section-header">
+            <div className="section-header-top">
+              <h3 style={{color: 'white'}} className="section-title">Courses</h3>
+            </div>
+          </div>
+          
+          <div className="courses-grid">
+            {courses.slice(0, 3).map(course => (
+              <div key={course.id} className="course-card">
+                <div className="course-hero-image">
+                  <div className="course-gradient-overlay"></div>
+                  <div className="course-logo">
+                    <div className="course-logo-icon">GfG</div>
                   </div>
-                ) : (
-                  <div className="pinned-certificate-placeholder">
-                    <div className="pinned-placeholder-icon">🏆</div>
-                  </div>
-                )}
-                
-                <div className="pinned-certificate-info">
-                  <h4 className="pinned-certificate-name">{certificate.name}</h4>
-                  <p className="pinned-certificate-platform">{certificate.platform}</p>
-                  {certificate.certificateLink && (
-                    <a 
-                      href={certificate.certificateLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="pinned-certificate-link"
-                    >
-                      View Certificate
-                    </a>
-                  )}
+                </div>
+                <div className="course-info">
+                  <h4 className="course-name">{course.name}</h4>
+                  <p className="course-description">GfG 160 - 160 Days of Problem Solving</p>
                 </div>
               </div>
             ))}
           </div>
-        ) : (
-          <div className="pinned-empty-state">
-            <div className="pinned-empty-icon">📌</div>
-            <p>No certificates pinned yet</p>
-            <p className="pinned-empty-subtitle">Pin your top 3 certificates from the Certificates page</p>
+          <button 
+              className="view-more-btn"
+              onClick={() => setActiveTab('courses')}
+            >
+              View More
+            </button>
+        </div>
+
+        {/* Certificates Section */}
+        <div className="certificates-section">
+          <div className="section-header">
+            <div className="section-header-top">
+              <h3 style={{color: 'white'}} className="section-title">Certificates</h3>
+            </div>
+            
           </div>
-        )}
+          
+          <div className="certificates-grid">
+            {pinnedCertificates.length > 0 ? (
+              pinnedCertificates.slice(0, 3).map(certificate => (
+                <div key={certificate.id} className="certificate-card">
+                  <div className="certificate-hero-image">
+                    <div className="certificate-gradient-overlay"></div>
+                    <div className="certificate-logo">
+                      <div className="certificate-logo-icon">GfG</div>
+                    </div>
+                  </div>
+                  <div className="certificate-info">
+                    <h4 className="certificate-name">{certificate.name}</h4>
+                    <p className="certificate-description">GfG 160 - 160 Days of Problem Solving</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Show sample certificates if none are pinned
+              courses.slice(0, 3).map(course => (
+                <div key={`cert-${course.id}`} className="certificate-card">
+                  <div className="certificate-hero-image">
+                    <div className="certificate-gradient-overlay"></div>
+                    <div className="certificate-logo">
+                      <div className="certificate-logo-icon">GfG</div>
+                    </div>
+                  </div>
+                  <div className="certificate-info">
+                    <h4 className="certificate-name">{course.name}</h4>
+                    <p className="certificate-description">GfG 160 - 160 Days of Problem Solving</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          <button 
+              className="view-more-btn"
+              onClick={() => setActiveTab('certificates')}
+            >
+              View More
+            </button>
+        </div>
+        
       </div>
 
       {/* Badge Achievement Section */}
       <div className="badge-achievement-section">
         <div className="section-header">
           <h3 className="section-subtitle">
-            <span className="section-icon"><i className="bi bi-award"></i></span>
+            <span className="section-icon">🏆</span>
             Badge Achievements
           </h3>
           <span className="section-count">({availableCertificates.length} certificates)</span>
@@ -1025,7 +1029,7 @@ const CoursesContent = () => {
       {/* Ongoing Courses */}
       <div className="courses-section">
         <h3 className="subsection-title">
-          <span className="status-icon"><i className="bi bi-arrow-clockwise"></i></span>
+          <span className="status-icon">🔄</span>
           Ongoing Courses ({ongoingCourses.length})
         </h3>
       <div className="courses-grid">
@@ -1060,7 +1064,7 @@ const CoursesContent = () => {
       {/* Completed Courses */}
       <div className="courses-section">
         <h3 className="subsection-title">
-          <span className="status-icon"><i className="bi bi-check-circle"></i></span>
+          <span className="status-icon">✅</span>
           Completed Courses ({completedCourses.length})
         </h3>
         <div className="courses-grid">
@@ -1335,7 +1339,7 @@ const CertificatesContent = ({ pinnedCertificates, setPinnedCertificates }) => {
                     disabled={isPinned(certificate.id) || pinnedCertificates.length >= 3}
                     title={isPinned(certificate.id) ? 'Already pinned' : pinnedCertificates.length >= 3 ? 'Maximum 3 certificates can be pinned' : 'Pin to profile'}
                   >
-                    <i className="bi bi-pin"></i>
+                    📌
                   </button>
                 </div>
         </div>
