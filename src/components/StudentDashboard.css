@@ -18,7 +18,7 @@
 .dashboard-header {
   background: #1a1a1a;
   border-bottom: 1px solid #333;
-  padding: 1rem 2rem;
+  padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,6 +26,7 @@
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-height: 60px;
 }
 
 .light-theme .dashboard-header {
@@ -36,16 +37,29 @@
 .header-left {
   display: flex;
   align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-logo {
+  height: 60px;
+  width: 110px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  transform: scale(1.5);
+}
+
+.dashboard-logo:hover {
+  transform: scale(1.6);
 }
 
 .header-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.book-icon {
-  font-size: 1.2rem;
 }
 
 .header-title h1 {
@@ -2341,9 +2355,10 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-header {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     flex-direction: column;
     gap: 1rem;
+    min-height: auto;
   }
   
   .header-right {
@@ -2352,6 +2367,11 @@
   
   .search-input {
     width: 150px;
+  }
+  
+  .dashboard-logo {
+    height: 55px;
+    width: 95px;
   }
   
   .sidebar {
@@ -2488,5 +2508,10 @@
   .nav-item {
     white-space: nowrap;
     min-width: 120px;
+  }
+  
+  .dashboard-logo {
+    height: 45px;
+    width: 85px;
   }
 }
