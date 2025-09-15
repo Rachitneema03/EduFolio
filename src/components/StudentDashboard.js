@@ -5,6 +5,7 @@ import MyAchievements from './MyAchievements';
 import GeneratePortfolio from './GeneratePortfolio';
 import Connect from './Connect';
 import AccountSettings from './AccountSettings';
+import dashboardLogo from '../Assets/dashboard-logo.png';
 import './StudentDashboard.css';
 
 const StudentDashboard = () => {
@@ -209,8 +210,15 @@ const StudentDashboard = () => {
         transition={{ duration: 0.6 }}
       >
         <div className="header-left">
+          <div className="dashboard-logo-container">
+            <img 
+              src={dashboardLogo} 
+              alt="EduFolio Logo" 
+              className="dashboard-logo"
+            />
+          </div>
           <div className="header-title">
-            <img src="src\Assets\logo.png" alt="EduFolio Logo" className="logo-icon" />
+
             <h1>Student Dashboard</h1>
           </div>
         </div>

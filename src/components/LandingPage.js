@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import logoImage from '../Assets/logo.png';
+import backgroundImage from '../Assets/Gemini_Generated_Image_qvbm1sqvbm1sqvbm.png';
 // Background image from public directory
 import './LandingPage.css';
 
@@ -9,7 +10,8 @@ const LandingPage = ({ onNavigate }) => {
     <div className="landing-page">
       {/* Background Image */}
       <div className="background-image">
-        <img src={`${process.env.PUBLIC_URL}/background-image.png`} alt="bg-image" />
+        <img src={backgroundImage}
+        alt="bg-image"/>
       </div>
       
       {/* Header with Logo */}
