@@ -22,6 +22,7 @@ const SignIn = ({ onNavigate }) => {
     console.log('Sign in data:', formData);
     // Handle sign in logic here
     // Redirect to dashboard after successful sign in
+    // The dashboard will show profile setup modal if needed
     onNavigate('/dashboard');
   };
 
@@ -29,6 +30,7 @@ const SignIn = ({ onNavigate }) => {
     console.log(`Sign in with ${provider}`);
     // Handle social login logic here
     // Redirect to dashboard after successful social login
+    // The dashboard will show profile setup modal if needed
     onNavigate('/dashboard');
   };
 

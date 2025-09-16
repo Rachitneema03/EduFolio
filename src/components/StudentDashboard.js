@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import EditProfileModal from './EditProfileModal';
+import ProfileSetupModal from './ProfileSetupModal';
 import MyAchievements from './MyAchievements';
 import GeneratePortfolio from './GeneratePortfolio';
 import Connect from './Connect';
@@ -12,6 +13,7 @@ const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isProfileSetupOpen, setIsProfileSetupOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [pinnedCertificates, setPinnedCertificates] = useState([]);
   const [unreadCount, setUnreadCount] = useState(2);
@@ -31,6 +33,14 @@ const StudentDashboard = () => {
     profilePhoto: null
   });
 
+  // Check if profile setup is needed on component mount
+  useEffect(() => {
+    const profileCompleted = localStorage.getItem('profileCompleted');
+    const isProfileIncomplete = !profileCompleted && (!userData.name || userData.name === 'USER' || 
+                               !userData.age || !userData.gender);
+    setIsProfileSetupOpen(isProfileIncomplete);
+  }, [userData]);
+
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
   };
@@ -46,6 +56,13 @@ const StudentDashboard = () => {
 
   const handleCloseModal = () => {
     setIsEditModalOpen(false);
+  };
+
+  const handleProfileSetupComplete = (newUserData) => {
+    setUserData(newUserData);
+    setIsProfileSetupOpen(false);
+    // Store profile completion status in localStorage
+    localStorage.setItem('profileCompleted', 'true');
   };
 
   const toggleNotification = () => {
@@ -324,6 +341,12 @@ const StudentDashboard = () => {
           {renderContent()}
         </motion.main>
       </div>
+
+      {/* Profile Setup Modal */}
+      <ProfileSetupModal
+        isOpen={isProfileSetupOpen}
+        onComplete={handleProfileSetupComplete}
+      />
 
       {/* Edit Profile Modal */}
       <EditProfileModal
