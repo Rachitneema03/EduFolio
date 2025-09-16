@@ -9,6 +9,8 @@ const LandingPage = ({ onNavigate }) => {
   return (
     <div className="landing-page">
       {/* Background Image */}
+      {/* Background Image */}
+
       <div className="background-image">
         <img src={backgroundImage}
         alt="bg-image"/>
