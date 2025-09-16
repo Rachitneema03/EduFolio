@@ -12,8 +12,12 @@ const EditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
     year: userData?.year || '',
     degree: userData?.degree || '',
     passingYear: userData?.passingYear || '',
+    gpa: userData?.gpa || '',
+    skills: userData?.skills || [],
     profilePhoto: userData?.profilePhoto || null
   });
+
+  const [newSkill, setNewSkill] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,6 +38,30 @@ const EditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
         }));
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddSkill = () => {
+    if (newSkill.trim() && !formData.skills.includes(newSkill.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        skills: [...prev.skills, newSkill.trim()]
+      }));
+      setNewSkill('');
+    }
+  };
+
+  const handleRemoveSkill = (skillToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter(skill => skill !== skillToRemove)
+    }));
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddSkill();
     }
   };
 
@@ -213,18 +241,75 @@ const EditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
               </div>
             </div>
             
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="passingYear">Passing Year</label>
+                <input
+                  type="number"
+                  id="passingYear"
+                  name="passingYear"
+                  value={formData.passingYear}
+                  onChange={handleInputChange}
+                  min="1990"
+                  max="2030"
+                  placeholder="e.g., 2025"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="gpa">GPA</label>
+                <input
+                  type="number"
+                  id="gpa"
+                  name="gpa"
+                  value={formData.gpa}
+                  onChange={handleInputChange}
+                  min="0"
+                  max="10"
+                  step="0.01"
+                  placeholder="e.g., 8.5"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Skills Section */}
+          <div className="form-section">
+            <h3>Skills</h3>
             <div className="form-group">
-              <label htmlFor="passingYear">Passing Year</label>
-              <input
-                type="number"
-                id="passingYear"
-                name="passingYear"
-                value={formData.passingYear}
-                onChange={handleInputChange}
-                min="1990"
-                max="2030"
-                placeholder="e.g., 2025"
-              />
+              <label htmlFor="skills">Add Skills</label>
+              <div className="skills-input-container">
+                <input
+                  type="text"
+                  id="skills"
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Enter a skill and press Enter or click Add"
+                />
+                <button
+                  type="button"
+                  className="add-skill-btn"
+                  onClick={handleAddSkill}
+                >
+                  Add
+                </button>
+              </div>
+              {formData.skills.length > 0 && (
+                <div className="skills-list">
+                  {formData.skills.map((skill, index) => (
+                    <div key={index} className="skill-tag">
+                      <span>{skill}</span>
+                      <button
+                        type="button"
+                        className="remove-skill-btn"
+                        onClick={() => handleRemoveSkill(skill)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
