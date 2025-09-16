@@ -274,21 +274,12 @@
   }
 }
 
-/* Custom scrollbar for modal */
+/* Hide scrollbar for modal */
 .profile-setup-modal::-webkit-scrollbar {
-  width: 6px;
+  display: none;
 }
 
-.profile-setup-modal::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.profile-setup-modal::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.5);
-  border-radius: 3px;
-}
-
-.profile-setup-modal::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.7);
+.profile-setup-modal {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
