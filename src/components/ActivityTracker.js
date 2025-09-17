@@ -48,41 +48,9 @@ const ActivityTracker = ({ onActivityUpdate }) => {
         certificate: null
       }
     ],
-    conferences: [
-      {
-        id: 3,
-        title: "International Tech Conference 2024",
-        description: "Annual technology conference with industry leaders",
-        date: "2024-03-10",
-        duration: "3 days",
-        organizer: "TechWorld Inc.",
-        location: "Convention Center",
-        credits: 5,
-        status: "approved",
-        certificate: null,
-        approvedBy: "Prof. Johnson",
-        approvedDate: "2024-03-12"
-      }
-    ],
-    moocs: [
-      {
-        id: 4,
-        title: "Machine Learning Specialization",
-        description: "Comprehensive ML course from Stanford University",
-        date: "2024-01-01",
-        duration: "12 weeks",
-        organizer: "Coursera",
-        location: "Online",
-        credits: 8,
-        status: "approved",
-        certificate: null,
-        approvedBy: "Dr. Brown",
-        approvedDate: "2024-01-15"
-      }
-    ],
     internships: [
       {
-        id: 5,
+        id: 3,
         title: "Software Development Internship",
         description: "6-month internship at leading tech company",
         date: "2024-01-01",
@@ -98,7 +66,7 @@ const ActivityTracker = ({ onActivityUpdate }) => {
     ],
     extracurriculars: [
       {
-        id: 6,
+        id: 4,
         title: "Coding Competition Winner",
         description: "First place in national coding competition",
         date: "2024-02-15",
@@ -111,6 +79,22 @@ const ActivityTracker = ({ onActivityUpdate }) => {
         approvedBy: "Dr. Wilson",
         approvedDate: "2024-02-16"
       }
+    ],
+    others: [
+      {
+        id: 5,
+        title: "Volunteer Teaching Assistant",
+        description: "Assisted in teaching programming fundamentals to beginners",
+        date: "2024-01-10",
+        duration: "3 months",
+        organizer: "Community Learning Center",
+        location: "Local Library",
+        credits: 4,
+        status: "approved",
+        certificate: null,
+        approvedBy: "Ms. Johnson",
+        approvedDate: "2024-01-12"
+      }
     ]
   });
 
@@ -119,7 +103,7 @@ const ActivityTracker = ({ onActivityUpdate }) => {
       const activity = {
         id: Date.now(),
         ...newActivity,
-        type: activeTab.slice(0, -1) // Remove 's' from plural
+        type: activeTab === 'others' ? 'other' : activeTab.slice(0, -1) // Handle 'others' -> 'other'
       };
       
       setActivities(prev => ({
@@ -134,7 +118,7 @@ const ActivityTracker = ({ onActivityUpdate }) => {
       
       setNewActivity({
         title: '',
-        type: activeTab.slice(0, -1),
+        type: activeTab === 'others' ? 'other' : activeTab.slice(0, -1),
         description: '',
         date: '',
         duration: '',
@@ -176,10 +160,9 @@ const ActivityTracker = ({ onActivityUpdate }) => {
   const getActivityIcon = (type) => {
     switch (type) {
       case 'seminar': return '🎓';
-      case 'conference': return '🏛️';
-      case 'mooc': return '💻';
       case 'internship': return '💼';
       case 'extracurricular': return '🏆';
+      case 'other': return '📋';
       default: return '📋';
     }
   };
@@ -306,10 +289,9 @@ const ActivityTracker = ({ onActivityUpdate }) => {
                   onChange={(e) => setNewActivity({...newActivity, type: e.target.value})}
                 >
                   <option value="seminar">Seminar</option>
-                  <option value="conference">Conference</option>
-                  <option value="mooc">MOOC</option>
                   <option value="internship">Internship</option>
                   <option value="extracurricular">Extra-curricular</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 

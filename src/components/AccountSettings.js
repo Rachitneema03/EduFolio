@@ -8,7 +8,8 @@ const AccountSettings = ({
   onThemeToggle,
   onNotificationSettingsUpdate,
   onPrivacySettingsUpdate,
-  onAccountSettingsUpdate
+  onAccountSettingsUpdate,
+  onSignOut
 }) => {
   const [activeSection, setActiveSection] = useState('profile');
   const [isEditing, setIsEditing] = useState(false);
@@ -271,7 +272,8 @@ const AccountSettings = ({
               <div className="section-header">
                 <h3>Notification Preferences</h3>
                 <button className="reset-btn" onClick={() => resetToDefaults('notifications')}>
-                  🔄 Reset to Defaults
+                  <i className="bi bi-arrow-clockwise"></i>
+                  Reset to Defaults
                 </button>
               </div>
 
@@ -379,7 +381,8 @@ const AccountSettings = ({
               <div className="section-header">
                 <h3>Privacy & Security</h3>
                 <button className="reset-btn" onClick={() => resetToDefaults('privacy')}>
-                  🔄 Reset to Defaults
+                  <i className="bi bi-arrow-clockwise"></i>
+                  Reset to Defaults
                 </button>
               </div>
 
@@ -487,7 +490,8 @@ const AccountSettings = ({
               <div className="section-header">
                 <h3>Appearance & Display</h3>
                 <button className="reset-btn" onClick={() => resetToDefaults('appearance')}>
-                  🔄 Reset to Defaults
+                  <i className="bi bi-arrow-clockwise"></i>
+                  Reset to Defaults
                 </button>
               </div>
 
@@ -565,7 +569,8 @@ const AccountSettings = ({
               <div className="section-header">
                 <h3>Account Management</h3>
                 <button className="reset-btn" onClick={() => resetToDefaults('account')}>
-                  🔄 Reset to Defaults
+                  <i className="bi bi-arrow-clockwise"></i>
+                  Reset to Defaults
                 </button>
               </div>
 
@@ -630,6 +635,16 @@ const AccountSettings = ({
                     />
                     <span className="slider"></span>
                   </label>
+                </div>
+
+                <div className="setting-item signout">
+                  <div className="setting-info">
+                    <h4>Sign Out</h4>
+                    <p>Sign out of your account and return to the login page</p>
+                  </div>
+                  <button className="signout-btn" onClick={onSignOut}>
+                    🚪 Sign Out
+                  </button>
                 </div>
 
                 <div className="setting-item danger">

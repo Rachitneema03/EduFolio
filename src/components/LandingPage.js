@@ -86,26 +86,6 @@ const LandingPage = ({ onNavigate }) => {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div 
-        className="scroll-indicator"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 2.0 }}
-      >
-        <motion.div 
-          className="scroll-arrow"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          ↓
-        </motion.div>
-        <span>Scroll to explore</span>
-      </motion.div>
     </div>
   );
 };

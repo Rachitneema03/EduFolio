@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import AccountTypeModal from './AccountTypeModal';
 import './AuthPages.css';
 
 const SignUp = ({ onNavigate }) => {
@@ -7,9 +8,9 @@ const SignUp = ({ onNavigate }) => {
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
-    accountFor: 'student'
+    password: ''
   });
+  const [showAccountTypeModal, setShowAccountTypeModal] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -23,23 +24,29 @@ const SignUp = ({ onNavigate }) => {
     e.preventDefault();
     console.log('Sign up data:', formData);
     // Handle sign up logic here
-    // Redirect to appropriate dashboard based on account type
-    if (formData.accountFor === 'faculty') {
+    // Show account type modal after successful registration
+    setShowAccountTypeModal(true);
+  };
+
+  const handleSocialSignUp = (provider) => {
+    console.log(`Sign up with ${provider}`);
+    // Handle social sign up logic here
+    // Show account type modal after successful social sign up
+    setShowAccountTypeModal(true);
+  };
+
+  const handleAccountTypeSelect = (accountType) => {
+    setShowAccountTypeModal(false);
+    // Redirect to appropriate dashboard based on selected account type
+    if (accountType === 'faculty') {
       onNavigate('/faculty-dashboard');
     } else {
       onNavigate('/dashboard');
     }
   };
 
-  const handleSocialSignUp = (provider) => {
-    console.log(`Sign up with ${provider}`);
-    // Handle social sign up logic here
-    // Redirect to appropriate dashboard based on account type
-    if (formData.accountFor === 'faculty') {
-      onNavigate('/faculty-dashboard');
-    } else {
-      onNavigate('/dashboard');
-    }
+  const handleCloseAccountTypeModal = () => {
+    setShowAccountTypeModal(false);
   };
 
   return (
@@ -86,38 +93,6 @@ const SignUp = ({ onNavigate }) => {
               Sign up with Google
             </motion.button>
 
-            <motion.button 
-              className="social-btn microsoft-btn"
-              onClick={() => handleSocialSignUp('Microsoft')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="social-icon microsoft-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path fill="#F25022" d="M1 1h10v10H1z"/>
-                  <path fill="#00A4EF" d="M13 1h10v10H13z"/>
-                  <path fill="#7FBA00" d="M1 13h10v10H1z"/>
-                  <path fill="#FFB900" d="M13 13h10v10H13z"/>
-                </svg>
-              </div>
-              Sign up with Microsoft
-            </motion.button>
-
-            <motion.button 
-              className="social-btn outlook-btn"
-              onClick={() => handleSocialSignUp('Outlook')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="social-icon outlook-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path fill="#0078D4" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2z"/>
-                  <path fill="#FFFFFF" d="M8.5 6.5h7v1h-7zm0 2h7v1h-7zm0 2h7v1h-7zm0 2h5v1h-5z"/>
-                  <path fill="#0078D4" d="M6 8.5h1.5v7H6z"/>
-                </svg>
-              </div>
-              Sign up with Outlook
-            </motion.button>
 
           </motion.div>
 
@@ -195,21 +170,6 @@ const SignUp = ({ onNavigate }) => {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="accountFor" className="form-label">Account For</label>
-              <select
-                id="accountFor"
-                name="accountFor"
-                value={formData.accountFor}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              >
-                <option value="student">Student</option>
-                <option value="faculty">Faculty</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
 
             <motion.button 
               type="submit" 
@@ -232,6 +192,13 @@ const SignUp = ({ onNavigate }) => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Account Type Modal */}
+      <AccountTypeModal
+        isOpen={showAccountTypeModal}
+        onSelectAccountType={handleAccountTypeSelect}
+        onClose={handleCloseAccountTypeModal}
+      />
     </div>
   );
 };

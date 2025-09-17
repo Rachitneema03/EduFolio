@@ -1,0 +1,332 @@
+/* Account Type Modal Styles */
+.account-type-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+}
+
+.account-type-modal {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #363ba1;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.account-type-modal::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+.light-theme .account-type-modal {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.account-type-modal-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.account-type-modal-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.light-theme .account-type-modal-header h2 {
+  color: white;
+}
+
+.account-type-modal-header p {
+  color: #b0b0b0;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.light-theme .account-type-modal-header p {
+  color: #666;
+}
+
+.account-type-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.account-type-option {
+  background: rgba(42, 42, 42, 0.8);
+  border: 2px solid #363ba1;
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.light-theme .account-type-option {
+  background: rgba(248, 249, 250, 0.9);
+  border: 2px solid #e0e0e0;
+}
+
+.account-type-option:hover {
+  border-color: #6366f1;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+  transform: translateY(-2px);
+}
+
+.light-theme .account-type-option:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.account-type-option.selected {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+.light-theme .account-type-option.selected {
+  background: rgba(99, 102, 241, 0.05);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+}
+
+.account-type-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.account-type-content {
+  flex: 1;
+}
+
+.account-type-content h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.light-theme .account-type-content h3 {
+  color: #1a1a1a;
+}
+
+.account-type-content p {
+  color: #b0b0b0;
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.light-theme .account-type-content p {
+  color: #666;
+}
+
+.account-type-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-type-content li {
+  color: #d0d0d0;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.light-theme .account-type-content li {
+  color: #555;
+}
+
+.account-type-content li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #6366f1;
+  font-weight: bold;
+}
+
+.account-type-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.radio-button {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #6366f1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.radio-button.checked {
+  background: #6366f1;
+  color: white;
+}
+
+.radio-button i {
+  font-size: 0.8rem;
+}
+
+.account-type-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.light-theme .account-type-modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  min-width: 140px;
+}
+
+.cancel-btn {
+  background: rgba(107, 114, 128, 0.2);
+  color: #9ca3af;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.cancel-btn:hover {
+  background: rgba(107, 114, 128, 0.3);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: 1px solid #6366f1;
+}
+
+.confirm-btn:hover:not(.disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+}
+
+.confirm-btn.disabled {
+  background: rgba(107, 114, 128, 0.2);
+  color: #9ca3af;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.confirm-btn.enabled {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: 1px solid #6366f1;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .account-type-modal {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .account-type-modal-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .account-type-option {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .account-type-icon {
+    align-self: center;
+  }
+  
+  .account-type-radio {
+    align-self: center;
+  }
+  
+  .account-type-modal-footer {
+    flex-direction: column;
+  }
+  
+  .cancel-btn,
+  .confirm-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-type-modal {
+    padding: 1rem;
+  }
+  
+  .account-type-modal-header h2 {
+    font-size: 1.4rem;
+  }
+  
+  .account-type-modal-header p {
+    font-size: 1rem;
+  }
+  
+  .account-type-option {
+    padding: 1rem;
+  }
+  
+  .account-type-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  .account-type-content h3 {
+    font-size: 1.2rem;
+  }
+}

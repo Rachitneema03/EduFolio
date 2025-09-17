@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import EditProfileModal from './EditProfileModal';
-import ProfileSetupModal from './ProfileSetupModal';
+import FacultyEditProfileModal from './FacultyEditProfileModal';
+import FacultyProfileSetupModal from './FacultyProfileSetupModal';
 import AccountSettings from './AccountSettings';
 import FacultyApprovalPanel from './FacultyApprovalPanel';
 import AnalyticsReporting from './AnalyticsReporting';
@@ -10,7 +10,7 @@ import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css'; // Reusing the same CSS for consistency
 import './FacultyDashboard.css'; // Faculty-specific styles
 
-const FacultyDashboard = () => {
+const FacultyDashboard = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('profile');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -86,9 +86,15 @@ const FacultyDashboard = () => {
     name: 'FACULTY',
     age: '',
     gender: '',
+    profileHeadline: '',
+    collegeName: '',
+    degree: '',
+    passingYear: '',
     department: '',
     designation: '',
     experience: '',
+    subjectsTaught: [],
+    skills: [],
     profilePhoto: null,
     linkedinUrl: '',
     email: ''
@@ -163,6 +169,15 @@ const FacultyDashboard = () => {
     setTimeout(() => {
       setIsSearchOpen(false);
     }, 200);
+  };
+
+  const handleSignOut = () => {
+    // Clear any stored data
+    localStorage.removeItem('facultyProfileCompleted');
+    // Redirect to sign in page
+    if (onNavigate) {
+      onNavigate('/signin');
+    }
   };
 
   const notifications = [
@@ -246,6 +261,7 @@ const FacultyDashboard = () => {
           onNotificationSettingsUpdate={(settings) => console.log('Notification settings updated:', settings)}
           onPrivacySettingsUpdate={(settings) => console.log('Privacy settings updated:', settings)}
           onAccountSettingsUpdate={(settings) => console.log('Account settings updated:', settings)}
+          onSignOut={handleSignOut}
         />;
       default:
         return <FacultyProfileContent 
@@ -378,19 +394,17 @@ const FacultyDashboard = () => {
       </div>
 
       {/* Profile Setup Modal */}
-      <ProfileSetupModal
+      <FacultyProfileSetupModal
         isOpen={isProfileSetupOpen}
         onComplete={handleProfileSetupComplete}
-        userType="faculty"
       />
 
       {/* Edit Profile Modal */}
-      <EditProfileModal
+      <FacultyEditProfileModal
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
         onSave={handleSaveProfile}
         userData={userData}
-        userType="faculty"
       />
 
       {/* Notification Popup */}
@@ -510,29 +524,44 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
               ) : (
                 <div className="avatar-circle">{getInitials(userData.name)}</div>
               )}
-              <div className="faculty-achieved-badge-icon">
-                🎓
+              <div className="profile-edit-icon">
+                <i className="bi bi-pencil-square"></i>
               </div>
             </div>
-            <h2 className="faculty-username">{userData.name}</h2>
+            <h2 className="faculty-username">{userData.name || 'Faculty Member'}</h2>
           </div>
           
           <div className="faculty-profile-center">
             <div className="faculty-institution-info">
-              {userData.department && (
-                <div className="faculty-institution">
-                  <div className="faculty-institution-label">Department:</div>
-                  <span>{userData.department}</span>
+              {userData.collegeName && (
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Institution:</span>
+                  <span className="faculty-info-value">{userData.collegeName}</span>
                 </div>
               )}
               {userData.designation && (
-                <div className="faculty-year">Designation: {userData.designation}</div>
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Designation:</span>
+                  <span className="faculty-info-value">{userData.designation}</span>
+                </div>
+              )}
+              {userData.degree && (
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Degree:</span>
+                  <span className="faculty-info-value">{userData.degree}</span>
+                </div>
+              )}
+              {userData.passingYear && (
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Passing Year:</span>
+                  <span className="faculty-info-value">{userData.passingYear}</span>
+                </div>
               )}
               {userData.experience && (
-                <div className="faculty-degree">Experience: {userData.experience} years</div>
-              )}
-              {userData.email && (
-                <div className="faculty-passing-year">Email: {userData.email}</div>
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Experience:</span>
+                  <span className="faculty-info-value">{userData.experience} years</span>
+                </div>
               )}
             </div>
           </div>
@@ -560,6 +589,9 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
         </div>
         
         <div className="profile-bottom">
+
+
+          {/* LinkedIn Profile */}
           {userData.linkedinUrl ? (
             <a 
               href={userData.linkedinUrl} 
@@ -652,38 +684,302 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
 
 // Students Content Component
 const StudentsContent = ({ students, setStudents }) => {
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
+  const [isAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
+  const [newStudent, setNewStudent] = useState({
+    name: '',
+    email: '',
+    year: '',
+    department: '',
+    courses: [],
+    achievements: 0,
+    lastActive: 'Just now'
+  });
+
+  const handleStudentClick = (student) => {
+    setSelectedStudent(student);
+    setIsStudentModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsStudentModalOpen(false);
+    setSelectedStudent(null);
+  };
+
+  const handleViewProfile = (student) => {
+    // Handle view profile action
+    console.log('View profile for:', student.name);
+    handleCloseModal();
+  };
+
+  const handleMessage = (student) => {
+    // Handle message action
+    console.log('Message to:', student.name);
+    handleCloseModal();
+  };
+
+  const handleAddStudent = () => {
+    setIsAddStudentModalOpen(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setIsAddStudentModalOpen(false);
+    setNewStudent({
+      name: '',
+      email: '',
+      year: '',
+      department: '',
+      courses: [],
+      achievements: 0,
+      lastActive: 'Just now'
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewStudent(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleAddStudentSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!newStudent.name || !newStudent.email || !newStudent.year || !newStudent.department) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const studentToAdd = {
+      ...newStudent,
+      id: students.length + 1,
+      courses: newStudent.courses.length > 0 ? newStudent.courses.split(',').map(c => c.trim()) : []
+    };
+
+    setStudents(prev => [...prev, studentToAdd]);
+    handleCloseAddModal();
+  };
+
   return (
     <div className="faculty-students-content">
       <div className="faculty-students-header">
         <h2 className="section-title">My Students</h2>
+        <button className="add-student-btn" onClick={handleAddStudent}>
+          <i className="bi bi-person-plus-fill"></i>
+          Add Student
+        </button>
       </div>
 
-      <div className="faculty-students-grid">
-        {students.map(student => (
-          <div key={student.id} className="faculty-student-card">
-            <div className="faculty-student-header">
-              <div className="faculty-student-icon">👨‍🎓</div>
-              <div className="faculty-student-status">Active</div>
+      <div className="students-table-container">
+        <table className="students-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Year</th>
+              <th>Department</th>
+              <th>Achievements</th>
+              <th>Last Active</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.map(student => (
+              <tr 
+                key={student.id} 
+                className="student-row"
+                onClick={() => handleStudentClick(student)}
+              >
+                <td className="student-name">
+                  <div className="student-name-cell">
+                    <span className="student-icon">👨‍🎓</span>
+                    {student.name}
+                  </div>
+                </td>
+                <td className="student-email">{student.email}</td>
+                <td className="student-year">{student.year}</td>
+                <td className="student-department">{student.department}</td>
+                <td className="student-achievements">{student.achievements}</td>
+                <td className="student-last-active">{student.lastActive}</td>
+                <td className="student-status">
+                  <span className="status-badge active">Active</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Student Details Modal */}
+      {isStudentModalOpen && selectedStudent && (
+        <div className="student-modal-overlay" onClick={handleCloseModal}>
+          <div className="student-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="student-modal-header">
+              <h3>Student Details</h3>
+              <button className="close-modal-btn" onClick={handleCloseModal}>×</button>
             </div>
-            <h3 className="faculty-student-name">{student.name}</h3>
-            <p className="faculty-student-department">{student.department}</p>
-            <div className="faculty-student-details">
-              <div className="faculty-detail-item">
-                <strong>Year:</strong>
-                <span className="faculty-detail-value">{student.year}</span>
+            
+            <div className="student-modal-body">
+              <div className="student-modal-avatar">
+                <div className="student-avatar-large">👨‍🎓</div>
+                <h4>{selectedStudent.name}</h4>
+                <p className="student-email">{selectedStudent.email}</p>
               </div>
-              <div className="faculty-detail-item">
-                <strong>Achievements:</strong>
-                <span className="faculty-detail-value">{student.achievements}</span>
+              
+              <div className="student-modal-details">
+                <div className="detail-row">
+                  <span className="detail-label">Year:</span>
+                  <span className="detail-value">{selectedStudent.year}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Department:</span>
+                  <span className="detail-value">{selectedStudent.department}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Achievements:</span>
+                  <span className="detail-value">{selectedStudent.achievements}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Last Active:</span>
+                  <span className="detail-value">{selectedStudent.lastActive}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Courses:</span>
+                  <span className="detail-value">{selectedStudent.courses.join(', ')}</span>
+                </div>
               </div>
             </div>
-            <div className="faculty-student-actions">
-              <button className="faculty-view-profile-btn">View Profile</button>
-              <button className="faculty-message-btn">Message</button>
+            
+            <div className="student-modal-actions">
+              <button 
+                className="view-profile-btn"
+                onClick={() => handleViewProfile(selectedStudent)}
+              >
+                <i className="bi bi-person-fill"></i>
+                View Profile
+              </button>
+              <button 
+                className="message-btn"
+                onClick={() => handleMessage(selectedStudent)}
+              >
+                <i className="bi bi-chat-fill"></i>
+                Message
+              </button>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {/* Add Student Modal */}
+      {isAddStudentModalOpen && (
+        <div className="student-modal-overlay" onClick={handleCloseAddModal}>
+          <div className="student-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="student-modal-header">
+              <h3>Add New Student</h3>
+              <button className="close-modal-btn" onClick={handleCloseAddModal}>×</button>
+            </div>
+            
+            <form onSubmit={handleAddStudentSubmit} className="add-student-form">
+              <div className="form-group">
+                <label htmlFor="name">Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={newStudent.name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Enter student name"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="email">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={newStudent.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Enter student email"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="year">Year *</label>
+                  <select
+                    id="year"
+                    name="year"
+                    value={newStudent.year}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select Year</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                    <option value="5th Year">5th Year</option>
+                    <option value="Graduate">Graduate</option>
+                    <option value="Post Graduate">Post Graduate</option>
+                  </select>
+                </div>
+                
+                <div className="form-group">
+                  <label htmlFor="department">Department *</label>
+                  <input
+                    type="text"
+                    id="department"
+                    name="department"
+                    value={newStudent.department}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter department"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="courses">Courses (comma-separated)</label>
+                <input
+                  type="text"
+                  id="courses"
+                  name="courses"
+                  value={Array.isArray(newStudent.courses) ? newStudent.courses.join(', ') : newStudent.courses}
+                  onChange={(e) => setNewStudent(prev => ({ ...prev, courses: e.target.value }))}
+                  placeholder="e.g., Data Structures, Algorithms"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="achievements">Achievements</label>
+                <input
+                  type="number"
+                  id="achievements"
+                  name="achievements"
+                  value={newStudent.achievements}
+                  onChange={handleInputChange}
+                  min="0"
+                  placeholder="Number of achievements"
+                />
+              </div>
+              
+              <div className="modal-actions">
+                <button type="button" className="cancel-btn" onClick={handleCloseAddModal}>
+                  Cancel
+                </button>
+                <button type="submit" className="save-btn">
+                  Add Student
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

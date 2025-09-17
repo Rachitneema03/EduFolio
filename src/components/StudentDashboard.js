@@ -11,7 +11,7 @@ import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css';
 
-const StudentDashboard = () => {
+const StudentDashboard = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('profile');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -171,6 +171,15 @@ const StudentDashboard = () => {
     }, 200);
   };
 
+  const handleSignOut = () => {
+    // Clear any stored data
+    localStorage.removeItem('profileCompleted');
+    // Redirect to sign in page
+    if (onNavigate) {
+      onNavigate('/signin');
+    }
+  };
+
   const notifications = [
     {
       id: 1,
@@ -220,16 +229,23 @@ const StudentDashboard = () => {
   ];
 
   const renderContent = () => {
+    // eslint-disable-next-line no-undef
+    const currentCertificates = certificates;
+    // eslint-disable-next-line no-undef
+    const currentPinnedCertificates = pinnedCertificates;
+    // eslint-disable-next-line no-undef
+    const currentSetPinnedCertificates = setPinnedCertificates;
+    
     switch (activeTab) {
       case 'profile':
         return <ProfileContent 
           userData={userData} 
           onEditProfile={handleEditProfile}
-          pinnedCertificates={pinnedCertificates}
-          setPinnedCertificates={setPinnedCertificates}
+          pinnedCertificates={currentPinnedCertificates}
+          setPinnedCertificates={currentSetPinnedCertificates}
           onNavigateToCertificates={() => setActiveTab('certificates')}
           courses={courses}
-          certificates={certificates}
+          certificates={currentCertificates}
           setActiveTab={setActiveTab}
         />;
       case 'courses':
@@ -239,10 +255,10 @@ const StudentDashboard = () => {
         />;
       case 'certificates':
         return <CertificatesContent 
-          certificates={certificates}
+          certificates={currentCertificates}
           setCertificates={setCertificates}
-          pinnedCertificates={pinnedCertificates}
-          setPinnedCertificates={setPinnedCertificates}
+          pinnedCertificates={currentPinnedCertificates}
+          setPinnedCertificates={currentSetPinnedCertificates}
         />;
       case 'achievements':
         return <MyAchievements />;
@@ -250,7 +266,7 @@ const StudentDashboard = () => {
         return <GeneratePortfolio 
           userData={userData}
           courses={courses}
-          certificates={certificates}
+          certificates={currentCertificates}
           achievements={[]}
           platformData={platformData}
         />;
@@ -267,16 +283,17 @@ const StudentDashboard = () => {
           onNotificationSettingsUpdate={(settings) => console.log('Notification settings updated:', settings)}
           onPrivacySettingsUpdate={(settings) => console.log('Privacy settings updated:', settings)}
           onAccountSettingsUpdate={(settings) => console.log('Account settings updated:', settings)}
+          onSignOut={handleSignOut}
         />;
       default:
         return <ProfileContent 
           userData={userData} 
           onEditProfile={handleEditProfile}
-          pinnedCertificates={pinnedCertificates}
-          setPinnedCertificates={setPinnedCertificates}
+          pinnedCertificates={currentPinnedCertificates}
+          setPinnedCertificates={currentSetPinnedCertificates}
           onNavigateToCertificates={() => setActiveTab('certificates')}
           courses={courses}
-          certificates={certificates}
+          certificates={currentCertificates}
           setActiveTab={setActiveTab}
         />;
     }
