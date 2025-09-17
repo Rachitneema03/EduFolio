@@ -4,6 +4,7 @@ import LandingPage from './components/LandingPage';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import StudentDashboard from './components/StudentDashboard';
+import FacultyDashboard from './components/FacultyDashboard';
 import './App.css';
 
 // Wrapper components to pass navigate function
@@ -27,6 +28,11 @@ const StudentDashboardWrapper = () => {
   return <StudentDashboard onNavigate={navigate} />;
 };
 
+const FacultyDashboardWrapper = () => {
+  const navigate = useNavigate();
+  return <FacultyDashboard onNavigate={navigate} />;
+};
+
 function App() {
   return (
     <Router>
@@ -36,6 +42,7 @@ function App() {
           <Route path="/signin" element={<SignInWrapper />} />
           <Route path="/signup" element={<SignUpWrapper />} />
           <Route path="/dashboard" element={<StudentDashboardWrapper />} />
+          <Route path="/faculty-dashboard" element={<FacultyDashboardWrapper />} />
         </Routes>
       </div>
     </Router>

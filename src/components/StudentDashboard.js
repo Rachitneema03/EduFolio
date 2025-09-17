@@ -7,6 +7,7 @@ import GeneratePortfolio from './GeneratePortfolio';
 import Connect from './Connect';
 import AccountSettings from './AccountSettings';
 import dashboardLogo from '../Assets/dashboard-logo.png';
+import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css';
 
 const StudentDashboard = () => {
@@ -289,7 +290,7 @@ const StudentDashboard = () => {
         <div className="header-left">
           <div className="dashboard-logo-container">
             <img 
-              src={dashboardLogo} 
+              src={isDarkMode ? dashboardLogo : logoDark} 
               alt="EduFolio Logo" 
               className="dashboard-logo"
             />

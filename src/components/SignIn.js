@@ -6,6 +6,7 @@ const SignIn = ({ onNavigate }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    accountType: 'student',
     rememberMe: false
   });
 
@@ -21,17 +22,23 @@ const SignIn = ({ onNavigate }) => {
     e.preventDefault();
     console.log('Sign in data:', formData);
     // Handle sign in logic here
-    // Redirect to dashboard after successful sign in
-    // The dashboard will show profile setup modal if needed
-    onNavigate('/dashboard');
+    // Redirect to appropriate dashboard based on account type
+    if (formData.accountType === 'faculty') {
+      onNavigate('/faculty-dashboard');
+    } else {
+      onNavigate('/dashboard');
+    }
   };
 
   const handleSocialLogin = (provider) => {
     console.log(`Sign in with ${provider}`);
     // Handle social login logic here
-    // Redirect to dashboard after successful social login
-    // The dashboard will show profile setup modal if needed
-    onNavigate('/dashboard');
+    // Redirect to appropriate dashboard based on account type
+    if (formData.accountType === 'faculty') {
+      onNavigate('/faculty-dashboard');
+    } else {
+      onNavigate('/dashboard');
+    }
   };
 
   return (
@@ -157,6 +164,21 @@ const SignIn = ({ onNavigate }) => {
                 className="form-input"
                 required
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="accountType" className="form-label">Account Type</label>
+              <select
+                id="accountType"
+                name="accountType"
+                value={formData.accountType}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+              >
+                <option value="student">Student</option>
+                <option value="faculty">Faculty</option>
+              </select>
             </div>
 
             <div className="form-options">

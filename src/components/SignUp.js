@@ -23,15 +23,23 @@ const SignUp = ({ onNavigate }) => {
     e.preventDefault();
     console.log('Sign up data:', formData);
     // Handle sign up logic here
-    // Redirect to dashboard after successful sign up
-    onNavigate('/dashboard');
+    // Redirect to appropriate dashboard based on account type
+    if (formData.accountFor === 'faculty') {
+      onNavigate('/faculty-dashboard');
+    } else {
+      onNavigate('/dashboard');
+    }
   };
 
   const handleSocialSignUp = (provider) => {
     console.log(`Sign up with ${provider}`);
     // Handle social sign up logic here
-    // Redirect to dashboard after successful social sign up
-    onNavigate('/dashboard');
+    // Redirect to appropriate dashboard based on account type
+    if (formData.accountFor === 'faculty') {
+      onNavigate('/faculty-dashboard');
+    } else {
+      onNavigate('/dashboard');
+    }
   };
 
   return (
