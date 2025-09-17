@@ -25,7 +25,6 @@ const StudentDashboard = () => {
     name: 'USER',
     age: '',
     gender: '',
-    profileHeadline: '',
     collegeName: '',
     year: '',
     degree: '',
@@ -553,82 +552,79 @@ const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinned
 
   return (
     <div className="profile-content">
-      <div className="profile-header">
-        <div className="profile-info">
-          <div className="profile-avatar-large">
-            {userData.profilePhoto ? (
-              <img 
-                src={userData.profilePhoto} 
-                alt="Profile" 
-                className="profile-photo"
-              />
-            ) : (
-              <div className="avatar-circle">{getInitials(userData.name)}</div>
-            )}
-            <button className="edit-avatar"><i className="bi bi-pencil-fill"></i></button>
-          </div>
-          
-          <div className="profile-details">
-            <h2 className="username">{userData.name}</h2>
-            {userData.profileHeadline && (
-              <p className="profile-headline">{userData.profileHeadline}</p>
-            )}
-            {userData.age && (
-              <p className="profile-age">Age: {userData.age}</p>
-            )}
-            {userData.gender && (
-              <p className="profile-gender">Gender: {userData.gender}</p>
-            )}
-          </div>
-          
-          <div className="institution-info">
-            {userData.collegeName && (
-              <div className="institution">
-                <span className="location-icon">📍</span>
-                <span>{userData.collegeName}</span>
+      <div className="profile-card">
+        <div className="profile-main">
+          <div className="profile-left">
+            <div className="profile-avatar-large">
+              {userData.profilePhoto ? (
+                <img 
+                  src={userData.profilePhoto} 
+                  alt="Profile" 
+                  className="profile-photo"
+                />
+              ) : (
+                <div className="avatar-circle">{getInitials(userData.name)}</div>
+              )}
+              <div className="achieved-badge-icon">
+                {(() => {
+                  const badges = getBadgeProgress();
+                  const achievedBadge = badges.find(badge => badge.achieved);
+                  return achievedBadge ? achievedBadge.icon : '🥉';
+                })()}
               </div>
-            )}
-            {userData.year && (
-              <div className="year">Year: {userData.year}</div>
-            )}
-            {userData.degree && (
-              <div className="degree">Degree: {userData.degree}</div>
-            )}
-            {userData.passingYear && (
-              <div className="passing-year">Passing Year: {userData.passingYear}</div>
-            )}
+            </div>
+            <h2 className="username">{userData.name}</h2>
           </div>
           
-          <button className="edit-profile-btn" onClick={onEditProfile}>
-            <span><i className="bi bi-pencil"></i></span>
-            Edit Profile
-          </button>
-        </div>
-      </div>
-
-      <div className="performance-metrics">
-        <div className="metric-card">
-          <div className="metric-icon">📊</div>
-          <div className="metric-value">6</div>
-          <div className="metric-label">Coding Score</div>
+          <div className="profile-center">
+            <div className="institution-info">
+              {userData.collegeName && (
+                <div className="institution">
+                  <div className="institution-label">Institution:</div>
+                  <span>{userData.collegeName}</span>
+                </div>
+              )}
+              {userData.year && (
+                <div className="year">Year: {userData.year}</div>
+              )}
+              {userData.degree && (
+                <div className="degree">Degree: {userData.degree}</div>
+              )}
+              {userData.passingYear && (
+                <div className="passing-year">Passing Year: {userData.passingYear}</div>
+              )}
+            </div>
+          </div>
+          
+          <div className="profile-right">
+            <button className="edit-profile-btn" onClick={onEditProfile}>
+              <i className="bi bi-pencil-square"></i>
+              Edit Profile
+            </button>
+            <div className="profile-stats">
+              <div className="stat-section">
+                <span className="stat-label">Achievement Score:</span>
+                <span className="stat-value">1,240</span>
+              </div>
+              <div className="stat-section">
+                <span className="stat-label">Verified Achievements:</span>
+                <span className="stat-value">6</span>
+              </div>
+              <div className="stat-section">
+                <span className="stat-label">Campus Rank:</span>
+                <span className="stat-value">--</span>
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div className="metric-card">
-          <div className="metric-icon">✅</div>
-          <div className="metric-value">3</div>
-          <div className="metric-label">Problem Solved</div>
+        <div className="profile-bottom">
+          <a href="#" className="linkedin-profile-link">
+            <i className="bi bi-linkedin"></i>
+            LinkedIn Profile
+          </a>
         </div>
-        
-        <div className="metric-card">
-          <div className="metric-icon">⭐</div>
-          <div className="metric-value">--</div>
-          <div className="metric-label">Contest Rating</div>
         </div>
-      </div>
-
-      <div className="campus-mantri">
-        <p>Apply for Campus Mantri</p>
-      </div>
 
       {/* Pinned Certificates Section */}
       <div className="pinned-certificates-section">
