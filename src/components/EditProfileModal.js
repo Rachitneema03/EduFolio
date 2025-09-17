@@ -14,13 +14,30 @@ const EditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
     passingYear: userData?.passingYear || '',
     gpa: userData?.gpa || '',
     skills: userData?.skills || [],
-    profilePhoto: userData?.profilePhoto || null
+    profilePhoto: userData?.profilePhoto || null,
+    linkedinUrl: userData?.linkedinUrl || ''
   });
 
   const [newSkill, setNewSkill] = useState('');
+  const [linkedinError, setLinkedinError] = useState('');
+
+  const validateLinkedInUrl = (url) => {
+    if (!url) return true; // Empty URL is valid (optional field)
+    
+    const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/(in|pub)\/[a-zA-Z0-9-]+\/?$/;
+    return linkedinPattern.test(url);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    if (name === 'linkedinUrl') {
+      setLinkedinError('');
+      if (value && !validateLinkedInUrl(value)) {
+        setLinkedinError('Please enter a valid LinkedIn profile URL (e.g., https://linkedin.com/in/your-profile)');
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -67,6 +84,13 @@ const EditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate LinkedIn URL before submitting
+    if (formData.linkedinUrl && !validateLinkedInUrl(formData.linkedinUrl)) {
+      setLinkedinError('Please enter a valid LinkedIn profile URL');
+      return;
+    }
+    
     onSave(formData);
     onClose();
   };
@@ -189,6 +213,22 @@ const EditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
                   placeholder="e.g., Computer Science Student"
                 />
               </div>
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="linkedinUrl">LinkedIn Profile URL</label>
+              <input
+                type="url"
+                id="linkedinUrl"
+                name="linkedinUrl"
+                value={formData.linkedinUrl}
+                onChange={handleInputChange}
+                placeholder="https://linkedin.com/in/your-profile"
+                className={linkedinError ? 'error' : ''}
+              />
+              {linkedinError && (
+                <span className="error-message">{linkedinError}</span>
+              )}
             </div>
           </div>
 

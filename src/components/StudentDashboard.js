@@ -21,6 +21,64 @@ const StudentDashboard = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [platformData, setPlatformData] = useState([]);
+  
+  // Centralized data management
+  const [courses, setCourses] = useState([
+    {
+      id: 1,
+      name: "GfG 160 Daily DSA Problems",
+      platform: "GeeksforGeeks",
+      type: "course",
+      startDate: "2024-01-01",
+      endDate: "2024-06-30",
+      status: "ongoing"
+    },
+    {
+      id: 2,
+      name: "React Complete Guide",
+      platform: "Udemy",
+      type: "course",
+      startDate: "2023-09-01",
+      endDate: "2023-12-15",
+      status: "completed"
+    },
+    {
+      id: 3,
+      name: "Machine Learning Specialization",
+      platform: "Coursera",
+      type: "course",
+      startDate: "2024-02-01",
+      endDate: "2024-08-31",
+      status: "ongoing"
+    }
+  ]);
+
+  const [certificates, setCertificates] = useState([
+    {
+      id: 1,
+      name: "GfG 160 Daily DSA Problems",
+      platform: "GeeksforGeeks",
+      achievedDate: "2024-01-15",
+      certificateLink: "https://example.com/certificate1",
+      certificateImage: null
+    },
+    {
+      id: 2,
+      name: "React Complete Guide",
+      platform: "Udemy",
+      achievedDate: "2023-12-20",
+      certificateLink: "https://example.com/certificate2",
+      certificateImage: null
+    },
+    {
+      id: 3,
+      name: "Machine Learning Specialization",
+      platform: "Coursera",
+      achievedDate: "2024-03-10",
+      certificateLink: "https://example.com/certificate3",
+      certificateImage: null
+    }
+  ]);
   const [userData, setUserData] = useState({
     name: 'USER',
     age: '',
@@ -29,7 +87,8 @@ const StudentDashboard = () => {
     year: '',
     degree: '',
     passingYear: '',
-    profilePhoto: null
+    profilePhoto: null,
+    linkedinUrl: ''
   });
 
   // Check if profile setup is needed on component mount
@@ -80,20 +139,13 @@ const StudentDashboard = () => {
       return;
     }
 
-    // Sample courses and certificates data for search
-    const courses = [
-      { id: 1, name: "GfG 160 Daily DSA Problems", platform: "GeeksforGeeks", type: "course" },
-      { id: 2, name: "React Complete Guide", platform: "Udemy", type: "course" },
-      { id: 3, name: "Machine Learning Specialization", platform: "Coursera", type: "course" }
-    ];
+    // Use certificates data for search
+    const certificatesForSearch = certificates.map(cert => ({
+      ...cert,
+      type: "certificate"
+    }));
 
-    const certificates = [
-      { id: 1, name: "GfG 160 Daily DSA Problems", platform: "GeeksforGeeks", type: "certificate" },
-      { id: 2, name: "React Complete Guide", platform: "Udemy", type: "certificate" },
-      { id: 3, name: "Machine Learning Specialization", platform: "Coursera", type: "certificate" }
-    ];
-
-    const allItems = [...courses, ...certificates];
+    const allItems = [...courses, ...certificatesForSearch];
     const filtered = allItems.filter(item => 
       item.name.toLowerCase().includes(query.toLowerCase()) ||
       item.platform.toLowerCase().includes(query.toLowerCase())
@@ -173,11 +225,19 @@ const StudentDashboard = () => {
           pinnedCertificates={pinnedCertificates}
           setPinnedCertificates={setPinnedCertificates}
           onNavigateToCertificates={() => setActiveTab('certificates')}
+          courses={courses}
+          certificates={certificates}
+          setActiveTab={setActiveTab}
         />;
       case 'courses':
-        return <CoursesContent />;
+        return <CoursesContent 
+          courses={courses}
+          setCourses={setCourses}
+        />;
       case 'certificates':
         return <CertificatesContent 
+          certificates={certificates}
+          setCertificates={setCertificates}
           pinnedCertificates={pinnedCertificates}
           setPinnedCertificates={setPinnedCertificates}
         />;
@@ -186,8 +246,8 @@ const StudentDashboard = () => {
       case 'portfolio':
         return <GeneratePortfolio 
           userData={userData}
-          courses={[]}
-          certificates={[]}
+          courses={courses}
+          certificates={certificates}
           achievements={[]}
           platformData={platformData}
         />;
@@ -210,6 +270,9 @@ const StudentDashboard = () => {
           pinnedCertificates={pinnedCertificates}
           setPinnedCertificates={setPinnedCertificates}
           onNavigateToCertificates={() => setActiveTab('certificates')}
+          courses={courses}
+          certificates={certificates}
+          setActiveTab={setActiveTab}
         />;
     }
   };
@@ -446,34 +509,8 @@ const StudentDashboard = () => {
 };
 
 // Profile Content Component
-const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinnedCertificates, onNavigateToCertificates }) => {
+const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinnedCertificates, onNavigateToCertificates, courses, certificates, setActiveTab }) => {
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
-  const [availableCertificates] = useState([
-    {
-      id: 1,
-      name: "GfG 160 Daily DSA Problems",
-      platform: "GeeksforGeeks",
-      achievedDate: "2024-01-15",
-      certificateLink: "https://example.com/certificate1",
-      certificateImage: null
-    },
-    {
-      id: 2,
-      name: "React Complete Guide",
-      platform: "Udemy",
-      achievedDate: "2023-12-20",
-      certificateLink: "https://example.com/certificate2",
-      certificateImage: null
-    },
-    {
-      id: 3,
-      name: "Machine Learning Specialization",
-      platform: "Coursera",
-      achievedDate: "2024-03-10",
-      certificateLink: "https://example.com/certificate3",
-      certificateImage: null
-    }
-  ]);
 
   const getInitials = (name) => {
     return name ? name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
@@ -500,7 +537,7 @@ const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinned
   };
 
   const getBadgeProgress = () => {
-    const totalCertificates = availableCertificates.length;
+    const totalCertificates = certificates.length;
     const badges = [
       {
         id: 'bronze',
@@ -619,108 +656,125 @@ const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinned
         </div>
         
         <div className="profile-bottom">
-          <a href="#" className="linkedin-profile-link">
-            <i className="bi bi-linkedin"></i>
-            LinkedIn Profile
-          </a>
+          {userData.linkedinUrl ? (
+            <a 
+              href={userData.linkedinUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="linkedin-profile-link"
+            >
+              <i className="bi bi-linkedin"></i>
+              LinkedIn Profile
+            </a>
+          ) : (
+            <div className="linkedin-profile-link disabled">
+              <i className="bi bi-linkedin"></i>
+              LinkedIn Profile
+              <span className="link-hint">Add LinkedIn URL in Edit Profile</span>
+            </div>
+          )}
         </div>
         </div>
 
       {/* Pinned Certificates Section */}
-      <div className="pinned-certificates-section">
-        <div className="section-header">
-          <h3 className="section-subtitle">
-            <span className="section-icon"><i className="bi bi-pin"></i></span>
-            Pinned Certificates
-          </h3>
-          <div className="section-actions">
-            <span className="section-count">({pinnedCertificates.length}/3)</span>
-            <button 
-              className="pin-certificate-btn"
-              onClick={() => setIsPinModalOpen(true)}
-              disabled={pinnedCertificates.length >= 3}
-              title={pinnedCertificates.length >= 3 ? 'Maximum 3 certificates can be pinned' : 'Pin a certificate'}
-            >
-              <span>+</span>
-              Pin Certificate
-            </button>
+      {/* Courses and Certificates Sections */}
+      <div className="courses-certificates-container">
+        {/* Courses Section */}
+        <div className="courses-section">
+          <div className="section-header">
+            <div className="section-header-top">
+              <h3 style={{color: 'white'}} className="section-title">Courses</h3>
+            </div>
           </div>
-        </div>
-        
-        {pinnedCertificates.length > 0 ? (
-          <div className="pinned-certificates-grid">
-            {pinnedCertificates.map(certificate => (
-              <div 
-                key={certificate.id} 
-                className="pinned-certificate-card glass-morphism"
-                onClick={onNavigateToCertificates}
-                title="Click to view in Certificates page"
-              >
-                <div className="pinned-certificate-header">
-                  <div className="pinned-certificate-icon">🏆</div>
-                  <button 
-                    className="unpin-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPinnedCertificates(prev => prev.filter(cert => cert.id !== certificate.id));
-                    }}
-                    title="Unpin certificate"
-                  >
-                    📌
-                  </button>
+          
+          <div className="courses-grid">
+            {courses.slice(0, 3).map(course => (
+              <div key={course.id} className="course-card">
+                <div className="course-hero-image">
+                  <div className="course-gradient-overlay"></div>
+                  <div className="course-logo">
+                    <div className="course-logo-icon">GfG</div>
+                  </div>
                 </div>
-                
-                {certificate.certificateImage ? (
-                  <div className="pinned-certificate-image-container">
-                    <img 
-                      src={certificate.certificateImage} 
-                      alt={certificate.name}
-                      className="pinned-certificate-image"
-                    />
-                  </div>
-                ) : (
-                  <div className="pinned-certificate-placeholder">
-                    <div className="pinned-placeholder-icon">🏆</div>
-                  </div>
-                )}
-                
-                <div className="pinned-certificate-info">
-                  <h4 className="pinned-certificate-name">{certificate.name}</h4>
-                  <p className="pinned-certificate-platform">{certificate.platform}</p>
-                  {certificate.certificateLink && (
-                    <a 
-                      href={certificate.certificateLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="pinned-certificate-link"
-                    >
-                      View Certificate
-                    </a>
-                  )}
+                <div className="course-info">
+                  <h4 className="course-name">{course.name}</h4>
+                  <p className="course-description">GfG 160 - 160 Days of Problem Solving</p>
                 </div>
               </div>
             ))}
           </div>
-        ) : (
-          <div className="pinned-empty-state">
-            <div className="pinned-empty-icon">📌</div>
-            <p>No certificates pinned yet</p>
-            <p className="pinned-empty-subtitle">Pin your top 3 certificates from the Certificates page</p>
+          <button 
+              className="view-more-btn"
+              onClick={() => setActiveTab('courses')}
+            >
+              View More
+            </button>
+        </div>
+
+        {/* Certificates Section */}
+        <div className="certificates-section">
+          <div className="section-header">
+            <div className="section-header-top">
+              <h3 style={{color: 'white'}} className="section-title">Certificates</h3>
+            </div>
+            
           </div>
-        )}
+          
+          <div className="certificates-grid">
+            {pinnedCertificates.length > 0 ? (
+              pinnedCertificates.slice(0, 3).map(certificate => (
+                <div key={certificate.id} className="certificate-card">
+                  <div className="certificate-hero-image">
+                    <div className="certificate-gradient-overlay"></div>
+                    <div className="certificate-logo">
+                      <div className="certificate-logo-icon">GfG</div>
+                    </div>
+                  </div>
+                  <div className="certificate-info">
+                    <h4 className="certificate-name">{certificate.name}</h4>
+                    <p className="certificate-description">GfG 160 - 160 Days of Problem Solving</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Show certificates from certificates page if none are pinned
+              certificates.slice(0, 3).map(certificate => (
+                <div key={`cert-${certificate.id}`} className="certificate-card">
+                  <div className="certificate-hero-image">
+                    <div className="certificate-gradient-overlay"></div>
+                    <div className="certificate-logo">
+                      <div className="certificate-logo-icon">{getPlatformIcon(certificate.platform)}</div>
+                    </div>
+                  </div>
+                  <div className="certificate-info">
+                    <h4 className="certificate-name">{certificate.name}</h4>
+                    <p className="certificate-description">{certificate.platform} Certificate</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          <button 
+              className="view-more-btn"
+              onClick={() => setActiveTab('certificates')}
+            >
+              View More
+            </button>
+        </div>
+        
       </div>
 
       {/* Badge Achievement Section */}
       <div className="badge-achievement-section">
         <div className="section-header">
           <h3 className="section-subtitle">
-            <span className="section-icon"><i className="bi bi-award"></i></span>
+            <span className="section-icon">🏆</span>
             Badge Achievements
           </h3>
-          <span className="section-count">({availableCertificates.length} certificates)</span>
+          <span className="section-count">({certificates.length} certificates)</span>
         </div>
         
-        <div className="badge-timeline">
+        <div className="badge-timeline badge-timeline-scrollable">
           {getBadgeProgress().map((badge, index) => (
             <div key={badge.id} className={`badge-timeline-item ${badge.achieved ? 'achieved' : ''}`}>
               <div className="badge-timeline-connector">
@@ -772,105 +826,12 @@ const ProfileContent = ({ userData, onEditProfile, pinnedCertificates, setPinned
           ))}
         </div>
       </div>
-
-      {/* Pin Certificate Modal */}
-      {isPinModalOpen && (
-        <div className="modal-overlay" onClick={() => setIsPinModalOpen(false)}>
-          <div className="pin-certificate-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Pin Certificate</h3>
-              <button 
-                className="close-btn"
-                onClick={() => setIsPinModalOpen(false)}
-              >
-                ×
-              </button>
-            </div>
-            
-            <div className="modal-body">
-              <div className="available-certificates-list">
-                {availableCertificates
-                  .filter(cert => !isPinned(cert.id))
-                  .map(certificate => (
-                    <div key={certificate.id} className="available-certificate-item">
-                      <div className="certificate-item-header">
-                        <div className="certificate-item-icon">{getPlatformIcon(certificate.platform)}</div>
-                        <button 
-                          className="pin-item-btn"
-                          onClick={() => {
-                            handlePinCertificate(certificate);
-                            setIsPinModalOpen(false);
-                          }}
-                          title="Pin this certificate"
-                        >
-                          📌
-                        </button>
-                      </div>
-                      
-                      {certificate.certificateImage ? (
-                        <div className="certificate-item-image">
-                          <img 
-                            src={certificate.certificateImage} 
-                            alt={certificate.name}
-                          />
-                        </div>
-                      ) : (
-                        <div className="certificate-item-placeholder">
-                          <div className="placeholder-icon">🏆</div>
-                        </div>
-                      )}
-                      
-                      <div className="certificate-item-info">
-                        <h4 className="certificate-item-name">{certificate.name}</h4>
-                        <p className="certificate-item-platform">{certificate.platform}</p>
-                      </div>
-                    </div>
-                  ))}
-                
-                {availableCertificates.filter(cert => !isPinned(cert.id)).length === 0 && (
-                  <div className="no-certificates-available">
-                    <div className="no-certificates-icon">📋</div>
-                    <p>No certificates available to pin</p>
-                    <p className="no-certificates-subtitle">All certificates are already pinned</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
 // Courses Content Component
-const CoursesContent = () => {
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      name: "GfG 160 Daily DSA Problems",
-      platform: "GeeksforGeeks",
-      startDate: "2024-01-01",
-      endDate: "2024-06-30",
-      status: "ongoing"
-    },
-    {
-      id: 2,
-      name: "React Complete Guide",
-      platform: "Udemy",
-      startDate: "2023-09-01",
-      endDate: "2023-12-15",
-      status: "completed"
-    },
-    {
-      id: 3,
-      name: "Machine Learning Specialization",
-      platform: "Coursera",
-      startDate: "2024-02-01",
-      endDate: "2024-08-31",
-      status: "ongoing"
-    }
-  ]);
+const CoursesContent = ({ courses, setCourses }) => {
 
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
   const [newCourse, setNewCourse] = useState({
@@ -1115,33 +1076,7 @@ const CoursesContent = () => {
 };
 
 // Certificates Content Component
-const CertificatesContent = ({ pinnedCertificates, setPinnedCertificates }) => {
-  const [certificates, setCertificates] = useState([
-    {
-      id: 1,
-      name: "GfG 160 Daily DSA Problems",
-      platform: "GeeksforGeeks",
-      achievedDate: "2024-01-15",
-      certificateLink: "https://example.com/certificate1",
-      certificateImage: null
-    },
-    {
-      id: 2,
-      name: "React Complete Guide",
-      platform: "Udemy",
-      achievedDate: "2023-12-20",
-      certificateLink: "https://example.com/certificate2",
-      certificateImage: null
-    },
-    {
-      id: 3,
-      name: "Machine Learning Specialization",
-      platform: "Coursera",
-      achievedDate: "2024-03-10",
-      certificateLink: "https://example.com/certificate3",
-      certificateImage: null
-    }
-  ]);
+const CertificatesContent = ({ certificates, setCertificates, pinnedCertificates, setPinnedCertificates }) => {
 
   const [isAddCertificateOpen, setIsAddCertificateOpen] = useState(false);
   const [newCertificate, setNewCertificate] = useState({

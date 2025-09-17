@@ -415,6 +415,309 @@
   color: #1a1a1a;
 }
 
+/* Disabled LinkedIn Link Styles */
+.linkedin-profile-link.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.linkedin-profile-link.disabled:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: none;
+}
+
+.light-theme .linkedin-profile-link.disabled {
+  opacity: 0.6;
+}
+
+.light-theme .linkedin-profile-link.disabled:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.link-hint {
+  font-size: 0.75rem;
+  color: #a0a0a0;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+.light-theme .link-hint {
+  color: #6b7280;
+}
+
+/* New Course and Certificate Cards */
+.courses-certificates-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.courses-section,
+.certificates-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.courses-grid,
+.certificates-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  max-width: 100%;
+}
+
+.courses-grid::-webkit-scrollbar,
+.certificates-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.courses-grid::-webkit-scrollbar-track,
+.certificates-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.courses-grid::-webkit-scrollbar-thumb,
+.certificates-grid::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 3px;
+}
+
+.courses-grid::-webkit-scrollbar-thumb:hover,
+.certificates-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.7);
+}
+
+.section-header-top h3 {
+  color: white !important;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.light-theme .section-header-top h3 {
+  color: #1a1a1a !important;
+}
+
+.course-card,
+.certificate-card {
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  height: 240px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card::before,
+.certificate-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  z-index: 1;
+}
+
+.light-theme .course-card,
+.light-theme .certificate-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.course-card:hover,
+.certificate-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25));
+}
+
+.light-theme .course-card:hover,
+.light-theme .certificate-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));
+}
+
+.course-hero-image {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: #6366f1;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.certificate-hero-image {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: #363ba1;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.course-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+}
+
+.certificate-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(54, 59, 161, 0.8), rgba(99, 102, 241, 0.8));
+}
+
+.course-logo,
+.certificate-logo {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.course-logo-icon,
+.certificate-logo-icon {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.course-info,
+.certificate-info {
+  padding: 1rem;
+  background: var(--clr-card);
+  border-radius: 0 0 12px 12px;
+  border: 1px solid var(--clr-border-soft);
+  border-top: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.light-theme .course-info,
+.light-theme .certificate-info {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-top: none;
+}
+
+.course-name,
+.certificate-name {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.light-theme .course-name,
+.light-theme .certificate-name {
+  color: #1a1a1a;
+}
+
+.course-description,
+.certificate-description {
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.light-theme .course-description,
+.light-theme .certificate-description {
+  color: #6b7280;
+}
+
+.view-more-btn {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  color: #6366f1;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  font-size: 0.9rem;
+}
+
+.view-more-btn:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design for Courses and Certificates */
+@media (max-width: 768px) {
+  .courses-certificates-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .course-card,
+  .certificate-card {
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    height: 220px;
+  }
+  
+  .courses-grid,
+  .certificates-grid {
+    gap: 0.75rem;
+  }
+}
+
 .profile-avatar-large {
   position: relative;
 }
@@ -1958,14 +2261,39 @@
 .badge-timeline {
   position: relative;
   padding: 1rem 0;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  overflow-x: auto;
+}
+
+/* Match scrollbar with courses/certificates */
+.badge-timeline::-webkit-scrollbar {
+  height: 6px;
+}
+
+.badge-timeline::-webkit-scrollbar-track {
+  background: var(--clr-overlay);
+  border-radius: 3px;
+}
+
+.badge-timeline::-webkit-scrollbar-thumb {
+  background: var(--clr-primary-alpha-50);
+  border-radius: 3px;
+}
+
+.badge-timeline::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-primary-alpha-70);
 }
 
 .badge-timeline-item {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   display: flex;
   align-items: flex-start;
   gap: 1.5rem;
+  min-width: 300px;
+  flex-shrink: 0;
 }
 
 .badge-timeline-item:last-child {
@@ -2163,7 +2491,7 @@
 }
 
 .light-theme .progress-text {
-  color: #4a5568 !important;
+  color: #4a5568;
 }
 
 .achievement-date {
