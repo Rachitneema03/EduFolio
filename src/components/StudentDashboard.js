@@ -11,7 +11,7 @@ import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css';
 
-const StudentDashboard = () => {
+const StudentDashboard = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('profile');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -140,6 +140,15 @@ const StudentDashboard = () => {
     }, 200);
   };
 
+  const handleSignOut = () => {
+    // Clear any stored data
+    localStorage.removeItem('profileCompleted');
+    // Redirect to sign in page
+    if (onNavigate) {
+      onNavigate('/signin');
+    }
+  };
+
   const notifications = [
     {
       id: 1,
@@ -189,6 +198,13 @@ const StudentDashboard = () => {
   ];
 
   const renderContent = () => {
+    // eslint-disable-next-line no-undef
+    const currentCertificates = certificates;
+    // eslint-disable-next-line no-undef
+    const currentPinnedCertificates = pinnedCertificates;
+    // eslint-disable-next-line no-undef
+    const currentSetPinnedCertificates = setPinnedCertificates;
+    
     switch (activeTab) {
       case 'profile':
         return <ProfileContent 
@@ -202,13 +218,13 @@ const StudentDashboard = () => {
           courses={courses}
           setCourses={setCourses}
         />;
+      
       case 'achievements':
         return <MyAchievements />;
       case 'portfolio':
         return <GeneratePortfolio 
           userData={userData}
           courses={courses}
-          certificates={[]}
           achievements={[]}
           platformData={platformData}
         />;
@@ -225,11 +241,13 @@ const StudentDashboard = () => {
           onNotificationSettingsUpdate={(settings) => console.log('Notification settings updated:', settings)}
           onPrivacySettingsUpdate={(settings) => console.log('Privacy settings updated:', settings)}
           onAccountSettingsUpdate={(settings) => console.log('Account settings updated:', settings)}
+          onSignOut={handleSignOut}
         />;
       default:
         return <ProfileContent 
           userData={userData} 
           onEditProfile={handleEditProfile}
+
           courses={courses}
           setActiveTab={setActiveTab}
         />;

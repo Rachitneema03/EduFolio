@@ -73,7 +73,7 @@
 
 .light-theme .activity-tab {
   background: #f8f9fa;
-  border: 1px solid #363ba1;
+  border: 1px solid #111212;
   color: #1a1a1a;
 }
 
@@ -139,7 +139,7 @@
 
 .light-theme .activity-card {
   background: rgba(248, 249, 250, 0.9);
-  border: 1px solid #e0e0e0;
+  border: 1px solid #d1d5db;
 }
 
 .activity-card:hover {
@@ -280,19 +280,43 @@
 }
 
 /* Add Activity Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  backdrop-filter: blur(5px);
+}
+
 .add-activity-modal {
   background: #1a1a1a;
   border: 1px solid #363ba1;
   border-radius: 16px;
   max-width: 600px;
   width: 90%;
-  max-height: 90vh;
+  max-height: 70vh;
+  min-height: 70vh;
   overflow-y: auto;
+  position: relative;
+  margin: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.add-activity-modal::-webkit-scrollbar {
+  display: none; /* WebKit browsers (Chrome, Safari, Edge) */
 }
 
 .light-theme .add-activity-modal {
   background: #ffffff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #d1d5db;
 }
 
 .modal-header {
@@ -304,7 +328,7 @@
 }
 
 .light-theme .modal-header {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #d1d5db;
 }
 
 .modal-header h3 {
@@ -398,7 +422,7 @@
 }
 
 .light-theme .modal-footer {
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #d1d5db;
 }
 
 .cancel-btn {
@@ -464,5 +488,14 @@
   
   .modal-footer {
     flex-direction: column;
+  }
+  
+  .modal-overlay {
+    padding: 1rem;
+  }
+  
+  .add-activity-modal {
+    width: 95%;
+    max-height: 95vh;
   }
 }

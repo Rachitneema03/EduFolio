@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import AccountTypeModal from './AccountTypeModal';
 import './AuthPages.css';
 
 const SignIn = ({ onNavigate }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    accountType: 'student',
     rememberMe: false
   });
+  const [showAccountTypeModal, setShowAccountTypeModal] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,23 +23,29 @@ const SignIn = ({ onNavigate }) => {
     e.preventDefault();
     console.log('Sign in data:', formData);
     // Handle sign in logic here
-    // Redirect to appropriate dashboard based on account type
-    if (formData.accountType === 'faculty') {
+    // Show account type modal after successful login
+    setShowAccountTypeModal(true);
+  };
+
+  const handleSocialLogin = (provider) => {
+    console.log(`Sign in with ${provider}`);
+    // Handle social login logic here
+    // Show account type modal after successful social login
+    setShowAccountTypeModal(true);
+  };
+
+  const handleAccountTypeSelect = (accountType) => {
+    setShowAccountTypeModal(false);
+    // Redirect to appropriate dashboard based on selected account type
+    if (accountType === 'faculty') {
       onNavigate('/faculty-dashboard');
     } else {
       onNavigate('/dashboard');
     }
   };
 
-  const handleSocialLogin = (provider) => {
-    console.log(`Sign in with ${provider}`);
-    // Handle social login logic here
-    // Redirect to appropriate dashboard based on account type
-    if (formData.accountType === 'faculty') {
-      onNavigate('/faculty-dashboard');
-    } else {
-      onNavigate('/dashboard');
-    }
+  const handleCloseAccountTypeModal = () => {
+    setShowAccountTypeModal(false);
   };
 
   return (
@@ -85,38 +92,6 @@ const SignIn = ({ onNavigate }) => {
               Sign in with Google
             </motion.button>
 
-            <motion.button 
-              className="social-btn microsoft-btn"
-              onClick={() => handleSocialLogin('Microsoft')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="social-icon microsoft-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path fill="#F25022" d="M1 1h10v10H1z"/>
-                  <path fill="#00A4EF" d="M13 1h10v10H13z"/>
-                  <path fill="#7FBA00" d="M1 13h10v10H1z"/>
-                  <path fill="#FFB900" d="M13 13h10v10H13z"/>
-                </svg>
-              </div>
-              Sign in with Microsoft
-            </motion.button>
-
-            <motion.button 
-              className="social-btn outlook-btn"
-              onClick={() => handleSocialLogin('Outlook')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="social-icon outlook-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path fill="#0078D4" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2z"/>
-                  <path fill="#FFFFFF" d="M8.5 6.5h7v1h-7zm0 2h7v1h-7zm0 2h7v1h-7zm0 2h5v1h-5z"/>
-                  <path fill="#0078D4" d="M6 8.5h1.5v7H6z"/>
-                </svg>
-              </div>
-              Sign in with Outlook
-            </motion.button>
 
           </motion.div>
 
@@ -166,20 +141,6 @@ const SignIn = ({ onNavigate }) => {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="accountType" className="form-label">Account Type</label>
-              <select
-                id="accountType"
-                name="accountType"
-                value={formData.accountType}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              >
-                <option value="student">Student</option>
-                <option value="faculty">Faculty</option>
-              </select>
-            </div>
 
             <div className="form-options">
               <label className="checkbox-container">
@@ -218,6 +179,13 @@ const SignIn = ({ onNavigate }) => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Account Type Modal */}
+      <AccountTypeModal
+        isOpen={showAccountTypeModal}
+        onSelectAccountType={handleAccountTypeSelect}
+        onClose={handleCloseAccountTypeModal}
+      />
     </div>
   );
 };

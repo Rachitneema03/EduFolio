@@ -283,3 +283,121 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Faculty Profile Setup Specific Styles */
+.degrees-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header label {
+  font-weight: 600;
+  color: #d0d0d0;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.light-theme .section-header label {
+  color: #555;
+}
+
+.add-degree-btn {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid #6366f1;
+  color: #6366f1;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-degree-btn:hover {
+  background: #6366f1;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.degree-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(42, 42, 42, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.light-theme .degree-row {
+  background: rgba(248, 249, 250, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.degree-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.degree-row .form-group:first-child {
+  flex: 2;
+}
+
+.degree-row .form-group:last-child {
+  flex: 0.8;
+}
+
+.remove-degree-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-top: 1.5rem;
+}
+
+.remove-degree-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments for faculty modal */
+@media (max-width: 768px) {
+  .degree-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .degree-row .form-group {
+    flex: 1;
+  }
+  
+  .remove-degree-btn {
+    align-self: flex-end;
+    margin-top: 0;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+}
