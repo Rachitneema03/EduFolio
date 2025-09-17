@@ -421,10 +421,10 @@
 
 .achieved-badge-icon {
   position: absolute;
-  top: 0;
-  right: 0;
-  background: #22c55e;
-  border: 2px solid white;
+  bottom: -5px;
+  right: -5px;
+  background: #161B22;
+  border: 2px solid #5e5ce6;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -437,7 +437,7 @@
 }
 
 .light-theme .achieved-badge-icon {
-  border: 2px solid #ffffff;
+  border: 2px solid #5e5ce6;
 }
 
 .avatar-circle {
