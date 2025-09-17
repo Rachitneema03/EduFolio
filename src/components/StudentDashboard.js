@@ -6,6 +6,7 @@ import MyAchievements from './MyAchievements';
 import GeneratePortfolio from './GeneratePortfolio';
 import Connect from './Connect';
 import AccountSettings from './AccountSettings';
+import ActivityTracker from './ActivityTracker';
 import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css';
@@ -22,6 +23,7 @@ const StudentDashboard = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [platformData, setPlatformData] = useState([]);
+  const [activities, setActivities] = useState([]);
   
   // Centralized data management
   const [courses, setCourses] = useState([
@@ -254,6 +256,8 @@ const StudentDashboard = () => {
         />;
       case 'connect':
         return <Connect onPlatformDataUpdate={setPlatformData} />;
+      case 'activities':
+        return <ActivityTracker onActivityUpdate={setActivities} />;
       case 'settings':
         return <AccountSettings 
           userData={userData}
@@ -382,6 +386,14 @@ const StudentDashboard = () => {
             >
               <span className="nav-icon"><i className="bi bi-link-45deg"></i></span>
               <span className="nav-text">Connect</span>
+            </button>
+            
+            <button 
+              className={`nav-item ${activeTab === 'activities' ? 'active' : ''}`}
+              onClick={() => setActiveTab('activities')}
+            >
+              <span className="nav-icon"><i className="bi bi-calendar-check"></i></span>
+              <span className="nav-text">Activity Tracker</span>
             </button>
             
             <button 

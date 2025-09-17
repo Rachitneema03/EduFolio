@@ -3,9 +3,12 @@ import { motion } from 'framer-motion';
 import EditProfileModal from './EditProfileModal';
 import ProfileSetupModal from './ProfileSetupModal';
 import AccountSettings from './AccountSettings';
+import FacultyApprovalPanel from './FacultyApprovalPanel';
+import AnalyticsReporting from './AnalyticsReporting';
 import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css'; // Reusing the same CSS for consistency
+import './FacultyDashboard.css'; // Faculty-specific styles
 
 const FacultyDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -230,11 +233,10 @@ const FacultyDashboard = () => {
           courses={courses}
           setCourses={setCourses}
         />;
-      case 'analytics':
-        return <AnalyticsContent 
-          students={students}
-          courses={courses}
-        />;
+      case 'approvals':
+        return <FacultyApprovalPanel onApprovalUpdate={(data) => console.log('Approval updated:', data)} />;
+      case 'reporting':
+        return <AnalyticsReporting onReportGenerate={(data) => console.log('Report generated:', data)} />;
       case 'settings':
         return <AccountSettings 
           userData={userData}
@@ -339,11 +341,19 @@ const FacultyDashboard = () => {
             </button>
             
             <button 
-              className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
-              onClick={() => setActiveTab('analytics')}
+              className={`nav-item ${activeTab === 'approvals' ? 'active' : ''}`}
+              onClick={() => setActiveTab('approvals')}
             >
-              <span className="nav-icon"><i className="bi bi-graph-up"></i></span>
-              <span className="nav-text">Analytics</span>
+              <span className="nav-icon"><i className="bi bi-check-circle"></i></span>
+              <span className="nav-text">Approvals</span>
+            </button>
+            
+            <button 
+              className={`nav-item ${activeTab === 'reporting' ? 'active' : ''}`}
+              onClick={() => setActiveTab('reporting')}
+            >
+              <span className="nav-icon"><i className="bi bi-file-earmark-text"></i></span>
+              <span className="nav-text">Reporting</span>
             </button>
             
             <button 
@@ -486,11 +496,11 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
   const totalAchievements = students.reduce((sum, student) => sum + student.achievements, 0);
 
   return (
-    <div className="profile-content">
-      <div className="profile-card">
-        <div className="profile-main">
-          <div className="profile-left">
-            <div className="profile-avatar-large">
+    <div className="faculty-profile-content">
+      <div className="faculty-profile-card">
+        <div className="faculty-profile-main">
+          <div className="faculty-profile-left">
+            <div className="faculty-profile-avatar-large">
               {userData.profilePhoto ? (
                 <img 
                   src={userData.profilePhoto} 
@@ -500,50 +510,50 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
               ) : (
                 <div className="avatar-circle">{getInitials(userData.name)}</div>
               )}
-              <div className="achieved-badge-icon">
+              <div className="faculty-achieved-badge-icon">
                 🎓
               </div>
             </div>
-            <h2 className="username">{userData.name}</h2>
+            <h2 className="faculty-username">{userData.name}</h2>
           </div>
           
-          <div className="profile-center">
-            <div className="institution-info">
+          <div className="faculty-profile-center">
+            <div className="faculty-institution-info">
               {userData.department && (
-                <div className="institution">
-                  <div className="institution-label">Department:</div>
+                <div className="faculty-institution">
+                  <div className="faculty-institution-label">Department:</div>
                   <span>{userData.department}</span>
                 </div>
               )}
               {userData.designation && (
-                <div className="year">Designation: {userData.designation}</div>
+                <div className="faculty-year">Designation: {userData.designation}</div>
               )}
               {userData.experience && (
-                <div className="degree">Experience: {userData.experience} years</div>
+                <div className="faculty-degree">Experience: {userData.experience} years</div>
               )}
               {userData.email && (
-                <div className="passing-year">Email: {userData.email}</div>
+                <div className="faculty-passing-year">Email: {userData.email}</div>
               )}
             </div>
           </div>
           
-          <div className="profile-right">
-            <button className="edit-profile-btn" onClick={onEditProfile}>
+          <div className="faculty-profile-right">
+            <button className="faculty-edit-profile-btn" onClick={onEditProfile}>
               <i className="bi bi-pencil-square"></i>
               Edit Profile
             </button>
-            <div className="profile-stats">
-              <div className="stat-section">
-                <span className="stat-label">Total Students:</span>
-                <span className="stat-value">{totalStudents}</span>
+            <div className="faculty-profile-stats">
+              <div className="faculty-stat-section">
+                <span className="faculty-stat-label">Total Students:</span>
+                <span className="faculty-stat-value">{totalStudents}</span>
               </div>
-              <div className="stat-section">
-                <span className="stat-label">Active Courses:</span>
-                <span className="stat-value">{activeCourses.length}</span>
+              <div className="faculty-stat-section">
+                <span className="faculty-stat-label">Active Courses:</span>
+                <span className="faculty-stat-value">{activeCourses.length}</span>
               </div>
-              <div className="stat-section">
-                <span className="stat-label">Student Achievements:</span>
-                <span className="stat-value">{totalAchievements}</span>
+              <div className="faculty-stat-section">
+                <span className="faculty-stat-label">Student Achievements:</span>
+                <span className="faculty-stat-value">{totalAchievements}</span>
               </div>
             </div>
           </div>
@@ -643,31 +653,33 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
 // Students Content Component
 const StudentsContent = ({ students, setStudents }) => {
   return (
-    <div className="courses-content">
-      <div className="courses-header">
+    <div className="faculty-students-content">
+      <div className="faculty-students-header">
         <h2 className="section-title">My Students</h2>
       </div>
 
-      <div className="courses-grid">
+      <div className="faculty-students-grid">
         {students.map(student => (
-          <div key={student.id} className="course-card glass-morphism">
-            <div className="course-header">
-              <div className="course-icon">👨‍🎓</div>
-              <div className="course-status ongoing">Active</div>
+          <div key={student.id} className="faculty-student-card">
+            <div className="faculty-student-header">
+              <div className="faculty-student-icon">👨‍🎓</div>
+              <div className="faculty-student-status">Active</div>
             </div>
-            <h3 className="course-name">{student.name}</h3>
-            <p className="course-platform">{student.department}</p>
-            <div className="course-dates">
-              <span className="date-item">
-                <strong>Year:</strong> {student.year}
-              </span>
-              <span className="date-item">
-                <strong>Achievements:</strong> {student.achievements}
-              </span>
+            <h3 className="faculty-student-name">{student.name}</h3>
+            <p className="faculty-student-department">{student.department}</p>
+            <div className="faculty-student-details">
+              <div className="faculty-detail-item">
+                <strong>Year:</strong>
+                <span className="faculty-detail-value">{student.year}</span>
+              </div>
+              <div className="faculty-detail-item">
+                <strong>Achievements:</strong>
+                <span className="faculty-detail-value">{student.achievements}</span>
+              </div>
             </div>
-            <div className="student-actions">
-              <button className="view-profile-btn">View Profile</button>
-              <button className="message-btn">Message</button>
+            <div className="faculty-student-actions">
+              <button className="faculty-view-profile-btn">View Profile</button>
+              <button className="faculty-message-btn">Message</button>
             </div>
           </div>
         ))}
@@ -679,33 +691,35 @@ const StudentsContent = ({ students, setStudents }) => {
 // Faculty Courses Content Component
 const FacultyCoursesContent = ({ courses, setCourses }) => {
   return (
-    <div className="courses-content">
-      <div className="courses-header">
+    <div className="faculty-courses-content">
+      <div className="faculty-courses-header">
         <h2 className="section-title">My Courses</h2>
       </div>
 
-      <div className="courses-grid">
+      <div className="faculty-courses-grid">
         {courses.map(course => (
-          <div key={course.id} className={`course-card glass-morphism ${course.status}`}>
-            <div className="course-header">
-              <div className="course-icon">📚</div>
-              <div className={`course-status ${course.status}`}>
+          <div key={course.id} className={`faculty-course-card ${course.status}`}>
+            <div className="faculty-course-header">
+              <div className="faculty-course-icon">📚</div>
+              <div className={`faculty-course-status ${course.status}`}>
                 {course.status === 'active' ? 'Active' : 'Completed'}
               </div>
             </div>
-            <h3 className="course-name">{course.name}</h3>
-            <p className="course-platform">{course.code}</p>
-            <div className="course-dates">
-              <span className="date-item">
-                <strong>Semester:</strong> {course.semester}
-              </span>
-              <span className="date-item">
-                <strong>Students:</strong> {course.students}
-              </span>
+            <h3 className="faculty-course-name">{course.name}</h3>
+            <p className="faculty-course-code">{course.code}</p>
+            <div className="faculty-course-details">
+              <div className="faculty-detail-item">
+                <strong>Semester:</strong>
+                <span className="faculty-detail-value">{course.semester}</span>
+              </div>
+              <div className="faculty-detail-item">
+                <strong>Students:</strong>
+                <span className="faculty-detail-value">{course.students}</span>
+              </div>
             </div>
-            <div className="course-actions">
-              <button className="view-course-btn">View Details</button>
-              <button className="manage-students-btn">Manage Students</button>
+            <div className="faculty-course-actions">
+              <button className="faculty-view-course-btn">View Details</button>
+              <button className="faculty-manage-students-btn">Manage Students</button>
             </div>
           </div>
         ))}
@@ -714,62 +728,5 @@ const FacultyCoursesContent = ({ courses, setCourses }) => {
   );
 };
 
-// Analytics Content Component
-const AnalyticsContent = ({ students, courses }) => {
-  const totalStudents = students.length;
-  const activeCourses = courses.filter(course => course.status === 'active').length;
-  const totalAchievements = students.reduce((sum, student) => sum + student.achievements, 0);
-  const avgAchievements = totalStudents > 0 ? (totalAchievements / totalStudents).toFixed(1) : 0;
-
-  return (
-    <div className="courses-content">
-      <div className="courses-header">
-        <h2 className="section-title">Analytics Dashboard</h2>
-      </div>
-
-      <div className="analytics-grid">
-        <div className="analytics-card glass-morphism">
-          <div className="analytics-icon">👥</div>
-          <h3>Total Students</h3>
-          <div className="analytics-value">{totalStudents}</div>
-        </div>
-
-        <div className="analytics-card glass-morphism">
-          <div className="analytics-icon">📚</div>
-          <h3>Active Courses</h3>
-          <div className="analytics-value">{activeCourses}</div>
-        </div>
-
-        <div className="analytics-card glass-morphism">
-          <div className="analytics-icon">🏆</div>
-          <h3>Total Achievements</h3>
-          <div className="analytics-value">{totalAchievements}</div>
-        </div>
-
-        <div className="analytics-card glass-morphism">
-          <div className="analytics-icon">📊</div>
-          <h3>Avg Achievements</h3>
-          <div className="analytics-value">{avgAchievements}</div>
-        </div>
-      </div>
-
-      <div className="analytics-charts">
-        <div className="chart-card glass-morphism">
-          <h3>Student Distribution by Year</h3>
-          <div className="chart-placeholder">
-            <p>Chart visualization would go here</p>
-          </div>
-        </div>
-
-        <div className="chart-card glass-morphism">
-          <h3>Achievement Trends</h3>
-          <div className="chart-placeholder">
-            <p>Chart visualization would go here</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default FacultyDashboard;
