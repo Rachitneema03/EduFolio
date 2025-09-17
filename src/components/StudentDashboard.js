@@ -199,11 +199,7 @@ const StudentDashboard = ({ onNavigate }) => {
 
   const renderContent = () => {
     // eslint-disable-next-line no-undef
-    const currentCertificates = certificates;
-    // eslint-disable-next-line no-undef
-    const currentPinnedCertificates = pinnedCertificates;
-    // eslint-disable-next-line no-undef
-    const currentSetPinnedCertificates = setPinnedCertificates;
+    
     
     switch (activeTab) {
       case 'profile':
