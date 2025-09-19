@@ -254,6 +254,8 @@ const FacultyDashboard = ({ onNavigate }) => {
         return <FacultyApprovalPanel onApprovalUpdate={(data) => console.log('Approval updated:', data)} />;
       case 'reporting':
         return <AnalyticsReporting onReportGenerate={(data) => console.log('Report generated:', data)} />;
+      case 'attendance':
+        return <FacultyAttendanceContent />;
       case 'settings':
         return <AccountSettings 
           userData={userData}
@@ -372,6 +374,14 @@ const FacultyDashboard = ({ onNavigate }) => {
             >
               <span className="nav-icon"><i className="bi bi-file-earmark-text"></i></span>
               <span className="nav-text">Reporting</span>
+            </button>
+            
+            <button 
+              className={`nav-item ${activeTab === 'attendance' ? 'active' : ''}`}
+              onClick={() => setActiveTab('attendance')}
+            >
+              <span className="nav-icon"><i className="bi bi-calendar-check-fill"></i></span>
+              <span className="nav-text">Attendance</span>
             </button>
             
             <button 
@@ -1042,5 +1052,24 @@ const FacultyCoursesContent = ({ courses, setCourses }) => {
   );
 };
 
+// Faculty Attendance Content Component
+const FacultyAttendanceContent = () => {
+  return (
+    <div className="attendance-content">
+      <div className="coming-soon-container">
+        <div className="coming-soon-icon">
+          <i className="bi bi-calendar-check-fill"></i>
+        </div>
+        <h2 className="coming-soon-title">Attendance Management</h2>
+        <p className="coming-soon-description">
+          Manage student attendance, mark attendance for classes, generate attendance reports, and track student participation.
+        </p>
+        <div className="coming-soon-badge">
+          <span>Coming Soon</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default FacultyDashboard;

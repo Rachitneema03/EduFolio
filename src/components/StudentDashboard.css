@@ -3502,3 +3502,107 @@
     width: 85px;
   }
 }
+
+/* Attendance Content Styles */
+.attendance-content {
+  padding: 2rem;
+  background: transparent;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coming-soon-container {
+  text-align: center;
+  max-width: 500px;
+  padding: 3rem 2rem;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid #404040;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.coming-soon-icon {
+  font-size: 4rem;
+  color: #6366f1;
+  margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.coming-soon-title {
+  color: white;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.coming-soon-description {
+  color: #d0d0d0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  }
+  to {
+    box-shadow: 0 4px 25px rgba(99, 102, 241, 0.6);
+  }
+}
+
+/* Responsive Design for Attendance */
+@media (max-width: 768px) {
+  .attendance-content {
+    padding: 1rem;
+  }
+  
+  .coming-soon-container {
+    padding: 2rem 1.5rem;
+  }
+  
+  .coming-soon-icon {
+    font-size: 3rem;
+  }
+  
+  .coming-soon-title {
+    font-size: 1.5rem;
+  }
+  
+  .coming-soon-description {
+    font-size: 1rem;
+  }
+}

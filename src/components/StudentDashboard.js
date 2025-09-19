@@ -7,6 +7,7 @@ import GeneratePortfolio from './GeneratePortfolio';
 import Connect from './Connect';
 import AccountSettings from './AccountSettings';
 import ActivityTracker from './ActivityTracker';
+import Documents from './Documents';
 import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import courseraLogo from '../Assets/platform-logos/coursera.svg';
@@ -316,6 +317,10 @@ const StudentDashboard = ({ onNavigate }) => {
         return <Connect onPlatformDataUpdate={setPlatformData} />;
       case 'activities':
         return <ActivityTracker onActivityUpdate={setActivities} />;
+      case 'documents':
+        return <Documents />;
+      case 'attendance':
+        return <AttendanceContent />;
       case 'settings':
         return <AccountSettings 
           userData={userData}
@@ -443,6 +448,22 @@ const StudentDashboard = ({ onNavigate }) => {
             >
               <span className="nav-icon"><i className="bi bi-calendar-check"></i></span>
               <span className="nav-text">Activity Tracker</span>
+            </button>
+            
+            <button 
+              className={`nav-item ${activeTab === 'documents' ? 'active' : ''}`}
+              onClick={() => setActiveTab('documents')}
+            >
+              <span className="nav-icon"><i className="bi bi-folder-fill"></i></span>
+              <span className="nav-text">Documents</span>
+            </button>
+            
+            <button 
+              className={`nav-item ${activeTab === 'attendance' ? 'active' : ''}`}
+              onClick={() => setActiveTab('attendance')}
+            >
+              <span className="nav-icon"><i className="bi bi-calendar-check-fill"></i></span>
+              <span className="nav-text">Attendance</span>
             </button>
             
             <button 
@@ -1390,5 +1411,24 @@ const CoursesContent = ({ courses, setCourses }) => {
   );
 };
 
+// Attendance Content Component
+const AttendanceContent = () => {
+  return (
+    <div className="attendance-content">
+      <div className="coming-soon-container">
+        <div className="coming-soon-icon">
+          <i className="bi bi-calendar-check-fill"></i>
+        </div>
+        <h2 className="coming-soon-title">Attendance Tracking</h2>
+        <p className="coming-soon-description">
+          Track your class attendance, view attendance reports, and monitor your attendance percentage.
+        </p>
+        <div className="coming-soon-badge">
+          <span>Coming Soon</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default StudentDashboard;
