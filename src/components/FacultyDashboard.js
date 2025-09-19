@@ -591,6 +591,12 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
                   <span className="faculty-info-value">{userData.batchName}</span>
                 </div>
               )}
+              {userData.subjectsTaught && userData.subjectsTaught.length > 0 && (
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Subjects:</span>
+                  <span className="faculty-info-value">{userData.subjectsTaught.join(', ')}</span>
+                </div>
+              )}
             </div>
           </div>
           

@@ -13,12 +13,10 @@ const FacultyEditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
     passingYear: userData?.passingYear || '',
     subjectsTaught: userData?.subjectsTaught || [],
     experience: userData?.experience || '',
-    skills: userData?.skills || [],
     profilePhoto: userData?.profilePhoto || null,
     linkedinUrl: userData?.linkedinUrl || ''
   });
 
-  const [newSkill, setNewSkill] = useState('');
   const [newSubject, setNewSubject] = useState('');
   const [linkedinError, setLinkedinError] = useState('');
 
@@ -59,22 +57,6 @@ const FacultyEditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
     }
   };
 
-  const handleAddSkill = () => {
-    if (newSkill.trim() && !formData.skills.includes(newSkill.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        skills: [...prev.skills, newSkill.trim()]
-      }));
-      setNewSkill('');
-    }
-  };
-
-  const handleRemoveSkill = (skillToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove)
-    }));
-  };
 
   const handleAddSubject = () => {
     if (newSubject.trim() && !formData.subjectsTaught.includes(newSubject.trim())) {
@@ -96,9 +78,7 @@ const FacultyEditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
   const handleKeyPress = (e, type) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (type === 'skill') {
-        handleAddSkill();
-      } else if (type === 'subject') {
+      if (type === 'subject') {
         handleAddSubject();
       }
     }
@@ -356,46 +336,6 @@ const FacultyEditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
             </div>
           </div>
 
-          {/* Skills Section */}
-          <div className="form-section">
-            <h3>Skills</h3>
-            <div className="form-group">
-              <label htmlFor="skills">Add Skills</label>
-              <div className="skills-input-container">
-                <input
-                  type="text"
-                  id="skills"
-                  value={newSkill}
-                  onChange={(e) => setNewSkill(e.target.value)}
-                  onKeyPress={(e) => handleKeyPress(e, 'skill')}
-                  placeholder="Enter a skill and press Enter or click Add"
-                />
-                <button
-                  type="button"
-                  className="add-skill-btn"
-                  onClick={handleAddSkill}
-                >
-                  Add
-                </button>
-              </div>
-              {formData.skills.length > 0 && (
-                <div className="skills-list">
-                  {formData.skills.map((skill, index) => (
-                    <div key={index} className="skill-tag">
-                      <span>{skill}</span>
-                      <button
-                        type="button"
-                        className="remove-skill-btn"
-                        onClick={() => handleRemoveSkill(skill)}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
 
           <div className="modal-actions">
             <button type="button" className="cancel-btn" onClick={onClose}>
