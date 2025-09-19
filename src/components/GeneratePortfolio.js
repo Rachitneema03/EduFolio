@@ -22,71 +22,30 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
     }));
   };
 
-  // Sample data for demonstration (in real app, this would come from props)
-  const sampleUserData = {
-    name: editedContent.name || userData?.name || 'John Doe',
-    email: editedContent.email || userData?.email || 'john.doe@email.com',
-    phone: editedContent.phone || userData?.phone || '+1 (555) 123-4567',
-    location: editedContent.location || userData?.location || 'New York, NY',
-    profileHeadline: editedContent.profileHeadline || userData?.profileHeadline || 'Full Stack Developer & UI/UX Designer',
-    bio: editedContent.bio || userData?.bio || 'Passionate developer with expertise in modern web technologies and user-centered design.',
-    skills: editedContent.skills || userData?.skills || ['React', 'Node.js', 'Python', 'JavaScript', 'UI/UX Design'],
+  // User data with fallbacks for missing information
+  const portfolioUserData = {
+    name: editedContent.name || userData?.name || 'Your Name',
+    email: editedContent.email || userData?.email || 'your.email@example.com',
+    phone: editedContent.phone || userData?.phone || 'Your Phone Number',
+    location: editedContent.location || userData?.location || 'Your Location',
+    profileHeadline: editedContent.profileHeadline || userData?.headline || 'Your Professional Title',
+    bio: editedContent.bio || userData?.bio || 'Write your professional bio here...',
+    skills: editedContent.skills || userData?.skills || ['Add your skills here'],
     education: editedContent.education || userData?.education || [
       {
-        degree: 'Bachelor of Computer Science',
-        school: 'University of Technology',
-        year: '2020-2024',
-        gpa: '3.8/4.0'
+        degree: userData?.degree || 'Your Degree',
+        school: userData?.collegeName || 'Your Institution',
+        year: userData?.passingYear || 'Your Graduation Year',
+        gpa: userData?.gpa || ''
       }
     ]
   };
 
-  const sampleCourses = courses.length > 0 ? courses : [
-    {
-      name: 'React Complete Guide',
-      platform: 'Udemy',
-      status: 'completed',
-      startDate: '2024-01-15',
-      endDate: '2024-03-15'
-    },
-    {
-      name: 'Data Structures and Algorithms',
-      platform: 'GeeksforGeeks',
-      status: 'completed',
-      startDate: '2024-02-01',
-      endDate: '2024-04-01'
-    }
-  ];
+  const portfolioCourses = courses.length > 0 ? courses.filter(course => course.status === 'completed') : [];
 
-  const sampleCertificates = certificates.length > 0 ? certificates : [
-    {
-      name: 'React Complete Guide Certificate',
-      platform: 'Udemy',
-      date: '2024-03-15',
-      link: 'https://udemy.com/certificate/react-complete'
-    },
-    {
-      name: 'AWS Cloud Practitioner',
-      platform: 'AWS',
-      date: '2024-02-20',
-      link: 'https://aws.amazon.com/certification/'
-    }
-  ];
+  const portfolioCertificates = certificates.length > 0 ? certificates : [];
 
-  const sampleAchievements = achievements.length > 0 ? achievements : [
-    {
-      title: 'Machine Learning Specialization',
-      platform: 'Coursera',
-      date: '2024-01-10',
-      status: 'verified'
-    },
-    {
-      title: 'Full Stack Development Bootcamp',
-      platform: 'freeCodeCamp',
-      date: '2023-12-15',
-      status: 'verified'
-    }
-  ];
+  const portfolioAchievements = achievements.length > 0 ? achievements.filter(achievement => achievement.status === 'verified') : [];
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
@@ -119,7 +78,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
         heightLeft -= pageHeight;
       }
 
-      pdf.save(`${sampleUserData.name.replace(' ', '_')}_Portfolio.pdf`);
+      pdf.save(`${portfolioUserData.name.replace(' ', '_')}_Portfolio.pdf`);
     } catch (error) {
       console.error('Error generating PDF:', error);
       alert('Error generating PDF. Please try again.');
@@ -140,7 +99,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
       });
 
       const link = document.createElement('a');
-      link.download = `${sampleUserData.name.replace(' ', '_')}_Portfolio.png`;
+      link.download = `${portfolioUserData.name.replace(' ', '_')}_Portfolio.png`;
       link.href = canvas.toDataURL();
       link.click();
     } catch (error) {
@@ -236,24 +195,24 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                 <input
                   type="text"
                   className="editable-input portfolio-name-input"
-                  value={sampleUserData.name}
+                  value={portfolioUserData.name}
                   onChange={(e) => handleContentEdit('name', e.target.value)}
                   placeholder="Your Name"
                 />
               ) : (
-                <h1 className="portfolio-name">{sampleUserData.name}</h1>
+                <h1 className="portfolio-name">{portfolioUserData.name}</h1>
               )}
               
               {isEditMode ? (
                 <input
                   type="text"
                   className="editable-input portfolio-title-input"
-                  value={sampleUserData.profileHeadline}
+                  value={portfolioUserData.profileHeadline}
                   onChange={(e) => handleContentEdit('profileHeadline', e.target.value)}
                   placeholder="Your Professional Title"
                 />
               ) : (
-                <p className="portfolio-title">{sampleUserData.profileHeadline}</p>
+                <p className="portfolio-title">{portfolioUserData.profileHeadline}</p>
               )}
               
               <div className="contact-info">
@@ -262,30 +221,30 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                     <span><i className="bi bi-envelope"></i> <input
                       type="email"
                       className="editable-input contact-input"
-                      value={sampleUserData.email}
+                      value={portfolioUserData.email}
                       onChange={(e) => handleContentEdit('email', e.target.value)}
                       placeholder="your.email@example.com"
                     /></span>
                     <span><i className="bi bi-phone"></i> <input
                       type="tel"
                       className="editable-input contact-input"
-                      value={sampleUserData.phone}
+                      value={portfolioUserData.phone}
                       onChange={(e) => handleContentEdit('phone', e.target.value)}
                       placeholder="+1 (555) 123-4567"
                     /></span>
                     <span><i className="bi bi-geo-alt"></i> <input
                       type="text"
                       className="editable-input contact-input"
-                      value={sampleUserData.location}
+                      value={portfolioUserData.location}
                       onChange={(e) => handleContentEdit('location', e.target.value)}
                       placeholder="City, State"
                     /></span>
                   </>
                 ) : (
                   <>
-                    <span><i className="bi bi-envelope"></i> {sampleUserData.email}</span>
-                    <span><i className="bi bi-phone"></i> {sampleUserData.phone}</span>
-                    <span><i className="bi bi-geo-alt"></i> {sampleUserData.location}</span>
+                    <span><i className="bi bi-envelope"></i> {portfolioUserData.email}</span>
+                    <span><i className="bi bi-phone"></i> {portfolioUserData.phone}</span>
+                    <span><i className="bi bi-geo-alt"></i> {portfolioUserData.location}</span>
                   </>
                 )}
               </div>
@@ -298,20 +257,20 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
             {isEditMode ? (
               <textarea
                 className="editable-textarea bio-textarea"
-                value={sampleUserData.bio}
+                value={portfolioUserData.bio}
                 onChange={(e) => handleContentEdit('bio', e.target.value)}
                 placeholder="Write your professional bio here..."
                 rows="4"
               />
             ) : (
-              <p className="bio-text">{sampleUserData.bio}</p>
+              <p className="bio-text">{portfolioUserData.bio}</p>
             )}
           </div>
 
           {/* Education Section */}
           <div className="portfolio-section">
             <h2 className="section-heading">Education</h2>
-            {sampleUserData.education.map((edu, index) => (
+            {portfolioUserData.education.map((edu, index) => (
               <div key={index} className="education-item">
                 {isEditMode ? (
                   <>
@@ -320,7 +279,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                       className="editable-input education-degree-input"
                       value={edu.degree}
                       onChange={(e) => {
-                        const newEducation = [...sampleUserData.education];
+                        const newEducation = [...portfolioUserData.education];
                         newEducation[index] = { ...edu, degree: e.target.value };
                         handleContentEdit('education', newEducation);
                       }}
@@ -332,7 +291,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                         className="editable-input education-school-input"
                         value={edu.school}
                         onChange={(e) => {
-                          const newEducation = [...sampleUserData.education];
+                          const newEducation = [...portfolioUserData.education];
                           newEducation[index] = { ...edu, school: e.target.value };
                           handleContentEdit('education', newEducation);
                         }}
@@ -343,7 +302,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                         className="editable-input education-year-input"
                         value={edu.year}
                         onChange={(e) => {
-                          const newEducation = [...sampleUserData.education];
+                          const newEducation = [...portfolioUserData.education];
                           newEducation[index] = { ...edu, year: e.target.value };
                           handleContentEdit('education', newEducation);
                         }}
@@ -355,7 +314,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
                       className="editable-input education-gpa-input"
                       value={edu.gpa || ''}
                       onChange={(e) => {
-                        const newEducation = [...sampleUserData.education];
+                        const newEducation = [...portfolioUserData.education];
                         newEducation[index] = { ...edu, gpa: e.target.value };
                         handleContentEdit('education', newEducation);
                       }}
@@ -379,14 +338,14 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
             {isEditMode ? (
               <textarea
                 className="editable-textarea skills-textarea"
-                value={sampleUserData.skills.join(', ')}
+                value={portfolioUserData.skills.join(', ')}
                 onChange={(e) => handleContentEdit('skills', e.target.value.split(',').map(s => s.trim()).filter(s => s))}
                 placeholder="Enter skills separated by commas (e.g., React, Node.js, Python)"
                 rows="2"
               />
             ) : (
               <div className="skills-container">
-                {sampleUserData.skills.map((skill, index) => (
+                {portfolioUserData.skills.map((skill, index) => (
                   <span key={index} className="skill-tag">{skill}</span>
                 ))}
               </div>
@@ -418,7 +377,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
           {/* Courses Section */}
           <div className="portfolio-section">
             <h2 className="section-heading">Courses & Training</h2>
-            {sampleCourses.map((course, index) => (
+            {portfolioCourses.map((course, index) => (
               <div key={index} className="course-item">
                 <div className="course-header">
                   <h3 className="course-name">{course.name}</h3>
@@ -436,7 +395,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
           {/* Certificates Section */}
           <div className="portfolio-section">
             <h2 className="section-heading">Certifications</h2>
-            {sampleCertificates.map((cert, index) => (
+            {portfolioCertificates.map((cert, index) => (
               <div key={index} className="certificate-item">
                 <div className="certificate-header">
                   <h3 className="certificate-name">{cert.name}</h3>
@@ -457,7 +416,7 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
           {/* Achievements Section */}
           <div className="portfolio-section">
             <h2 className="section-heading">Achievements</h2>
-            {sampleAchievements.map((achievement, index) => (
+            {portfolioAchievements.map((achievement, index) => (
               <div key={index} className="achievement-item">
                 <div className="achievement-header">
                   <h3 className="achievement-title">{achievement.title}</h3>
@@ -477,19 +436,19 @@ const GeneratePortfolio = ({ userData, courses = [], certificates = [], achievem
           <h3 style={{color: '#1a1a1a', marginBottom: '1rem', fontSize: '1.2rem'}}>Quick Stats</h3>
           <div style={{marginBottom: '1.5rem'}}>
             <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Courses Completed</p>
-            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{sampleCourses.length}</p>
+            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{portfolioCourses.length}</p>
           </div>
           <div style={{marginBottom: '1.5rem'}}>
             <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Certificates Earned</p>
-            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{sampleCertificates.length}</p>
+            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{portfolioCertificates.length}</p>
           </div>
           <div style={{marginBottom: '1.5rem'}}>
             <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Achievements</p>
-            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{sampleAchievements.length}</p>
+            <p style={{color: '#1a1a1a', fontSize: '1.5rem', fontWeight: 'bold'}}>{portfolioAchievements.length}</p>
           </div>
           <div>
             <p style={{color: '#6b7280', marginBottom: '0.5rem'}}>Skills</p>
-            <p style={{color: '#1a1a1a', fontSize: '1rem'}}>{sampleUserData.skills.length} skills listed</p>
+            <p style={{color: '#1a1a1a', fontSize: '1rem'}}>{portfolioUserData.skills.length} skills listed</p>
           </div>
         </div>
       </div>

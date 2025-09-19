@@ -97,7 +97,9 @@ const FacultyDashboard = ({ onNavigate }) => {
     skills: [],
     profilePhoto: null,
     linkedinUrl: '',
-    email: ''
+    email: '',
+    isBatchMentor: false,
+    batchName: ''
   });
 
   // Check if profile setup is needed on component mount
@@ -561,6 +563,22 @@ const FacultyProfileContent = ({ userData, onEditProfile, students, courses, set
                 <div className="faculty-info-item">
                   <span className="faculty-info-label">Experience:</span>
                   <span className="faculty-info-value">{userData.experience} years</span>
+                </div>
+              )}
+              {userData.department && (
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Department:</span>
+                  <span className="faculty-info-value">{userData.department}</span>
+                </div>
+              )}
+              <div className="faculty-info-item">
+                <span className="faculty-info-label">Batch Mentor:</span>
+                <span className="faculty-info-value">{userData.isBatchMentor ? 'Yes' : 'No'}</span>
+              </div>
+              {userData.isBatchMentor && userData.batchName && (
+                <div className="faculty-info-item">
+                  <span className="faculty-info-label">Mentoring Batch:</span>
+                  <span className="faculty-info-value">{userData.batchName}</span>
                 </div>
               )}
             </div>

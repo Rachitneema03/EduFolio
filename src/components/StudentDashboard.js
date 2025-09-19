@@ -30,6 +30,75 @@ const StudentDashboard = ({ onNavigate }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [platformData, setPlatformData] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [achievements, setAchievements] = useState({
+    'all-verified': [
+      {
+        id: 1,
+        title: "React Complete Guide Certificate",
+        description: "Completed comprehensive React.js course with hands-on projects",
+        category: "Engineering",
+        platform: "Udemy",
+        date: "2024-01-15",
+        status: "verified",
+        file: null
+      },
+      {
+        id: 2,
+        title: "Data Structures and Algorithms",
+        description: "Mastered core DSA concepts and problem-solving techniques",
+        category: "Engineering",
+        platform: "GeeksforGeeks",
+        date: "2024-02-20",
+        status: "verified",
+        file: null
+      },
+      {
+        id: 3,
+        title: "Machine Learning Specialization",
+        description: "Completed 5-course specialization in machine learning",
+        category: "Data Science",
+        platform: "Coursera",
+        date: "2024-03-10",
+        status: "verified",
+        file: null
+      }
+    ],
+    'pending': [
+      {
+        id: 4,
+        title: "AWS Cloud Practitioner",
+        description: "Cloud computing fundamentals and AWS services",
+        category: "Engineering",
+        platform: "AWS",
+        date: "2024-04-05",
+        status: "pending",
+        file: null
+      },
+      {
+        id: 5,
+        title: "Python for Data Science",
+        description: "Advanced Python programming for data analysis",
+        category: "Data Science",
+        platform: "edX",
+        date: "2024-04-12",
+        status: "pending",
+        file: null
+      }
+    ],
+    'rejected': [
+      {
+        id: 6,
+        title: "Blockchain Development",
+        description: "Smart contracts and decentralized applications",
+        category: "Engineering",
+        platform: "Coursera",
+        date: "2024-03-25",
+        status: "rejected",
+        file: null,
+        rejectionReason: "Certificate not verifiable"
+      }
+    ]
+  });
   
   // Centralized data management
   const [courses, setCourses] = useState([
@@ -73,7 +142,12 @@ const StudentDashboard = ({ onNavigate }) => {
     profilePhoto: null,
     linkedinUrl: '',
     headline: '',
-    skills: ['JavaScript', 'React', 'Python', 'Node.js', 'MongoDB']
+    skills: ['JavaScript', 'React', 'Python', 'Node.js', 'MongoDB'],
+    email: '',
+    phone: '',
+    location: '',
+    bio: '',
+    gpa: ''
   });
 
   // Check if profile setup is needed on component mount
@@ -215,6 +289,7 @@ const StudentDashboard = ({ onNavigate }) => {
           onEditProfile={handleEditProfile}
           courses={courses}
           setActiveTab={setActiveTab}
+          achievements={achievements}
         />;
       case 'courses':
         return <CoursesContent 
@@ -223,12 +298,18 @@ const StudentDashboard = ({ onNavigate }) => {
         />;
       
       case 'achievements':
-        return <MyAchievements />;
+        return <MyAchievements achievements={achievements} setAchievements={setAchievements} />;
       case 'portfolio':
         return <GeneratePortfolio 
           userData={userData}
           courses={courses}
-          achievements={[]}
+          achievements={achievements['all-verified']}
+          certificates={achievements['all-verified'].map(achievement => ({
+            name: achievement.title,
+            platform: achievement.platform,
+            date: achievement.date,
+            link: achievement.file ? URL.createObjectURL(achievement.file) : null
+          }))}
           platformData={platformData}
         />;
       case 'connect':
@@ -250,9 +331,9 @@ const StudentDashboard = ({ onNavigate }) => {
         return <ProfileContent 
           userData={userData} 
           onEditProfile={handleEditProfile}
-
           courses={courses}
           setActiveTab={setActiveTab}
+          achievements={achievements}
         />;
     }
   };
@@ -488,37 +569,9 @@ const StudentDashboard = ({ onNavigate }) => {
 };
 
 // Profile Content Component
-const ProfileContent = ({ userData, onEditProfile, courses, setActiveTab }) => {
-  // Sample verified achievements data (in real app, this would come from MyAchievements component)
-  const verifiedAchievements = [
-    {
-      id: 1,
-      title: "React Complete Guide Certificate",
-      description: "Completed comprehensive React.js course with hands-on projects",
-      category: "Programming",
-      platform: "Udemy",
-      date: "2024-01-15",
-      status: "verified"
-    },
-    {
-      id: 2,
-      title: "Data Structures and Algorithms",
-      description: "Mastered core DSA concepts and problem-solving techniques",
-      category: "Computer Science",
-      platform: "GeeksforGeeks",
-      date: "2024-02-20",
-      status: "verified"
-    },
-    {
-      id: 3,
-      title: "Machine Learning Specialization",
-      description: "Completed 5-course specialization in machine learning",
-      category: "Data Science",
-      platform: "Coursera",
-      date: "2024-03-10",
-      status: "verified"
-    }
-  ];
+const ProfileContent = ({ userData, onEditProfile, courses, setActiveTab, achievements }) => {
+  // Use actual verified achievements data from shared state
+  const verifiedAchievements = achievements['all-verified'] || [];
 
   const getInitials = (name) => {
     return name ? name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';

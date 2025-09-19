@@ -148,6 +148,10 @@
   gap: 1.5rem;
 }
 
+.cards{
+  height: 100% !important;
+}
+
 .achievement-card {
   text-align: left;
   cursor: pointer;
@@ -509,4 +513,29 @@ textarea::placeholder {
   font-weight: 600;
   color: white;
   line-height: 1.3;
+}
+
+.achievement-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.delete-achievement-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-achievement-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-1px);
 }

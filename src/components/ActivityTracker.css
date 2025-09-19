@@ -272,9 +272,27 @@
   transition: all 0.3s ease;
 }
 
+.delete-activity-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
 .view-certificate-btn:hover,
 .edit-activity-btn:hover {
   background: #6366f1;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.delete-activity-btn:hover {
+  background: #ef4444;
   color: white;
   transform: translateY(-1px);
 }

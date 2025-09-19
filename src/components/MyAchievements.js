@@ -10,9 +10,47 @@ import healthcareHero from '../Assets/achievement-heroes/healthcare.svg';
 import educationHero from '../Assets/achievement-heroes/education.svg';
 import defaultHero from '../Assets/achievement-heroes/default.svg';
 
-const MyAchievements = () => {
+const MyAchievements = ({ achievements, setAchievements }) => {
   const [activeAchievementTab, setActiveAchievementTab] = useState('all-verified');
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+  
+  // Faculty data structure
+  const facultyData = {
+    'Computer Science': [
+      { id: 1, name: 'Dr. Sarah Johnson', subject: 'Data Structures' },
+      { id: 2, name: 'Prof. Michael Chen', subject: 'Algorithms' },
+      { id: 3, name: 'Dr. Emily Rodriguez', subject: 'Machine Learning' },
+      { id: 4, name: 'Prof. David Kim', subject: 'Database Systems' }
+    ],
+    'Mathematics': [
+      { id: 5, name: 'Dr. Robert Wilson', subject: 'Calculus' },
+      { id: 6, name: 'Prof. Lisa Anderson', subject: 'Linear Algebra' },
+      { id: 7, name: 'Dr. James Taylor', subject: 'Statistics' }
+    ],
+    'Physics': [
+      { id: 8, name: 'Dr. Maria Garcia', subject: 'Quantum Mechanics' },
+      { id: 9, name: 'Prof. Thomas Brown', subject: 'Thermodynamics' },
+      { id: 10, name: 'Dr. Jennifer Lee', subject: 'Electromagnetism' }
+    ],
+    'Chemistry': [
+      { id: 11, name: 'Dr. Christopher Davis', subject: 'Organic Chemistry' },
+      { id: 12, name: 'Prof. Amanda White', subject: 'Physical Chemistry' },
+      { id: 13, name: 'Dr. Kevin Martinez', subject: 'Inorganic Chemistry' }
+    ],
+    'Engineering': [
+      { id: 14, name: 'Dr. Rachel Thompson', subject: 'Software Engineering' },
+      { id: 15, name: 'Prof. Mark Johnson', subject: 'Computer Networks' },
+      { id: 16, name: 'Dr. Nicole Adams', subject: 'System Design' }
+    ],
+    'Batch Mentors': [
+      { id: 101, name: 'Dr. Sarah Johnson', subject: 'Batch Mentor', batchName: '2024 Batch', department: 'Computer Science' },
+      { id: 102, name: 'Prof. Michael Chen', subject: 'Batch Mentor', batchName: '2023 Batch', department: 'Computer Science' },
+      { id: 103, name: 'Dr. Robert Wilson', subject: 'Batch Mentor', batchName: 'Alpha Batch', department: 'Mathematics' },
+      { id: 104, name: 'Dr. Maria Garcia', subject: 'Batch Mentor', batchName: 'Beta Batch', department: 'Physics' },
+      { id: 105, name: 'Dr. Christopher Davis', subject: 'Batch Mentor', batchName: 'Gamma Batch', department: 'Chemistry' },
+      { id: 106, name: 'Dr. Rachel Thompson', subject: 'Batch Mentor', batchName: 'Delta Batch', department: 'Engineering' }
+    ]
+  };
   const [newAchievement, setNewAchievement] = useState({
     title: '',
     description: '',
@@ -20,76 +58,9 @@ const MyAchievements = () => {
     customCategory: '',
     file: null,
     platform: '',
-    date: ''
-  });
-  const [achievements, setAchievements] = useState({
-    'all-verified': [
-      {
-        id: 1,
-        title: "React Complete Guide Certificate",
-        description: "Completed comprehensive React.js course with hands-on projects",
-        category: "Engineering",
-        platform: "Udemy",
-        date: "2024-01-15",
-        status: "verified",
-        file: null
-      },
-      {
-        id: 2,
-        title: "Data Structures and Algorithms",
-        description: "Mastered core DSA concepts and problem-solving techniques",
-        category: "Engineering",
-        platform: "GeeksforGeeks",
-        date: "2024-02-20",
-        status: "verified",
-        file: null
-      },
-      {
-        id: 3,
-        title: "Machine Learning Specialization",
-        description: "Completed 5-course specialization in machine learning",
-        category: "Data Science",
-        platform: "Coursera",
-        date: "2024-03-10",
-        status: "verified",
-        file: null
-      }
-    ],
-    'pending': [
-      {
-        id: 4,
-        title: "AWS Cloud Practitioner",
-        description: "Cloud computing fundamentals and AWS services",
-        category: "Engineering",
-        platform: "AWS",
-        date: "2024-04-05",
-        status: "pending",
-        file: null
-      },
-      {
-        id: 5,
-        title: "Python for Data Science",
-        description: "Advanced Python programming for data analysis",
-        category: "Data Science",
-        platform: "edX",
-        date: "2024-04-12",
-        status: "pending",
-        file: null
-      }
-    ],
-    'rejected': [
-      {
-        id: 6,
-        title: "Blockchain Development",
-        description: "Smart contracts and decentralized applications",
-        category: "Engineering",
-        platform: "Coursera",
-        date: "2024-03-25",
-        status: "rejected",
-        file: null,
-        rejectionReason: "Certificate not verifiable"
-      }
-    ]
+    date: '',
+    facultyDepartment: '',
+    selectedFaculty: ''
   });
 
   const handleSubmitAchievement = () => {
@@ -107,7 +78,9 @@ const MyAchievements = () => {
         platform: newAchievement.platform,
         date: newAchievement.date || new Date().toISOString().split('T')[0],
         status: 'pending',
-        file: newAchievement.file
+        file: newAchievement.file,
+        facultyDepartment: newAchievement.facultyDepartment,
+        selectedFaculty: newAchievement.selectedFaculty
       };
       
       // Add to pending achievements using state
@@ -124,7 +97,9 @@ const MyAchievements = () => {
         customCategory: '',
         file: null,
         platform: '',
-        date: ''
+        date: '',
+        facultyDepartment: '',
+        selectedFaculty: ''
       });
       setIsSubmitModalOpen(false);
     }
@@ -134,6 +109,15 @@ const MyAchievements = () => {
     const file = event.target.files[0];
     if (file) {
       setNewAchievement({...newAchievement, file: file});
+    }
+  };
+
+  const handleDeleteAchievement = (achievementId, category) => {
+    if (window.confirm('Are you sure you want to delete this achievement?')) {
+      setAchievements(prev => ({
+        ...prev,
+        [category]: prev[category].filter(achievement => achievement.id !== achievementId)
+      }));
     }
   };
 
@@ -241,7 +225,7 @@ const MyAchievements = () => {
       <div className="achievements-grid">
         {currentAchievements.length > 0 ? (
           currentAchievements.map(achievement => (
-            <div key={achievement.id} className="achievement-card glass-morphism">
+            <div key={achievement.id} className="achievement-card glass-morphism cards">
               <div className="achievement-header">
                 <div className="achievement-status">
                   <span 
@@ -293,6 +277,15 @@ const MyAchievements = () => {
                     <span className="rejection-text">{achievement.rejectionReason}</span>
                   </div>
                 )}
+              </div>
+              
+              <div className="achievement-actions">
+                <button 
+                  className="delete-achievement-btn"
+                  onClick={() => handleDeleteAchievement(achievement.id, activeAchievementTab)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))
@@ -450,6 +443,44 @@ const MyAchievements = () => {
                   value={newAchievement.date}
                   onChange={(e) => setNewAchievement({...newAchievement, date: e.target.value})}
                 />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Faculty Department</label>
+                  <select
+                    value={newAchievement.facultyDepartment}
+                    onChange={(e) => setNewAchievement({...newAchievement, facultyDepartment: e.target.value, selectedFaculty: ''})}
+                  >
+                    <option value="">Select Department</option>
+                    {Object.keys(facultyData).filter(dept => dept !== 'Batch Mentors').map(dept => (
+                      <option key={dept} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Faculty for Approval</label>
+                  <select
+                    value={newAchievement.selectedFaculty}
+                    onChange={(e) => setNewAchievement({...newAchievement, selectedFaculty: e.target.value})}
+                    disabled={!newAchievement.facultyDepartment}
+                  >
+                    <option value="">Select Faculty</option>
+                    {/* Department-specific faculty */}
+                    {newAchievement.facultyDepartment && facultyData[newAchievement.facultyDepartment]?.map(faculty => (
+                      <option key={faculty.id} value={faculty.id}>
+                        {faculty.name} ({faculty.subject})
+                      </option>
+                    ))}
+                    {/* Batch mentors - always available */}
+                    {facultyData['Batch Mentors']?.map(faculty => (
+                      <option key={faculty.id} value={faculty.id}>
+                        {faculty.name} - {faculty.batchName} ({faculty.department})
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div className="form-group">

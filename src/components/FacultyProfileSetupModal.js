@@ -10,16 +10,19 @@ const FacultyProfileSetupModal = ({ isOpen, onComplete }) => {
     gender: '',
     degrees: [{ degree: '', year: '' }],
     designation: '',
-    officialEmail: ''
+    officialEmail: '',
+    department: '',
+    isBatchMentor: false,
+    batchName: ''
   });
 
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'radio' ? checked : value
     }));
     
     // Clear error when user starts typing
@@ -98,6 +101,14 @@ const FacultyProfileSetupModal = ({ isOpen, onComplete }) => {
       newErrors.officialEmail = 'Please enter a valid email address';
     }
 
+    if (!formData.department.trim()) {
+      newErrors.department = 'Department is required';
+    }
+
+    if (formData.isBatchMentor && !formData.batchName.trim()) {
+      newErrors.batchName = 'Batch name/year is required for batch mentors';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -115,7 +126,9 @@ const FacultyProfileSetupModal = ({ isOpen, onComplete }) => {
         degrees: formData.degrees,
         designation: formData.designation,
         officialEmail: formData.officialEmail,
-        department: '',
+        department: formData.department,
+        isBatchMentor: formData.isBatchMentor,
+        batchName: formData.batchName,
         experience: '',
         profilePhoto: null,
         linkedinUrl: ''
@@ -294,6 +307,102 @@ const FacultyProfileSetupModal = ({ isOpen, onComplete }) => {
               />
               {errors.officialEmail && <span className="error-message">{errors.officialEmail}</span>}
             </div>
+            
+            <div className="form-group">
+              <label htmlFor="department">Department *</label>
+              <select
+                id="department"
+                name="department"
+                value={formData.department}
+                onChange={handleInputChange}
+                className={errors.department ? 'error' : ''}
+              >
+                <option value="">Select Department</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Biology">Biology</option>
+                <option value="English">English</option>
+                <option value="History">History</option>
+                <option value="Economics">Economics</option>
+                <option value="Psychology">Psychology</option>
+                <option value="Other">Other</option>
+              </select>
+              {errors.department && <span className="error-message">{errors.department}</span>}
+            </div>
+            
+            <div className="form-group">
+              <label>Are you a Batch Mentor?</label>
+              <div className="radio-group">
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="isBatchMentor"
+                    value="true"
+                    checked={formData.isBatchMentor === true}
+                    onChange={(e) => setFormData(prev => ({ ...prev, isBatchMentor: true }))}
+                  />
+                  <span className="radio-text">Yes</span>
+                </label>
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="isBatchMentor"
+                    value="false"
+                    checked={formData.isBatchMentor === false}
+                    onChange={(e) => setFormData(prev => ({ ...prev, isBatchMentor: false, batchName: '' }))}
+                  />
+                  <span className="radio-text">No</span>
+                </label>
+              </div>
+            </div>
+            
+            {formData.isBatchMentor && (
+              <div className="form-group conditional-field show">
+                <label htmlFor="batchName">Batch Name/Year *</label>
+                <select
+                  id="batchName"
+                  name="batchName"
+                  value={formData.batchName}
+                  onChange={handleInputChange}
+                  className={errors.batchName ? 'error' : ''}
+                >
+                  <option value="">Select Batch</option>
+                  <option value="2024 Batch">2024 Batch</option>
+                  <option value="2023 Batch">2023 Batch</option>
+                  <option value="2022 Batch">2022 Batch</option>
+                  <option value="2021 Batch">2021 Batch</option>
+                  <option value="2020 Batch">2020 Batch</option>
+                  <option value="Alpha Batch">Alpha Batch</option>
+                  <option value="Beta Batch">Beta Batch</option>
+                  <option value="Gamma Batch">Gamma Batch</option>
+                  <option value="Delta Batch">Delta Batch</option>
+                  <option value="Epsilon Batch">Epsilon Batch</option>
+                  <option value="Zeta Batch">Zeta Batch</option>
+                  <option value="Eta Batch">Eta Batch</option>
+                  <option value="Theta Batch">Theta Batch</option>
+                  <option value="Iota Batch">Iota Batch</option>
+                  <option value="Kappa Batch">Kappa Batch</option>
+                  <option value="Lambda Batch">Lambda Batch</option>
+                  <option value="Mu Batch">Mu Batch</option>
+                  <option value="Nu Batch">Nu Batch</option>
+                  <option value="Xi Batch">Xi Batch</option>
+                  <option value="Omicron Batch">Omicron Batch</option>
+                  <option value="Pi Batch">Pi Batch</option>
+                  <option value="Rho Batch">Rho Batch</option>
+                  <option value="Sigma Batch">Sigma Batch</option>
+                  <option value="Tau Batch">Tau Batch</option>
+                  <option value="Upsilon Batch">Upsilon Batch</option>
+                  <option value="Phi Batch">Phi Batch</option>
+                  <option value="Chi Batch">Chi Batch</option>
+                  <option value="Psi Batch">Psi Batch</option>
+                  <option value="Omega Batch">Omega Batch</option>
+                </select>
+                {errors.batchName && <span className="error-message">{errors.batchName}</span>}
+              </div>
+            )}
           </div>
 
           <div className="profile-setup-actions">
