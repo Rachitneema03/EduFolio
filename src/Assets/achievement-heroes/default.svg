@@ -1,0 +1,14 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="defaultGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="120" rx="12" fill="url(#defaultGradient)"/>
+  <circle cx="100" cy="50" r="25" fill="white" opacity="0.2"/>
+  <rect x="60" y="80" width="80" height="8" rx="4" fill="white" opacity="0.3"/>
+  <rect x="70" y="95" width="60" height="8" rx="4" fill="white" opacity="0.2"/>
+  <text x="100" y="25" text-anchor="middle" fill="white" font-size="14" font-weight="bold">ACHIEVEMENT</text>
+</svg>
+

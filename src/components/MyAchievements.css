@@ -144,7 +144,7 @@
 
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 1.5rem;
 }
 
@@ -481,4 +481,32 @@ textarea::placeholder {
   .achievement-description {
     font-size: 0.85rem;
   }
+}
+
+/* New Achievement Card Layout Styles */
+.achievement-hero-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.achievement-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.achievement-content {
+  padding: 0;
+}
+
+.achievement-content .achievement-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
 }

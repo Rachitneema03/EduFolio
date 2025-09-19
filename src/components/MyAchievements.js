@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
 import './MyAchievements.css';
+import managementHero from '../Assets/achievement-heroes/management.svg';
+import engineeringHero from '../Assets/achievement-heroes/engineering.svg';
+import dataScienceHero from '../Assets/achievement-heroes/data-science.svg';
+import designHero from '../Assets/achievement-heroes/design.svg';
+import marketingHero from '../Assets/achievement-heroes/marketing.svg';
+import financeHero from '../Assets/achievement-heroes/finance.svg';
+import healthcareHero from '../Assets/achievement-heroes/healthcare.svg';
+import educationHero from '../Assets/achievement-heroes/education.svg';
+import defaultHero from '../Assets/achievement-heroes/default.svg';
 
 const MyAchievements = () => {
   const [activeAchievementTab, setActiveAchievementTab] = useState('all-verified');
@@ -8,18 +17,18 @@ const MyAchievements = () => {
     title: '',
     description: '',
     category: '',
+    customCategory: '',
     file: null,
     platform: '',
     date: ''
   });
-
-  const achievements = {
+  const [achievements, setAchievements] = useState({
     'all-verified': [
       {
         id: 1,
         title: "React Complete Guide Certificate",
         description: "Completed comprehensive React.js course with hands-on projects",
-        category: "Programming",
+        category: "Engineering",
         platform: "Udemy",
         date: "2024-01-15",
         status: "verified",
@@ -29,7 +38,7 @@ const MyAchievements = () => {
         id: 2,
         title: "Data Structures and Algorithms",
         description: "Mastered core DSA concepts and problem-solving techniques",
-        category: "Computer Science",
+        category: "Engineering",
         platform: "GeeksforGeeks",
         date: "2024-02-20",
         status: "verified",
@@ -51,7 +60,7 @@ const MyAchievements = () => {
         id: 4,
         title: "AWS Cloud Practitioner",
         description: "Cloud computing fundamentals and AWS services",
-        category: "Cloud Computing",
+        category: "Engineering",
         platform: "AWS",
         date: "2024-04-05",
         status: "pending",
@@ -61,7 +70,7 @@ const MyAchievements = () => {
         id: 5,
         title: "Python for Data Science",
         description: "Advanced Python programming for data analysis",
-        category: "Programming",
+        category: "Data Science",
         platform: "edX",
         date: "2024-04-12",
         status: "pending",
@@ -73,7 +82,7 @@ const MyAchievements = () => {
         id: 6,
         title: "Blockchain Development",
         description: "Smart contracts and decentralized applications",
-        category: "Blockchain",
+        category: "Engineering",
         platform: "Coursera",
         date: "2024-03-25",
         status: "rejected",
@@ -81,16 +90,38 @@ const MyAchievements = () => {
         rejectionReason: "Certificate not verifiable"
       }
     ]
-  };
+  });
 
   const handleSubmitAchievement = () => {
     if (newAchievement.title && newAchievement.description && newAchievement.category) {
       // Add to pending achievements
-      console.log('New achievement submitted:', newAchievement);
+      const finalCategory = newAchievement.category === 'Other' && newAchievement.customCategory 
+        ? newAchievement.customCategory 
+        : newAchievement.category;
+      
+      const submittedAchievement = {
+        id: Date.now(),
+        title: newAchievement.title,
+        description: newAchievement.description,
+        category: finalCategory,
+        platform: newAchievement.platform,
+        date: newAchievement.date || new Date().toISOString().split('T')[0],
+        status: 'pending',
+        file: newAchievement.file
+      };
+      
+      // Add to pending achievements using state
+      setAchievements(prevAchievements => ({
+        ...prevAchievements,
+        pending: [...prevAchievements.pending, submittedAchievement]
+      }));
+      
+      console.log('New achievement submitted:', submittedAchievement);
       setNewAchievement({
         title: '',
         description: '',
         category: '',
+        customCategory: '',
         file: null,
         platform: '',
         date: ''
@@ -122,6 +153,41 @@ const MyAchievements = () => {
       case 'rejected': return '#ef4444';
       default: return '#6b7280';
     }
+  };
+
+  const getHeroImage = (category) => {
+    const categoryLower = category.toLowerCase();
+    let heroImage;
+    switch (categoryLower) {
+      case 'management':
+        heroImage = managementHero;
+        break;
+      case 'engineering':
+        heroImage = engineeringHero;
+        break;
+      case 'data science':
+        heroImage = dataScienceHero;
+        break;
+      case 'design':
+        heroImage = designHero;
+        break;
+      case 'marketing':
+        heroImage = marketingHero;
+        break;
+      case 'finance':
+        heroImage = financeHero;
+        break;
+      case 'healthcare':
+        heroImage = healthcareHero;
+        break;
+      case 'education':
+        heroImage = educationHero;
+        break;
+      default:
+        heroImage = defaultHero;
+    }
+    console.log(`Hero image for category "${category}":`, heroImage);
+    return heroImage;
   };
 
   const currentAchievements = achievements[activeAchievementTab] || [];
@@ -192,6 +258,18 @@ const MyAchievements = () => {
                   </span>
                 </div>
                 <div className="achievement-date">{achievement.date}</div>
+              </div>
+              
+              <div className="achievement-hero-image">
+                <img 
+                  src={(() => {
+                    const imageSrc = achievement.status === 'rejected' || !achievement.file ? getHeroImage(achievement.category) : URL.createObjectURL(achievement.file);
+                    console.log(`Image source for "${achievement.title}":`, imageSrc);
+                    return imageSrc;
+                  })()} 
+                  alt={achievement.title}
+                  className="achievement-image"
+                />
               </div>
               
               <div className="achievement-content">
@@ -330,14 +408,29 @@ const MyAchievements = () => {
                     onChange={(e) => setNewAchievement({...newAchievement, category: e.target.value})}
                   >
                     <option value="">Select category</option>
-                    <option value="Programming">Programming</option>
-                    <option value="Computer Science">Computer Science</option>
+                    <option value="Management">Management</option>
+                    <option value="Engineering">Engineering</option>
                     <option value="Data Science">Data Science</option>
-                    <option value="Cloud Computing">Cloud Computing</option>
-                    <option value="Blockchain">Blockchain</option>
+                    <option value="Design">Design</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>
+
+                {newAchievement.category === 'Other' && (
+                  <div className="form-group">
+                    <label>Custom Category</label>
+                    <input
+                      type="text"
+                      value={newAchievement.customCategory}
+                      onChange={(e) => setNewAchievement({...newAchievement, customCategory: e.target.value})}
+                      placeholder="Enter custom category"
+                    />
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label>Platform</label>

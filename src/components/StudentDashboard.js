@@ -9,6 +9,13 @@ import AccountSettings from './AccountSettings';
 import ActivityTracker from './ActivityTracker';
 import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
+import courseraLogo from '../Assets/platform-logos/coursera.svg';
+import udemyLogo from '../Assets/platform-logos/udemy.svg';
+import geeksforgeeksLogo from '../Assets/platform-logos/geeksforgeeks.svg';
+import edxLogo from '../Assets/platform-logos/edx.svg';
+import khanAcademyLogo from '../Assets/platform-logos/khan-academy.svg';
+import freecodecampLogo from '../Assets/platform-logos/freecodecamp.svg';
+import otherLogo from '../Assets/platform-logos/other.svg';
 import './StudentDashboard.css';
 
 const StudentDashboard = ({ onNavigate }) => {
@@ -693,7 +700,7 @@ const ProfileContent = ({ userData, onEditProfile, courses, setActiveTab }) => {
           ) : (
             <div className="linkedin-profile-link disabled">
               <div className="linkedin-content">
-                <i className="bi bi-linkedin"></i>
+              <i className="bi bi-linkedin"></i>
                 <span>LinkedIn Profile</span>
               </div>
               <div className="link-hint">Add URL to insert link</div>
@@ -706,47 +713,47 @@ const ProfileContent = ({ userData, onEditProfile, courses, setActiveTab }) => {
       <div className="courses-achievements-container">
         {/* Courses Section Card */}
         <div className="section-card courses-section-card">
-          <div className="courses-section">
-            <div className="section-header">
-              <div className="section-header-top">
-                <h3 style={{color: 'white'}} className="section-title">Courses</h3>
-              </div>
+        <div className="courses-section">
+          <div className="section-header">
+            <div className="section-header-top">
+              <h3 style={{color: 'white'}} className="section-title">Courses</h3>
             </div>
-            
-            <div className="courses-grid">
-              {courses.slice(0, 3).map(course => (
-                <div key={course.id} className="course-card">
-                  <div className="course-hero-image">
-                    <div className="course-gradient-overlay"></div>
-                    <div className="course-logo">
-                      <div className="course-logo-icon">GfG</div>
-                    </div>
-                  </div>
-                  <div className="course-info">
-                    <h4 className="course-name">{course.name}</h4>
-                    <p className="course-description">GfG 160 - 160 Days of Problem Solving</p>
+          </div>
+          
+          <div className="courses-grid">
+            {courses.slice(0, 3).map(course => (
+              <div key={course.id} className="course-card">
+                <div className="course-hero-image">
+                  <div className="course-gradient-overlay"></div>
+                  <div className="course-logo">
+                    <div className="course-logo-icon">GfG</div>
                   </div>
                 </div>
-              ))}
-            </div>
-            <button 
-                className="view-more-btn"
-                onClick={() => setActiveTab('courses')}
-              >
-                View More
-              </button>
+                <div className="course-info">
+                  <h4 className="course-name">{course.name}</h4>
+                  <p className="course-description">GfG 160 - 160 Days of Problem Solving</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button 
+              className="view-more-btn"
+              onClick={() => setActiveTab('courses')}
+            >
+              View More
+            </button>
           </div>
         </div>
 
         {/* Achievements Section Card */}
         <div className="section-card achievements-section-card">
           <div className="achievements-section">
-            <div className="section-header">
-              <div className="section-header-top">
+          <div className="section-header">
+            <div className="section-header-top">
                 <h3 style={{color: 'white'}} className="section-title">Achievements</h3>
-              </div>
             </div>
-            
+          </div>
+          
             <div className="achievements-grid">
               {verifiedAchievements.slice(0, 3).map(achievement => (
                 <div key={achievement.id} className="achievement-card">
@@ -762,14 +769,14 @@ const ProfileContent = ({ userData, onEditProfile, courses, setActiveTab }) => {
                   </div>
                 </div>
               ))}
-            </div>
-            <button 
-                className="view-more-btn"
-                onClick={() => setActiveTab('achievements')}
-              >
-                View More
-              </button>
           </div>
+          <button 
+              className="view-more-btn"
+                onClick={() => setActiveTab('achievements')}
+            >
+              View More
+            </button>
+        </div>
         </div>
       </div>
 
@@ -843,6 +850,8 @@ const ProfileContent = ({ userData, onEditProfile, courses, setActiveTab }) => {
 const CoursesContent = ({ courses, setCourses }) => {
 
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
+  const [isEditCourseOpen, setIsEditCourseOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState(null);
   const [newCourse, setNewCourse] = useState({
     name: '',
     platform: '',
@@ -852,8 +861,20 @@ const CoursesContent = ({ courses, setCourses }) => {
     status: 'ongoing'
   });
 
+  // Date validation function
+  const validateDates = (startDate, endDate) => {
+    if (!startDate || !endDate) return true; // Allow empty dates during input
+    return new Date(startDate) <= new Date(endDate);
+  };
+
   const handleAddCourse = () => {
     if (newCourse.name && newCourse.startDate && newCourse.endDate) {
+      // Validate dates
+      if (!validateDates(newCourse.startDate, newCourse.endDate)) {
+        alert('End date must be after or equal to start date');
+        return;
+      }
+      
       const platform = newCourse.platform === 'other' ? newCourse.customPlatform : newCourse.platform;
       const course = {
         id: Date.now(),
@@ -876,16 +897,83 @@ const CoursesContent = ({ courses, setCourses }) => {
     }
   };
 
+  const handleEditCourse = (course) => {
+    setEditingCourse(course);
+    setNewCourse({
+      name: course.name,
+      platform: course.platform,
+      customPlatform: '',
+      startDate: course.startDate,
+      endDate: course.endDate,
+      status: course.status
+    });
+    setIsEditCourseOpen(true);
+  };
+
+  const handleUpdateCourse = () => {
+    if (newCourse.name && newCourse.startDate && newCourse.endDate) {
+      // Validate dates
+      if (!validateDates(newCourse.startDate, newCourse.endDate)) {
+        alert('End date must be after or equal to start date');
+        return;
+      }
+      
+      const platform = newCourse.platform === 'other' ? newCourse.customPlatform : newCourse.platform;
+      const updatedCourse = {
+        ...editingCourse,
+        name: newCourse.name,
+        platform: platform,
+        startDate: newCourse.startDate,
+        endDate: newCourse.endDate,
+        status: newCourse.status
+      };
+      
+      setCourses(courses.map(course => 
+        course.id === editingCourse.id ? updatedCourse : course
+      ));
+      
+      setNewCourse({
+        name: '',
+        platform: '',
+        customPlatform: '',
+        startDate: '',
+        endDate: '',
+        status: 'ongoing'
+      });
+      setEditingCourse(null);
+      setIsEditCourseOpen(false);
+    }
+  };
+
+  const handleDeleteCourse = (courseId) => {
+    if (window.confirm('Are you sure you want to delete this course?')) {
+      setCourses(courses.filter(course => course.id !== courseId));
+    }
+  };
+
   const ongoingCourses = courses.filter(course => course.status === 'ongoing');
   const completedCourses = courses.filter(course => course.status === 'completed');
 
-  const getPlatformIcon = (platform) => {
-    switch (platform.toLowerCase()) {
-      case 'coursera': return '🎓';
-      case 'udemy': return '🎯';
-      case 'geeksforgeeks': return '💻';
-      case 'gfg': return '💻';
-      default: return '📚';
+  const getPlatformImage = (platform) => {
+    const platformLower = platform.toLowerCase();
+    switch (platformLower) {
+      case 'coursera':
+        return courseraLogo;
+      case 'udemy':
+        return udemyLogo;
+      case 'geeksforgeeks':
+      case 'gfg':
+        return geeksforgeeksLogo;
+      case 'edx':
+        return edxLogo;
+      case 'khan academy':
+        return khanAcademyLogo;
+      case 'freecodecamp':
+        return freecodecampLogo;
+      case 'other':
+        return otherLogo;
+      default:
+        return otherLogo;
     }
   };
 
@@ -945,6 +1033,9 @@ const CoursesContent = ({ courses, setCourses }) => {
                   <option value="coursera">Coursera</option>
                   <option value="udemy">Udemy</option>
                   <option value="geeksforgeeks">GeeksforGeeks</option>
+                  <option value="edx">edX</option>
+                  <option value="khan academy">Khan Academy</option>
+                  <option value="freecodecamp">FreeCodeCamp</option>
                   <option value="other">Other</option>
                 </select>
               </div>
@@ -968,6 +1059,7 @@ const CoursesContent = ({ courses, setCourses }) => {
                     type="date"
                     value={newCourse.startDate}
                     onChange={(e) => setNewCourse({...newCourse, startDate: e.target.value})}
+                    max={newCourse.endDate || undefined}
                   />
                 </div>
 
@@ -977,6 +1069,7 @@ const CoursesContent = ({ courses, setCourses }) => {
                     type="date"
                     value={newCourse.endDate}
                     onChange={(e) => setNewCourse({...newCourse, endDate: e.target.value})}
+                    min={newCourse.startDate || undefined}
                   />
                 </div>
               </div>
@@ -1011,6 +1104,112 @@ const CoursesContent = ({ courses, setCourses }) => {
         </div>
       )}
 
+      {/* Edit Course Modal */}
+      {isEditCourseOpen && (
+        <div className="modal-overlay" onClick={() => setIsEditCourseOpen(false)}>
+          <div className="add-course-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Edit Course</h3>
+              <button 
+                className="close-btn"
+                onClick={() => setIsEditCourseOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Course Name</label>
+                <input
+                  type="text"
+                  value={newCourse.name}
+                  onChange={(e) => setNewCourse({...newCourse, name: e.target.value})}
+                  placeholder="Enter course name"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Platform</label>
+                <select
+                  value={newCourse.platform}
+                  onChange={(e) => setNewCourse({...newCourse, platform: e.target.value})}
+                >
+                  <option value="">Select platform</option>
+                  <option value="coursera">Coursera</option>
+                  <option value="udemy">Udemy</option>
+                  <option value="geeksforgeeks">GeeksforGeeks</option>
+                  <option value="edx">edX</option>
+                  <option value="khan academy">Khan Academy</option>
+                  <option value="freecodecamp">FreeCodeCamp</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {newCourse.platform === 'other' && (
+                <div className="form-group">
+                  <label>Custom Platform</label>
+                  <input
+                    type="text"
+                    value={newCourse.customPlatform}
+                    onChange={(e) => setNewCourse({...newCourse, customPlatform: e.target.value})}
+                    placeholder="Enter platform name"
+                  />
+                </div>
+              )}
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Start Date</label>
+                  <input
+                    type="date"
+                    value={newCourse.startDate}
+                    onChange={(e) => setNewCourse({...newCourse, startDate: e.target.value})}
+                    max={newCourse.endDate || undefined}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>End Date</label>
+                  <input
+                    type="date"
+                    value={newCourse.endDate}
+                    onChange={(e) => setNewCourse({...newCourse, endDate: e.target.value})}
+                    min={newCourse.startDate || undefined}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Status</label>
+                <select
+                  value={newCourse.status}
+                  onChange={(e) => setNewCourse({...newCourse, status: e.target.value})}
+                >
+                  <option value="ongoing">Ongoing</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                className="cancel-btn"
+                onClick={() => setIsEditCourseOpen(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="save-btn"
+                onClick={handleUpdateCourse}
+              >
+                Update Course
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Ongoing Courses */}
       <div className="courses-section">
         <h3 className="subsection-title">
@@ -1022,7 +1221,18 @@ const CoursesContent = ({ courses, setCourses }) => {
             ongoingCourses.map(course => (
               <div key={course.id} className="course-card glass-morphism">
                 <div className="course-header">
-                  <div className="course-icon">{getPlatformIcon(course.platform)}</div>
+                  <div className="course-icon">
+                    <img 
+                      src={getPlatformImage(course.platform)} 
+                      alt={course.platform}
+                      className="platform-image"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                    <span className="platform-fallback" style={{display: 'none'}}>📚</span>
+                  </div>
                   <div className="course-status ongoing">Ongoing</div>
                 </div>
                 <h3 className="course-name">{course.name}</h3>
@@ -1034,6 +1244,22 @@ const CoursesContent = ({ courses, setCourses }) => {
                   <span className="date-item">
                     <strong>End:</strong> {formatDate(course.endDate)}
                   </span>
+                </div>
+                <div className="course-actions">
+                  <button 
+                    className="edit-course-btn"
+                    onClick={() => handleEditCourse(course)}
+                    title="Edit course"
+                  >
+                    <i className="bi bi-pencil"></i>
+                  </button>
+                  <button 
+                    className="delete-course-btn"
+                    onClick={() => handleDeleteCourse(course.id)}
+                    title="Delete course"
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
                 </div>
               </div>
             ))
@@ -1057,7 +1283,18 @@ const CoursesContent = ({ courses, setCourses }) => {
             completedCourses.map(course => (
               <div key={course.id} className="course-card glass-morphism completed">
                 <div className="course-header">
-                  <div className="course-icon">{getPlatformIcon(course.platform)}</div>
+                  <div className="course-icon">
+                    <img 
+                      src={getPlatformImage(course.platform)} 
+                      alt={course.platform}
+                      className="platform-image"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                    <span className="platform-fallback" style={{display: 'none'}}>📚</span>
+                  </div>
                   <div className="course-status completed">Completed</div>
                 </div>
                 <h3 className="course-name">{course.name}</h3>
@@ -1069,6 +1306,22 @@ const CoursesContent = ({ courses, setCourses }) => {
                   <span className="date-item">
                     <strong>End:</strong> {formatDate(course.endDate)}
                   </span>
+                </div>
+                <div className="course-actions">
+                  <button 
+                    className="edit-course-btn"
+                    onClick={() => handleEditCourse(course)}
+                    title="Edit course"
+                  >
+                    <i className="bi bi-pencil"></i>
+                  </button>
+                  <button 
+                    className="delete-course-btn"
+                    onClick={() => handleDeleteCourse(course.id)}
+                    title="Delete course"
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
                 </div>
               </div>
             ))

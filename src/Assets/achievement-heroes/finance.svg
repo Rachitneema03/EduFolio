@@ -1,0 +1,16 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="financeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="120" rx="12" fill="url(#financeGradient)"/>
+  <rect x="60" y="40" width="80" height="50" rx="8" fill="white" opacity="0.1"/>
+  <rect x="70" y="50" width="60" height="8" rx="4" fill="white" opacity="0.3"/>
+  <rect x="70" y="65" width="40" height="8" rx="4" fill="white" opacity="0.3"/>
+  <rect x="70" y="80" width="50" height="8" rx="4" fill="white" opacity="0.3"/>
+  <circle cx="100" cy="30" r="12" fill="white" opacity="0.4"/>
+  <text x="100" y="20" text-anchor="middle" fill="white" font-size="14" font-weight="bold">FINANCE</text>
+</svg>
+
