@@ -31,23 +31,6 @@ const Documents = () => {
     'Other'
   ];
 
-  // Load documents from token-based storage on component mount
-  useEffect(() => {
-    if (isLoggedIn) {
-      const savedDocuments = getData('documents');
-      if (savedDocuments) {
-        setDocuments(savedDocuments);
-      }
-    }
-  }, [isLoggedIn, getData]);
-
-  // Save documents to token-based storage whenever documents change
-  useEffect(() => {
-    if (isLoggedIn && documents) {
-      storeData('documents', documents);
-    }
-  }, [documents, isLoggedIn, storeData]);
-
   // Sample documents data (fallback if no saved data)
   const [documents, setDocuments] = useState({
     'all': [
@@ -132,6 +115,23 @@ const Documents = () => {
     'Recommendation Letters': [],
     'Other': []
   });
+
+  // Load documents from token-based storage on component mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      const savedDocuments = getData('documents');
+      if (savedDocuments) {
+        setDocuments(savedDocuments);
+      }
+    }
+  }, [isLoggedIn, getData]);
+
+  // Save documents to token-based storage whenever documents change
+  useEffect(() => {
+    if (isLoggedIn && documents) {
+      storeData('documents', documents);
+    }
+  }, [documents, isLoggedIn, storeData]);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
