@@ -8,6 +8,8 @@ import Connect from './Connect';
 import AccountSettings from './AccountSettings';
 import ActivityTracker from './ActivityTracker';
 import Documents from './Documents';
+import { destroyToken, getCurrentUserToken } from '../utils/tokenManager';
+import { useAuth } from '../contexts/AuthContext';
 import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import courseraLogo from '../Assets/platform-logos/coursera.svg';
@@ -20,6 +22,7 @@ import otherLogo from '../Assets/platform-logos/other.svg';
 import './StudentDashboard.css';
 
 const StudentDashboard = ({ onNavigate }) => {
+  const { updateAuthStatus, storeData, getData, isLoggedIn } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -151,6 +154,47 @@ const StudentDashboard = ({ onNavigate }) => {
     gpa: ''
   });
 
+  // Load profile data from token storage on component mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      const savedProfileData = getData('profile');
+      if (savedProfileData) {
+        setUserData(savedProfileData);
+        console.log('Profile data loaded from token storage:', savedProfileData);
+      }
+      
+      // Load courses data
+      const savedCoursesData = getData('courses');
+      if (savedCoursesData) {
+        setCourses(savedCoursesData);
+        console.log('Courses data loaded from token storage:', savedCoursesData);
+      }
+      
+      // Load achievements data
+      const savedAchievementsData = getData('achievements');
+      if (savedAchievementsData) {
+        setAchievements(savedAchievementsData);
+        console.log('Achievements data loaded from token storage:', savedAchievementsData);
+      }
+    }
+  }, [isLoggedIn, getData]);
+
+  // Save courses data to token storage whenever courses change
+  useEffect(() => {
+    if (isLoggedIn && courses.length > 0) {
+      storeData('courses', courses);
+      console.log('Courses data saved with token storage:', courses);
+    }
+  }, [courses, isLoggedIn, storeData]);
+
+  // Save achievements data to token storage whenever achievements change
+  useEffect(() => {
+    if (isLoggedIn && achievements) {
+      storeData('achievements', achievements);
+      console.log('Achievements data saved with token storage:', achievements);
+    }
+  }, [achievements, isLoggedIn, storeData]);
+
   // Check if profile setup is needed on component mount
   useEffect(() => {
     const profileCompleted = localStorage.getItem('profileCompleted');
@@ -169,6 +213,13 @@ const StudentDashboard = ({ onNavigate }) => {
 
   const handleSaveProfile = (newUserData) => {
     setUserData(newUserData);
+    
+    // Store profile data with token-based key
+    if (isLoggedIn) {
+      storeData('profile', newUserData);
+      console.log('Profile data saved with token storage:', newUserData);
+    }
+    
     setIsEditModalOpen(false);
   };
 
@@ -178,6 +229,13 @@ const StudentDashboard = ({ onNavigate }) => {
 
   const handleProfileSetupComplete = (newUserData) => {
     setUserData(newUserData);
+    
+    // Store profile data with token-based key
+    if (isLoggedIn) {
+      storeData('profile', newUserData);
+      console.log('Profile setup completed and saved with token storage:', newUserData);
+    }
+    
     setIsProfileSetupOpen(false);
     // Store profile completion status in localStorage
     localStorage.setItem('profileCompleted', 'true');
@@ -223,8 +281,27 @@ const StudentDashboard = ({ onNavigate }) => {
   };
 
   const handleSignOut = () => {
-    // Clear any stored data
+    // Get current user token before destroying
+    const currentUser = getCurrentUserToken();
+    
+    // Destroy authentication token and all user data
+    if (currentUser) {
+      destroyToken(currentUser.email);
+    }
+    
+    // Clear any additional stored data
     localStorage.removeItem('profileCompleted');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_first_name');
+    localStorage.removeItem('user_last_name');
+    localStorage.removeItem('user_remember_me');
+    localStorage.removeItem('user_social_provider');
+    
+    console.log('User signed out successfully');
+    
+    // Update auth context
+    updateAuthStatus();
+    
     // Redirect to sign in page
     if (onNavigate) {
       onNavigate('/signin');
@@ -324,7 +401,14 @@ const StudentDashboard = ({ onNavigate }) => {
       case 'settings':
         return <AccountSettings 
           userData={userData}
-          onUserDataUpdate={setUserData}
+          onUserDataUpdate={(updatedData) => {
+            setUserData(updatedData);
+            // Store updated profile data with token-based key
+            if (isLoggedIn) {
+              storeData('profile', updatedData);
+              console.log('Profile data updated via AccountSettings and saved with token storage:', updatedData);
+            }
+          }}
           isDarkMode={isDarkMode}
           onThemeToggle={toggleTheme}
           onNotificationSettingsUpdate={(settings) => console.log('Notification settings updated:', settings)}

@@ -5,12 +5,15 @@ import FacultyProfileSetupModal from './FacultyProfileSetupModal';
 import AccountSettings from './AccountSettings';
 import FacultyApprovalPanel from './FacultyApprovalPanel';
 import AnalyticsReporting from './AnalyticsReporting';
+import { destroyToken, getCurrentUserToken } from '../utils/tokenManager';
+import { useAuth } from '../contexts/AuthContext';
 import dashboardLogo from '../Assets/dashboard-logo.png';
 import logoDark from '../Assets/logo-dark.png';
 import './StudentDashboard.css'; // Reusing the same CSS for consistency
 import './FacultyDashboard.css'; // Faculty-specific styles
 
 const FacultyDashboard = ({ onNavigate }) => {
+  const { updateAuthStatus, storeData, getData, isLoggedIn } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -102,6 +105,47 @@ const FacultyDashboard = ({ onNavigate }) => {
     batchName: ''
   });
 
+  // Load profile data from token storage on component mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      const savedProfileData = getData('faculty_profile');
+      if (savedProfileData) {
+        setUserData(savedProfileData);
+        console.log('Faculty profile data loaded from token storage:', savedProfileData);
+      }
+      
+      // Load students data
+      const savedStudentsData = getData('faculty_students');
+      if (savedStudentsData) {
+        setStudents(savedStudentsData);
+        console.log('Faculty students data loaded from token storage:', savedStudentsData);
+      }
+      
+      // Load courses data
+      const savedCoursesData = getData('faculty_courses');
+      if (savedCoursesData) {
+        setCourses(savedCoursesData);
+        console.log('Faculty courses data loaded from token storage:', savedCoursesData);
+      }
+    }
+  }, [isLoggedIn, getData]);
+
+  // Save students data to token storage whenever students change
+  useEffect(() => {
+    if (isLoggedIn && students.length > 0) {
+      storeData('faculty_students', students);
+      console.log('Faculty students data saved with token storage:', students);
+    }
+  }, [students, isLoggedIn, storeData]);
+
+  // Save courses data to token storage whenever courses change
+  useEffect(() => {
+    if (isLoggedIn && courses.length > 0) {
+      storeData('faculty_courses', courses);
+      console.log('Faculty courses data saved with token storage:', courses);
+    }
+  }, [courses, isLoggedIn, storeData]);
+
   // Check if profile setup is needed on component mount
   useEffect(() => {
     const profileCompleted = localStorage.getItem('facultyProfileCompleted');
@@ -120,6 +164,13 @@ const FacultyDashboard = ({ onNavigate }) => {
 
   const handleSaveProfile = (newUserData) => {
     setUserData(newUserData);
+    
+    // Store profile data with token-based key
+    if (isLoggedIn) {
+      storeData('faculty_profile', newUserData);
+      console.log('Faculty profile data saved with token storage:', newUserData);
+    }
+    
     setIsEditModalOpen(false);
   };
 
@@ -129,6 +180,13 @@ const FacultyDashboard = ({ onNavigate }) => {
 
   const handleProfileSetupComplete = (newUserData) => {
     setUserData(newUserData);
+    
+    // Store profile data with token-based key
+    if (isLoggedIn) {
+      storeData('faculty_profile', newUserData);
+      console.log('Faculty profile setup completed and saved with token storage:', newUserData);
+    }
+    
     setIsProfileSetupOpen(false);
     // Store profile completion status in localStorage
     localStorage.setItem('facultyProfileCompleted', 'true');
@@ -174,8 +232,27 @@ const FacultyDashboard = ({ onNavigate }) => {
   };
 
   const handleSignOut = () => {
-    // Clear any stored data
+    // Get current user token before destroying
+    const currentUser = getCurrentUserToken();
+    
+    // Destroy authentication token and all user data
+    if (currentUser) {
+      destroyToken(currentUser.email);
+    }
+    
+    // Clear any additional stored data
     localStorage.removeItem('facultyProfileCompleted');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_first_name');
+    localStorage.removeItem('user_last_name');
+    localStorage.removeItem('user_remember_me');
+    localStorage.removeItem('user_social_provider');
+    
+    console.log('Faculty user signed out successfully');
+    
+    // Update auth context
+    updateAuthStatus();
+    
     // Redirect to sign in page
     if (onNavigate) {
       onNavigate('/signin');
@@ -259,7 +336,14 @@ const FacultyDashboard = ({ onNavigate }) => {
       case 'settings':
         return <AccountSettings 
           userData={userData}
-          onUserDataUpdate={setUserData}
+          onUserDataUpdate={(updatedData) => {
+            setUserData(updatedData);
+            // Store updated profile data with token-based key
+            if (isLoggedIn) {
+              storeData('faculty_profile', updatedData);
+              console.log('Faculty profile data updated via AccountSettings and saved with token storage:', updatedData);
+            }
+          }}
           isDarkMode={isDarkMode}
           onThemeToggle={toggleTheme}
           onNotificationSettingsUpdate={(settings) => console.log('Notification settings updated:', settings)}

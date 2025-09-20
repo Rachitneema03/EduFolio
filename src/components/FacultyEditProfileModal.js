@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
 import './EditProfileModal.css';
 
 const FacultyEditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
+  const { getData, isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
     name: userData?.name || '',
     age: userData?.age || '',
@@ -19,6 +21,29 @@ const FacultyEditProfileModal = ({ isOpen, onClose, onSave, userData }) => {
 
   const [newSubject, setNewSubject] = useState('');
   const [linkedinError, setLinkedinError] = useState('');
+
+  // Load profile data from token storage when modal opens
+  useEffect(() => {
+    if (isOpen && isLoggedIn) {
+      const savedProfileData = getData('faculty_profile');
+      if (savedProfileData) {
+        setFormData({
+          name: savedProfileData.name || '',
+          age: savedProfileData.age || '',
+          gender: savedProfileData.gender || '',
+          profileHeadline: savedProfileData.profileHeadline || '',
+          collegeName: savedProfileData.collegeName || '',
+          degree: savedProfileData.degree || '',
+          passingYear: savedProfileData.passingYear || '',
+          subjectsTaught: savedProfileData.subjectsTaught || [],
+          experience: savedProfileData.experience || '',
+          profilePhoto: savedProfileData.profilePhoto || null,
+          linkedinUrl: savedProfileData.linkedinUrl || ''
+        });
+        console.log('FacultyEditProfileModal: Profile data loaded from token storage:', savedProfileData);
+      }
+    }
+  }, [isOpen, isLoggedIn, getData]);
 
   const validateLinkedInUrl = (url) => {
     if (!url) return true; // Empty URL is valid (optional field)

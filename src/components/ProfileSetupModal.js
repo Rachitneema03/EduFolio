@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
 import './ProfileSetupModal.css';
 
 const ProfileSetupModal = ({ isOpen, onComplete }) => {
+  const { getData, isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -14,6 +16,25 @@ const ProfileSetupModal = ({ isOpen, onComplete }) => {
   });
 
   const [errors, setErrors] = useState({});
+
+  // Load profile data from token storage when modal opens
+  useEffect(() => {
+    if (isOpen && isLoggedIn) {
+      const savedProfileData = getData('profile');
+      if (savedProfileData) {
+        setFormData({
+          name: savedProfileData.name || '',
+          age: savedProfileData.age || '',
+          dob: savedProfileData.dob || '',
+          gender: savedProfileData.gender || '',
+          category: savedProfileData.category || '',
+          branch: savedProfileData.branch || '',
+          currentYear: savedProfileData.currentYear || ''
+        });
+        console.log('ProfileSetupModal: Profile data loaded from token storage:', savedProfileData);
+      }
+    }
+  }, [isOpen, isLoggedIn, getData]);
 
   // Category and branch mappings
   const categoryBranches = {

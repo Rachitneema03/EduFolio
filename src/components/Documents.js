@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
 import './Documents.css';
 
 const Documents = () => {
+  const { storeData, getData, isLoggedIn } = useAuth();
   const [activeTab, setActiveTab] = useState('all');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -29,7 +31,24 @@ const Documents = () => {
     'Other'
   ];
 
-  // Sample documents data
+  // Load documents from token-based storage on component mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      const savedDocuments = getData('documents');
+      if (savedDocuments) {
+        setDocuments(savedDocuments);
+      }
+    }
+  }, [isLoggedIn, getData]);
+
+  // Save documents to token-based storage whenever documents change
+  useEffect(() => {
+    if (isLoggedIn && documents) {
+      storeData('documents', documents);
+    }
+  }, [documents, isLoggedIn, storeData]);
+
+  // Sample documents data (fallback if no saved data)
   const [documents, setDocuments] = useState({
     'all': [
       {
@@ -144,11 +163,22 @@ const Documents = () => {
       };
 
       // Add to all documents
-      setDocuments(prev => ({
-        ...prev,
-        all: [...prev.all, document],
-        [newDocument.category]: [...prev[newDocument.category], document]
-      }));
+      setDocuments(prev => {
+        const updatedDocuments = {
+          ...prev,
+          all: [...prev.all, document],
+          [newDocument.category]: [...prev[newDocument.category], document]
+        };
+        
+        // Log the token-based storage action
+        console.log('Document uploaded and will be saved with token-based storage:', {
+          documentName: document.name,
+          category: document.category,
+          userToken: isLoggedIn ? 'Active' : 'Not logged in'
+        });
+        
+        return updatedDocuments;
+      });
 
       setNewDocument({
         name: '',

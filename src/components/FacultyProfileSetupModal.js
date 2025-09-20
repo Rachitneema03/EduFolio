@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
 import './ProfileSetupModal.css';
 
 const FacultyProfileSetupModal = ({ isOpen, onComplete }) => {
+  const { getData, isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -17,6 +19,28 @@ const FacultyProfileSetupModal = ({ isOpen, onComplete }) => {
   });
 
   const [errors, setErrors] = useState({});
+
+  // Load profile data from token storage when modal opens
+  useEffect(() => {
+    if (isOpen && isLoggedIn) {
+      const savedProfileData = getData('faculty_profile');
+      if (savedProfileData) {
+        setFormData({
+          name: savedProfileData.name || '',
+          age: savedProfileData.age || '',
+          dob: savedProfileData.dob || '',
+          gender: savedProfileData.gender || '',
+          degrees: savedProfileData.degrees || [{ degree: '', year: '' }],
+          designation: savedProfileData.designation || '',
+          officialEmail: savedProfileData.officialEmail || '',
+          department: savedProfileData.department || '',
+          isBatchMentor: savedProfileData.isBatchMentor || false,
+          batchName: savedProfileData.batchName || ''
+        });
+        console.log('FacultyProfileSetupModal: Profile data loaded from token storage:', savedProfileData);
+      }
+    }
+  }, [isOpen, isLoggedIn, getData]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;

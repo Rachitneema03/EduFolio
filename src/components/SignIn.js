@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AccountTypeModal from './AccountTypeModal';
+import { generateToken, storeToken, isAuthenticated } from '../utils/tokenManager';
+import { useAuth } from '../contexts/AuthContext';
 import './AuthPages.css';
 
 const SignIn = ({ onNavigate }) => {
+  const { updateAuthStatus } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -22,14 +25,46 @@ const SignIn = ({ onNavigate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Sign in data:', formData);
-    // Handle sign in logic here
+    
+    // Generate and store authentication token
+    const token = generateToken();
+    const tokenData = storeToken(formData.email, token);
+    
+    console.log('Generated token:', token);
+    console.log('Token data:', tokenData);
+    
+    // Store user basic info for the session
+    localStorage.setItem('user_email', formData.email);
+    localStorage.setItem('user_remember_me', formData.rememberMe);
+    
+    // Update auth context
+    updateAuthStatus();
+    
     // Show account type modal after successful login
     setShowAccountTypeModal(true);
   };
 
   const handleSocialLogin = (provider) => {
     console.log(`Sign in with ${provider}`);
-    // Handle social login logic here
+    
+    // For social login, we'll use a placeholder email
+    // In a real app, you'd get the actual email from the social provider
+    const socialEmail = `social_${provider.toLowerCase()}_user@example.com`;
+    
+    // Generate and store authentication token for social login
+    const token = generateToken();
+    const tokenData = storeToken(socialEmail, token);
+    
+    console.log('Social login token:', token);
+    console.log('Social login token data:', tokenData);
+    
+    // Store user basic info for the session
+    localStorage.setItem('user_email', socialEmail);
+    localStorage.setItem('user_social_provider', provider);
+    
+    // Update auth context
+    updateAuthStatus();
+    
     // Show account type modal after successful social login
     setShowAccountTypeModal(true);
   };

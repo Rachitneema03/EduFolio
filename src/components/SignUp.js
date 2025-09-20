@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AccountTypeModal from './AccountTypeModal';
+import { generateToken, storeToken } from '../utils/tokenManager';
+import { useAuth } from '../contexts/AuthContext';
 import './AuthPages.css';
 
 const SignUp = ({ onNavigate }) => {
+  const { updateAuthStatus } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -23,14 +26,47 @@ const SignUp = ({ onNavigate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Sign up data:', formData);
-    // Handle sign up logic here
+    
+    // Generate and store authentication token
+    const token = generateToken();
+    const tokenData = storeToken(formData.email, token);
+    
+    console.log('Generated token for signup:', token);
+    console.log('Token data:', tokenData);
+    
+    // Store user basic info for the session
+    localStorage.setItem('user_email', formData.email);
+    localStorage.setItem('user_first_name', formData.firstName);
+    localStorage.setItem('user_last_name', formData.lastName);
+    
+    // Update auth context
+    updateAuthStatus();
+    
     // Show account type modal after successful registration
     setShowAccountTypeModal(true);
   };
 
   const handleSocialSignUp = (provider) => {
     console.log(`Sign up with ${provider}`);
-    // Handle social sign up logic here
+    
+    // For social signup, we'll use a placeholder email
+    // In a real app, you'd get the actual email from the social provider
+    const socialEmail = `social_${provider.toLowerCase()}_user@example.com`;
+    
+    // Generate and store authentication token for social signup
+    const token = generateToken();
+    const tokenData = storeToken(socialEmail, token);
+    
+    console.log('Social signup token:', token);
+    console.log('Social signup token data:', tokenData);
+    
+    // Store user basic info for the session
+    localStorage.setItem('user_email', socialEmail);
+    localStorage.setItem('user_social_provider', provider);
+    
+    // Update auth context
+    updateAuthStatus();
+    
     // Show account type modal after successful social sign up
     setShowAccountTypeModal(true);
   };

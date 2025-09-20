@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import LandingPage from './components/LandingPage';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
@@ -35,17 +37,33 @@ const FacultyDashboardWrapper = () => {
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<LandingPageWrapper />} />
-          <Route path="/signin" element={<SignInWrapper />} />
-          <Route path="/signup" element={<SignUpWrapper />} />
-          <Route path="/dashboard" element={<StudentDashboardWrapper />} />
-          <Route path="/faculty-dashboard" element={<FacultyDashboardWrapper />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<LandingPageWrapper />} />
+            <Route path="/signin" element={<SignInWrapper />} />
+            <Route path="/signup" element={<SignUpWrapper />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <StudentDashboardWrapper />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/faculty-dashboard" 
+              element={
+                <ProtectedRoute>
+                  <FacultyDashboardWrapper />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
