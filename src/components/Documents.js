@@ -236,7 +236,7 @@ const Documents = () => {
       case 'Resume/CV': return '👤';
       case 'Cover Letters': return '✉️';
       case 'Transcripts': return '📜';
-      case 'Recommendation Letters': return '💌';
+      case 'Recommendation Letters': return '📧';
       default: return '📁';
     }
   };
