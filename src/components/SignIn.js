@@ -74,6 +74,8 @@ const SignIn = ({ onNavigate }) => {
     // Redirect to appropriate dashboard based on selected account type
     if (accountType === 'faculty') {
       onNavigate('/faculty-dashboard');
+    } else if (accountType === 'admin') {
+      onNavigate('/admin-dashboard');
     } else {
       onNavigate('/dashboard');
     }

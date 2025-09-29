@@ -7,6 +7,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import StudentDashboard from './components/StudentDashboard';
 import FacultyDashboard from './components/FacultyDashboard';
+import AdminDashboard from './components/AdminDashboard';
 import './App.css';
 
 // Wrapper components to pass navigate function
@@ -35,6 +36,11 @@ const FacultyDashboardWrapper = () => {
   return <FacultyDashboard onNavigate={navigate} />;
 };
 
+const AdminDashboardWrapper = () => {
+  const navigate = useNavigate();
+  return <AdminDashboard onNavigate={navigate} />;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -57,6 +63,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <FacultyDashboardWrapper />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin-dashboard" 
+              element={
+                <ProtectedRoute>
+                  <AdminDashboardWrapper />
                 </ProtectedRoute>
               } 
             />

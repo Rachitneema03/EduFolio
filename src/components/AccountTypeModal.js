@@ -88,6 +88,32 @@ const AccountTypeModal = ({ isOpen, onSelectAccountType, onClose }) => {
               </div>
             </div>
           </motion.div>
+
+          <motion.div 
+            className={`account-type-option ${selectedType === 'admin' ? 'selected' : ''}`}
+            onClick={() => handleSelectType('admin')}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="account-type-icon">
+              <i className="bi bi-gear-fill"></i>
+            </div>
+            <div className="account-type-content">
+              <h3>Administrator</h3>
+              <p>I am an institutional administrator looking to manage users, generate NAAC reports, and oversee institutional operations.</p>
+              <ul>
+                <li>Manage students and faculty</li>
+                <li>Generate NAAC accreditation reports</li>
+                <li>Register and manage colleges</li>
+                <li>Oversee institutional analytics</li>
+              </ul>
+            </div>
+            <div className="account-type-radio">
+              <div className={`radio-button ${selectedType === 'admin' ? 'checked' : ''}`}>
+                {selectedType === 'admin' && <i className="bi bi-check"></i>}
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         <div className="account-type-modal-footer">
